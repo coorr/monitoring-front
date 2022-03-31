@@ -1,0 +1,88 @@
+
+
+.App {
+    font-family: sans-serif;
+  }
+  
+  .dropable-container {
+    width: 30rem;
+    height: 20rem;
+    border: 1px dashed #000;
+  }
+  
+  .dd-demo-container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .focus-drop-container {
+    border: 1px dashed red;
+  }
+
+  
+label {
+  display: block;
+}
+body{
+  overflow-x: hidden;
+}
+
+/** 상단 바 **/
+/* // 937 */
+/* .ContainerBox{width: 1920px; height: 937px; }    */
+.rootNavBarArea{ width: 100%; height: 5%;  background-color: #2d2c33; display: flex; position: fixed;  z-index: 9999;}
+.rootNavBarTitle{color: white; font-size: 1.5em; text-decoration: none; margin-left: 2%; margin-top: 0.2%; }
+.rootNavBarTitle:hover{color: white; font-size: 1.5em; text-decoration: none; margin-left: 2%; }
+.rootNavBar{ width: 40%;  display: flex; }
+.rootNavBarList{ margin-top: 1.43%; list-style:none;  margin-left: 5%;}
+.rootNavBarText{color: #93939b; text-decoration: none;}
+.rootNavBarText:hover{color: #93939b; text-decoration: none;}
+.rootNavBarLogin{margin-left: auto; margin-right: 0;  width: 10%; height: 100%; display: flex; list-style:none;}
+.rootNavBarListLogin{ margin-top: 5%; margin-left: 10%; }
+.rootNavBarTextLogin{color: #93939b; text-decoration: none; }
+.rootNavBarTextLogin:hover{color: #93939b; text-decoration: none;}
+
+.ContainerSecond{width: 100%; height: 95%; display: flex; }
+.sideBarAreas{ height: 100%; width: 50px; position: fixed;  margin-top: 2.4%;}
+.dropdown-toggle::after { display:none !important; }
+.btn-primary { background-color: #3f7bd4; border: 0px;}
+.btn-primary:hover{ background-color: #3f7bd4; border: 0px;}
+.dropdown-toggle{ background-color: #3f7bd4; border: 0px;}
+.dropdown-toggle:hover{ background-color: #3f7bd4; border: 0px;}
+
+.card-container.card {
+  max-width: 350px !important;
+  padding: 40px 40px;
+}
+
+.card {
+  background-color: #f7f7f7;
+  padding: 20px 25px 30px;
+  margin: 0 auto 25px;
+  margin-top: 50px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.profile-img-card {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 10px;
+  display: block;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+.show-grid{
+  border-width: 3;
+  border-color: blue;
+}
+.textArea {margin-left: 50px;}
+/* .ml-auto{margin-left: auto; margin-right: 30px;} */
+/* .navbar-brand{margin-left: 30px;} */
+.jumbotron {width: 1250px; height: 300px; background-color: #eceaea;}
+  

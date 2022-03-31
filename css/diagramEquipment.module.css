@@ -1,0 +1,44 @@
+/* diagramView.js */
+/* search */
+.diagram_container{ width: 100%; height: 100%; background-color: #E5E4EA; overflow: hidden; margin-left: 50px; margin-top: 2.4%;}
+.diagram_searchArea{width: 99.5%; height: 13%;  background-color: #fff; margin-left: 0.25%;}
+.diagram_searchTitleBox{width: 100%; height: 35%;   display: flex; }
+.diagram_searchTitleLeft{ width: 8%;   padding: 0.4%; }
+.diagram_searchTitleLeftFont{font-weight: bold; font-size: 0.9em;}
+.diagram_searchTitleRightArea{width: 90%; border: 1px solid #999999; height: 70%; margin-top: 0.3%; background-color: #F3F3F5;}
+.diagram_searchTitleRightInput{  margin-left: 0.5%; width: 90%; height: 90%; border: 0; margin-top: 0.1%; background-color: #F3F3F5;}
+
+/* 조회하기 */
+.diagram_selectArea{text-align: center;  margin-top: 2.1%;  margin-right: 4%; }
+.diagram_selectBtn{  font-size: 0.9em; border: 1px solid #29363d; background-color: #29363d; color: white; border-radius: 0;}
+.diagram_selectBtn:hover {border:1px solid black; background-color: black; color: white;}
+
+/* Grid */
+.diagram_gridArea{width: 99.5%; height: 72%;  background-color: #fff; margin-left: 0.25%;}
+.diagram_gridArea_Second{width: 99.5%; height: 85%;  background-color: #fff; margin-left: 0.25%;}
+.diagram_gridBtnBox{text-align: right; width: 99%; height: 9%; }
+
+/* topogolyEquipment.tsx */
+.topogolgy_container{width: 100%; height: 100%; background-color: #E5E4EA;  margin-left: 50px; margin-top: 2.4%;}
+.topogolgy_topMenu{width: 99.5%; margin: 0.25% 0.25% 0 0.25%; background-color: white; height: 4%; }
+.topogolgy_topButton{ background-color: white; color: black; border: 1px solid black; font-size: 0.8rem; height: 90%; margin-left: 0.3%; border-radius: 0.5rem; padding: 0.25rem; }
+.topogolgy_topButton:hover{ background-color: white; color: rgb(145, 145, 145); border: 1px solid black; font-size: 0.8rem; height: 90%; margin-left: 0.3%; border-radius: 0.5rem; padding: 0.25rem; }
+.topogolgy_topButton:focus{ background-color: white; color: black; border: 1px solid black; font-size: 0.8rem; height: 90%; margin-left: 0.3%; border-radius: 0.5rem; padding: 0.25rem; }
+.topogolgy_addLogo{margin-bottom: 5%;}
+.topogolgy_topButton_right{ float: right; margin-right: 0.3rem; background-color: white; color: black; border: 1px solid black; font-size: 0.8rem; height: 90%; border-radius: 0.5rem; padding: 0.35rem;}
+.topogolgy_addLogo_save{ margin-right: 5px;}
+.topogolgy_addLogo_list{ margin-bottom: 5px;}
+/* DiagraWraaper.tsx */
+.diagram_component { width: 99.5%; height: 85%;  background-color: white; margin-left: 0.25%; }
+
+
+/* Ag-Grid 버튼 */
+.edit_topology_style{line-height:normal; border: 1px solid #6693D7; background-color: #fff;  color: #6693D7; height: 22px;width: 40px; margin-left: 25%; margin-top: 2%; }
+.edit_topology_style:hover{background-color: #6693D7; border: 1px solid #6693D7; color:#fff;}
+.edit_topology_style:focus{border: 1px solid #6693D7; background-color: #fff; color: #6693D7; }
+
+.select_topology_style{line-height:normal; border: 1px solid black; background-color: #fff;  color: black; height: 22px;width: 40px; margin-left: 25%; margin-top: 2%; }
+.select_topology_style:hover{background-color: black; border: 1px solid black; color:#fff;}
+.select_topology_style:focus{border: 1px solid black; background-color: #fff; color: black; }
+
+.diagram_category_icon{margin-left: 2%; margin-right: 2%;}
