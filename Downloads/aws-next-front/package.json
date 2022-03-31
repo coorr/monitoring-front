@@ -1,0 +1,20 @@
+{
+  "name": "aws-next-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
+  },
+  "author": "aws-next",
+  "license": "ISC",
+  "dependencies": {
+    "@next/bundle-analyzer": "^12.1.4",
+    "cross-env": "^7.0.3",
+    "next": "^9.5.5",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.2.2"
+  }
+}
