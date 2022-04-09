@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const config = \"http://54.180.170.84:8080/\";","map":{"version":3,"sources":["C:/Users/user/Downloads/shopping-front/src/config/config.js"],"names":["config"],"mappings":"AAAA,OAAO,MAAMA,MAAM,GAAG,4BAAf","sourcesContent":["export const config = \"http://54.180.170.84:8080/\";"]},"metadata":{},"sourceType":"module"}

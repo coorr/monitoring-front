@@ -7,7 +7,7 @@
     "dev": "next",
     "build": "cross-env ANALYZE=true NODE_ENV=production next build",
     "start": "cross-env NODE_ENV=production next  start -p 80",
-    "builds" :"react-scripts build",
+    "builds": "react-scripts build",
     "starts": "react-scripts start"
   },
   "author": "aws-next",
@@ -24,6 +24,7 @@
     "react-icons": "^4.3.1",
     "react-pro-sidebar": "^0.7.1",
     "react-router-dom": "^6.2.2",
-    "react-validation": "^3.0.7"
+    "react-validation": "^3.0.7",
+    "validator": "^13.7.0"
   }
 }

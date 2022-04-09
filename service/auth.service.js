@@ -1,17 +1,17 @@
 import axios from "axios";
-import { config } from '../config/config'
+import { config } from "../src/config/config";
 
-const API_URL = config+"aiwacs/";
+const API_URL = config+"api/user/";
 
 class AuthService {
-  login(username, password,requestURL) {
+  login(username, password) {
     return axios
       .post(API_URL + "signin", {
         username,
         password
-      }, { headers: { Referers:requestURL}})
+      },)
       .then(response => {
-        if (response.data.accessToken) {
+        if (response.data.token) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
 
