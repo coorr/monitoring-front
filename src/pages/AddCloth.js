@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../components/header'
-import AuthService from '../../service/auth.service';
+import AuthService from '../../service/Auth.service';
 
 export default class AddCloth extends Component {
   constructor(props) {
