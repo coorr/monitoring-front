@@ -1,10 +1,11 @@
 {
-  "/AddCloth": "pages/AddCloth.js",
-  "/Help": "pages/Help.js",
-  "/Login": "pages/Login.js",
-  "/Register": "pages/Register.js",
+  "/AddCloth": "pages/AddCloth.html",
+  "/Help": "pages/Help.html",
+  "/Login": "pages/Login.html",
+  "/Register": "pages/Register.html",
   "/_app": "pages/_app.js",
-  "/": "pages/index.js",
+  "/": "pages/index.html",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js"
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html"
 }
