@@ -5,8 +5,8 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/5CQ9BLzsE5lhc9PSkzPT9/_buildManifest.js",
-    "static/5CQ9BLzsE5lhc9PSkzPT9/_ssgManifest.js"
+    "static/PJ1H_cCofvZwideLR0-l5/_buildManifest.js",
+    "static/PJ1H_cCofvZwideLR0-l5/_ssgManifest.js"
   ],
   "pages": {
     "/": [
@@ -14,16 +14,16 @@
       "static/chunks/webpack-e067438c4cf4ef2ef178.js",
       "static/chunks/framework.f3faf2bce1beb5517f6f.js",
       "static/chunks/06e23d07585d8d22b1108fdef8b0922f4f4517a5.97cd7a73c341b5e1f7c7.js",
-      "static/chunks/bd55cac9db7d51e944196da78d56788bb5051746.5762e38767bfe8b232a3.js",
+      "static/chunks/bd55cac9db7d51e944196da78d56788bb5051746.f4fbefe41e305491e22c.js",
       "static/css/dbb44108e41233810914.css",
-      "static/chunks/pages/index-ffcde9f797da516a0465.js"
+      "static/chunks/pages/index-3151663e622aeb88e2d4.js"
     ],
     "/AddCloth": [
       "static/chunks/main-329ee88dd4391ad10c73.js",
       "static/chunks/webpack-e067438c4cf4ef2ef178.js",
       "static/chunks/framework.f3faf2bce1beb5517f6f.js",
       "static/chunks/06e23d07585d8d22b1108fdef8b0922f4f4517a5.97cd7a73c341b5e1f7c7.js",
-      "static/chunks/bd55cac9db7d51e944196da78d56788bb5051746.5762e38767bfe8b232a3.js",
+      "static/chunks/bd55cac9db7d51e944196da78d56788bb5051746.f4fbefe41e305491e22c.js",
       "static/css/dbb44108e41233810914.css",
       "static/chunks/pages/AddCloth-67b0a18b69ec6630daca.js"
     ],
@@ -38,7 +38,7 @@
       "static/chunks/webpack-e067438c4cf4ef2ef178.js",
       "static/chunks/framework.f3faf2bce1beb5517f6f.js",
       "static/chunks/06e23d07585d8d22b1108fdef8b0922f4f4517a5.97cd7a73c341b5e1f7c7.js",
-      "static/chunks/bd55cac9db7d51e944196da78d56788bb5051746.5762e38767bfe8b232a3.js",
+      "static/chunks/bd55cac9db7d51e944196da78d56788bb5051746.f4fbefe41e305491e22c.js",
       "static/css/dbb44108e41233810914.css",
       "static/chunks/pages/Login-874f12b4c11a4e3e0157.js"
     ],
@@ -47,7 +47,7 @@
       "static/chunks/webpack-e067438c4cf4ef2ef178.js",
       "static/chunks/framework.f3faf2bce1beb5517f6f.js",
       "static/chunks/06e23d07585d8d22b1108fdef8b0922f4f4517a5.97cd7a73c341b5e1f7c7.js",
-      "static/chunks/bd55cac9db7d51e944196da78d56788bb5051746.5762e38767bfe8b232a3.js",
+      "static/chunks/bd55cac9db7d51e944196da78d56788bb5051746.f4fbefe41e305491e22c.js",
       "static/css/dbb44108e41233810914.css",
       "static/chunks/pages/Register-17d875d1f34b995a050c.js"
     ],

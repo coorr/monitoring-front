@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import AppLayout from "./index"
+import Header from "../components/header";
 import AuthService from "../../service/Auth.service";
 import Link from "next/link";
 import Router from "next/router";
@@ -84,7 +84,7 @@ export default class Login extends Component {
   render() {
     return (
     <>
-     <AppLayout />
+     <Header />
       <div className="col-md-12">
         <div className="card card-container">
           <img
