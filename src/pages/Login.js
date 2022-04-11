@@ -3,54 +3,55 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import Header from "../components/header";
-import AuthService from "../../service/Auth.service";
+import AuthService from "../../service/user/Auth.service";
 import Link from "next/link";
 import Router from "next/router";
+import styles from '../components/css/User.module.css'
 
 
 
-const required = value => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-
     this.state = {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       loading: false,
-      message: ""
+      currentUser: ''
     };
   }
 
-  onChangeUsername(e) {
+  componentDidMount() {
+    const user = AuthService.getCurrentUser();
+    if(user) {
+      Router.push("/")
+    }
+  }
+
+  onChangeUsername = (e) => {
     this.setState({
       username: e.target.value
     });
   }
 
-  onChangePassword(e) {
+  onChangePassword = (e) => {
     this.setState({
       password: e.target.value
     });
   }
 
-  handleLogin(e) {
+  handleLogin = (e) => {
     e.preventDefault();
+    const { username, password} = this.state;
+    if(username.length === 0) {
+      return alert("아이디 항목은 필수 입력값입니다.")
+    } else if(password.length ===0) {
+      return alert("패스워드 항목은 필수 입력값입니다.")
+    }
+    
 
     this.setState({
-      message: "",
       loading: true
     });
     this.form.validateAll();
@@ -67,10 +68,9 @@ export default class Login extends Component {
               error.response.data.message) ||
             error.message ||
             error.toString();
-
+          alert(resMessage)
           this.setState({
             loading: false,
-            message: resMessage
           });
         }
       );
@@ -82,77 +82,81 @@ export default class Login extends Component {
   }
 
   render() {
+    const { currentUser } = this.state;
     return (
     <>
      <Header />
-      <div className="col-md-12">
-        <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
+        <div className="col-md-12">
+            <div className="card card-container">
+            
+              <label className={styles.login_font_title}>Login</label>
+              <br />
+              <br />
 
-          <Form
-            onSubmit={this.handleLogin}
-            ref={c => {
-              this.form = c;
-            }}
-          >
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="username"
-                value={this.state.username}
-                onChange={this.onChangeUsername}
-                validations={[required]}
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                value={this.state.password}
-                onChange={this.onChangePassword}
-                validations={[required]}
-              />
-            </div>
-
-            <div className="form-group">
-              <button
-                className="btn btn-primary btn-block"
-                disabled={this.state.loading}
+              <Form
+                onSubmit={this.handleLogin}
+                ref={c => {
+                  this.form = c;
+                }}
               >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Login</span>
-              </button>
-            </div>
+                <div className="form-group">
+                  <label htmlFor="username" className={styles.login_font_input}>ID</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.onChangeUsername}
+                  />
+                </div>
 
-            {this.state.message && (
-              <div className="form-group">
-                <div className="alert alert-danger" role="alert">
-                  <div style={{fontSize:'17px'}}>
-                  {this.state.message}
+                <div className="form-group">
+                  <label htmlFor="password" className={styles.login_font_input}>PASSWORD</label>
+                  <Input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.onChangePassword}
+                  />
+                </div>
+
+                <br />
+
+                <div className="form-group">
+                  <button
+                    className="btn btn-primary btn-block"
+                    disabled={this.state.loading}
+                    type="submit"
+                    onSubmit={this.handleLogin}
+                  >
+                    {this.state.loading && (
+                      <span className="spinner-border spinner-border-sm"></span>
+                    )}
+                    <span>Login</span>
+                  </button>
+                </div>
+
+                <br />
+
+                <div className="form-group">
+                  <div className="btn  login_account_layout">
+                    <label className={styles.login_account_font_label}>New to Account?</label>{" "}
+                    <a href="register" className={styles.login_account_font_a}>Create an account.</a>
                   </div>
                 </div>
-              </div>
-            )}
-            <CheckButton
-              style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
-            />
-          </Form>
-        </div>
-      </div>
+
+                <CheckButton
+                  style={{ display: "none" }}
+                  ref={c => {
+                    this.checkBtn = c;
+                  }}
+                />
+              </Form>
+              
+            </div>
+          </div>
+       
       </>
     );
   }

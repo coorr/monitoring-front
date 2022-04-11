@@ -1,1 +1,0 @@
-_N_E=(window.webpackJsonp_N_E=window.webpackJsonp_N_E||[]).push([[6],{"N+/A":function(_,n,w){(window.__NEXT_P=window.__NEXT_P||[]).push(["/AddCloth",function(){return w("ckwV")}])}},[["N+/A",0,2,1,3]]]);

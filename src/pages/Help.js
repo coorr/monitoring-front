@@ -8,6 +8,10 @@ export default class Help extends Component {
         <>
          <Header />
          <div>Help</div>
+         <button>아아</button>
+         <form>
+           <button>나나</button>
+         </form>
         </>
     )
   }

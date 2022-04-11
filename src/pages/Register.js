@@ -4,13 +4,16 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import Header from '../components/header'
-import AuthService from "../../service/Auth.service";
+import AuthService from "../../service/user/Auth.service";
+import styles from '../components/css/User.module.css'
+import Router from "next/router";
+import Register_result from "./register.result";
 
 const required = value => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        입력해주세요.
       </div>
     );
   }
@@ -20,7 +23,7 @@ const email = value => {
   if (!isEmail(value)) {
     return (
       <div className="alert alert-danger" role="alert">
-        This is not a valid email.
+        유효하지 않는 이메일입니다.
       </div>
     );
   }
@@ -30,17 +33,17 @@ const vusername = value => {
   if (value.length < 3 || value.length > 20) {
     return (
       <div className="alert alert-danger" role="alert">
-        The username must be between 3 and 20 characters.
+        아이디는 영문소문자 또는 숫자 4~20자로 입력해 주세요.
       </div>
     );
   }
 };
 
 const vpassword = value => {
-  if (value.length < 6 || value.length > 40) {
+  if (value.length < 6 || value.length > 16) {
     return (
       <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
+        비밀번호는 영문소문자 또는 숫자 4~16자로 입력해 주세요.
       </div>
     );
   }
@@ -49,59 +52,56 @@ const vpassword = value => {
 export default class Register extends Component {
   constructor(props) {
     super(props);
-    this.handleRegister = this.handleRegister.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangeEmail = this.onChangeEmail.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-
     this.state = {
       username: "",
       email: "",
       password: "",
-      successful: false,
-      message: ""
+      successful: false
     };
   }
 
-  onChangeUsername(e) {
+  onChangeUsername = (e) => {
     this.setState({
       username: e.target.value
     });
   }
 
-  onChangeEmail(e) {
+  onChangeEmail= (e) => {
     this.setState({
       email: e.target.value
     });
   }
 
-  onChangePassword(e) {
+  onChangePassword= (e) => {
     this.setState({
       password: e.target.value
     });
   }
 
-  handleRegister(e) {
+  handleRegister= (e) => {
     e.preventDefault();
 
     this.setState({
-      message: "",
       successful: false
     });
 
     this.form.validateAll();
 
-    if (this.checkBtn.context._errors.length === 0) {  // 0은 id,email,pw다 올바르게 입력했을때 , 서버보다 우선순위 먼저
-      AuthService.register(   // body 역할
+    if (this.checkBtn.context._errors.length === 0) {   // 서버보다 우선순위 먼저
+      AuthService.register(   
         this.state.username,
         this.state.email,
         this.state.password
       ).then(
         response => {
           this.setState({
-            message: response.data.message,
             successful: true
           });
+          Router.push({
+            pathname: "/register.result",
+            query: {username: this.state.username, email: this.state.email}
+          })
+
         },
         error => {
           const resMessage =
@@ -111,9 +111,9 @@ export default class Register extends Component {
             error.message ||
             error.toString();
 
+          alert(resMessage)
           this.setState({
             successful: false,
-            message: resMessage
           });
         }
       );
@@ -121,18 +121,14 @@ export default class Register extends Component {
   }
 
   render() {
-    console.log(this.state.message);
     return (
       <>
       <Header />
       <div className="col-md-12">
         <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
-
+        <label className={styles.login_font_title}>Register</label>
+        <br />
+        <br />
           <Form
             onSubmit={this.handleRegister}
             ref={c => {
@@ -142,7 +138,7 @@ export default class Register extends Component {
             {!this.state.successful && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="username">Username</label>
+                <label htmlFor="username" className={styles.login_font_input}>USERNAME</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -154,7 +150,7 @@ export default class Register extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="email">Email</label>
+                <label htmlFor="email" className={styles.login_font_input}>EAMIL</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -166,7 +162,7 @@ export default class Register extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="Password" className={styles.login_font_input}>PASSWORD</label>
                   <Input
                     type="password"
                     className="form-control"
@@ -176,24 +172,11 @@ export default class Register extends Component {
                     validations={[required, vpassword]}
                   />
                 </div>
+                <br />
+                <br />
 
                 <div className="form-group">
                   <button className="btn btn-primary btn-block">Sign Up</button>
-                </div>
-              </div>
-            )}
-
-            {this.state.message && (
-              <div className="form-group">
-                <div
-                  className={
-                    this.state.successful
-                      ? "alert alert-success"
-                      : "alert alert-danger"
-                  }
-                  role="alert"
-                >
-                  {this.state.message}
                 </div>
               </div>
             )}

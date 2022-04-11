@@ -1,6 +1,6 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: process.env.ANALYZE === 'true',
-  });
+  });  // 빌드 메모리 분석
   
   module.exports = withBundleAnalyzer({
     compress: true,
@@ -13,4 +13,5 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
         plugins: [...config.plugins, ],
       };
     },
-  });
+  },);
+

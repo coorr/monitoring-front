@@ -1,25 +1,26 @@
 import React, { Component } from 'react'
 import { Container,Navbar,Nav,NavDropdown } from "react-bootstrap";
 import styles from './css/Header.module.css'
-import AddCloth from '../pages/AddCloth';
-import Login from '../pages/Login';
-import Link from 'next/link'
-import Register from '../pages/Register';
-import AuthService from '../../service/Auth.service';
-import Help from '../pages/Help'
+import AuthService from '../../service/user/Auth.service';
 
 export default class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
-      currentUser: { username: "" }
+      currentUser: '',
+      showAdminBoard: false,
     }
   }
 
   componentDidMount() {
-    const currentUser = AuthService.getCurrentUser();
-    this.setState({ currentUser: currentUser })
+    const user = AuthService.getCurrentUser();
+    if(user) {
+      this.setState({ 
+        currentUser: user,
+        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+       })
+    }
   }
 
   showDropdown = () => {
@@ -28,20 +29,27 @@ export default class Header extends Component {
   hideDropdown = () => {
     this.setState({ show: false})
   }
+  logOut = () => {
+    AuthService.logout();
+    this.setState({
+      showAdminBoard: false,
+      currentUser: undefined,
+    });
+  }
 
 
   render() {
-    const { show,currentUser } = this.state;
+    const { show,currentUser, showAdminBoard } = this.state;
     return (
      <Navbar  expand="lg"  >
         <Container className={styles.headerLayout}>
-          <Navbar.Brand href="#home" className={styles.headerColor}>COOR</Navbar.Brand>
+          <Navbar.Brand href="/" className={styles.headerColor}>COOR</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" >
             <Nav className="ms-auto" >
               {
-                currentUser && (
-                  <Nav.Link href="AddCloth" id={styles.navLink}>등록하기</Nav.Link>
+                showAdminBoard && (
+                  <Nav.Link href="addCloth" id={styles.navLink}>등록하기</Nav.Link>
                 )
               }
               <NavDropdown 
@@ -58,9 +66,15 @@ export default class Header extends Component {
                 <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>Shirt</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>T-shirt</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="Help" id={styles.navLink}>help</Nav.Link>
-              <Nav.Link href="Register" id={styles.navLink}>cart</Nav.Link>
-              <Nav.Link href="Login" id={styles.navLink}>login</Nav.Link>
+              <Nav.Link href="help" id={styles.navLink}>help</Nav.Link>
+              <Nav.Link href="register" id={styles.navLink}>cart</Nav.Link>
+              {
+                currentUser ? (
+                  <Nav.Link href="/" id={styles.navLink} onClick={this.logOut}>LogOut</Nav.Link>
+                ) : (
+                  <Nav.Link href="login" id={styles.navLink}>login</Nav.Link>
+                )
+              }
               
             </Nav>
           </Navbar.Collapse>
