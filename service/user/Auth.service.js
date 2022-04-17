@@ -13,6 +13,7 @@ class AuthService {
       .then(response => {
         if (response.data.token) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          axios.defaults.headers.common['x-access-token']=response.data;
         }
 
         return response.data;

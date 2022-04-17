@@ -43,7 +43,6 @@ export default class AddCloth extends Component {
   }
 
   handleComplete = () => {
-    console.log("마지?");
     const { title, price, discount_price, category, size, material, info } = this.state;
     const itemData = {
       title: title,
