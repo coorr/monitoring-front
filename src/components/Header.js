@@ -1,51 +1,43 @@
-import React, { Component } from 'react'
+import React, { useState,useCallback } from 'react'
 import { Container,Navbar,Nav,NavDropdown } from "react-bootstrap";
 import styles from './css/Header.module.css'
 import AuthService from '../../service/user/Auth.service';
 import Router from 'next/router'
+import { useDispatch, useSelector } from 'react-redux';
+import { LogoutAction } from '../reducers/user';
 
-export default class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: false,
-      currentUser: '',
-      showAdminBoard: false,
-    }
-  }
 
-  componentDidMount() {
-    const user = AuthService.getCurrentUser();
-    if(user) {
-      this.setState({ 
-        currentUser: user,
-        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-       })
-    }
-  }
+const showAdminBoard = true;
+const currentUser = false;
 
-  showDropdown = () => {
-    this.setState({ show: true})
-  }
-  hideDropdown = () => {
-    this.setState({ show: false})
-  }
-  logOut = () => {
+const Header = () => {
+  const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
+  console.log(isLoggedIn);
+
+  const showDropdown = useCallback(() => {
+    setShow(true)
+  },[show]);
+  const hideDropdown = useCallback(() => {
+    setShow(false)
+  },[show]);
+
+  const logOut = useCallback(() => {
     AuthService.logout();
-    this.setState({
-      showAdminBoard: false,
-      currentUser: undefined,
-    });
+    // this.setState({
+    //   showAdminBoard: false,
+    //   currentUser: undefined,
+    // });
+    dispatch(LogoutAction())
     Router.push("/")
-  }
+  }, []);
 
-  login = () => {
+  const login = useCallback(() => {
     Router.push("login")
-  }
+  },[]);
 
-  render() {
-    const { show,currentUser, showAdminBoard } = this.state;
-    return (
+  return (
      <Navbar  expand="lg"  >
         <Container className={styles.headerLayout}>
           <Navbar.Brand href="/" className={styles.headerColor}>COOR</Navbar.Brand>
@@ -54,17 +46,17 @@ export default class Header extends Component {
             <Nav className="ms-auto" >
               {
                 showAdminBoard && (
-                  <Nav.Link href="addCloth" id={styles.navLink}>등록하기</Nav.Link>
+                  <Nav.Link href="addItem" id={styles.navLink}>등록하기</Nav.Link>
                 )
               }
               <NavDropdown 
                 title="Store" 
                 id={styles.dropdownMenu}
                 show={show}
-                onMouseEnter={this.showDropdown} 
-                onMouseLeave={this.hideDropdown}
+                onMouseEnter={showDropdown} 
+                onMouseLeave={hideDropdown}
               >
-                <NavDropdown.Item href="allCloth" id={styles.dropdownMenuItem}>New arrivals</NavDropdown.Item>
+                <NavDropdown.Item href="addItem" id={styles.dropdownMenuItem}>New arrivals</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2" id={styles.dropdownMenuItem}>Outwear</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3"id={styles.dropdownMenuItem}>Knitwear</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>Sweatshirt</NavDropdown.Item>
@@ -74,10 +66,10 @@ export default class Header extends Component {
               <Nav.Link href="help" id={styles.navLink}>help</Nav.Link>
               <Nav.Link href="register" id={styles.navLink}>cart</Nav.Link>
               {
-                currentUser ? (
-                  <Nav.Link id={styles.navLink} onClick={this.logOut}>LogOut</Nav.Link>
+                isLoggedIn ? (
+                  <Nav.Link id={styles.navLink} onClick={logOut}>LogOut</Nav.Link>
                 ) : (
-                  <Nav.Link id={styles.navLink} onClick={this.login}>login</Nav.Link>
+                  <Nav.Link id={styles.navLink} onClick={login}>login</Nav.Link>
                 )
               }
               
@@ -85,6 +77,92 @@ export default class Header extends Component {
           </Navbar.Collapse>
           </Container>
       </Navbar>
-    )
-  }
+  )
 }
+
+export default Header
+
+// export default class Header extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       show: false,
+//       currentUser: '',
+//       showAdminBoard: false,
+//     }
+//   }
+
+//   componentDidMount() {
+//     const user = AuthService.getCurrentUser();
+//     if(user) {
+//       this.setState({ 
+//         currentUser: user,
+//         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+//        })
+//     }
+//   }
+
+//   showDropdown = () => {
+//     this.setState({ show: true})
+//   }
+//   hideDropdown = () => {
+//     this.setState({ show: false})
+//   }
+//   logOut = () => {
+//     AuthService.logout();
+//     this.setState({
+//       showAdminBoard: false,
+//       currentUser: undefined,
+//     });
+//     Router.push("/")
+//   }
+
+//   login = () => {
+//     Router.push("login")
+//   }
+
+//   render() {
+//     const { show,currentUser, showAdminBoard } = this.state;
+//     return (
+//      <Navbar  expand="lg"  >
+//         <Container className={styles.headerLayout}>
+//           <Navbar.Brand href="/" className={styles.headerColor}>COOR</Navbar.Brand>
+//           <Navbar.Toggle aria-controls="basic-navbar-nav" />
+//           <Navbar.Collapse id="basic-navbar-nav" >
+//             <Nav className="ms-auto" >
+//               {
+//                 showAdminBoard && (
+//                   <Nav.Link href="addCloth" id={styles.navLink}>등록하기</Nav.Link>
+//                 )
+//               }
+//               <NavDropdown 
+//                 title="Store" 
+//                 id={styles.dropdownMenu}
+//                 show={show}
+//                 onMouseEnter={this.showDropdown} 
+//                 onMouseLeave={this.hideDropdown}
+//               >
+//                 <NavDropdown.Item href="allCloth" id={styles.dropdownMenuItem}>New arrivals</NavDropdown.Item>
+//                 <NavDropdown.Item href="#action/3.2" id={styles.dropdownMenuItem}>Outwear</NavDropdown.Item>
+//                 <NavDropdown.Item href="#action/3.3"id={styles.dropdownMenuItem}>Knitwear</NavDropdown.Item>
+//                 <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>Sweatshirt</NavDropdown.Item>
+//                 <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>Shirt</NavDropdown.Item>
+//                 <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>T-shirt</NavDropdown.Item>
+//               </NavDropdown>
+//               <Nav.Link href="help" id={styles.navLink}>help</Nav.Link>
+//               <Nav.Link href="register" id={styles.navLink}>cart</Nav.Link>
+//               {
+//                 currentUser ? (
+//                   <Nav.Link id={styles.navLink} onClick={this.logOut}>LogOut</Nav.Link>
+//                 ) : (
+//                   <Nav.Link id={styles.navLink} onClick={this.login}>login</Nav.Link>
+//                 )
+//               }
+              
+//             </Nav>
+//           </Navbar.Collapse>
+//           </Container>
+//       </Navbar>
+//     )
+//   }
+// }

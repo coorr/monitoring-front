@@ -1,1 +1,0 @@
-{"c":["webpack"],"r":["pages/allCloth"],"m":["./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2FallCloth&absolutePagePath=C%3A%5CUsers%5Cuser%5CDownloads%5Cshopping-front%5Csrc%5Cpages%5CallCloth.js!","./service/item/Item.service.js","./service/user/auth-header.js","./service/user/tokenCheck.js","./src/pages/allCloth.js"]}

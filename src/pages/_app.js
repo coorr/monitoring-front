@@ -3,21 +3,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-pro-sidebar/dist/css/styles.css';
 import Head from 'next/head'
 import SSRProvider from 'react-bootstrap/SSRProvider';
+import wrapper from '../store/configureStore';
 
 
 
-
-export default function App({ Component, pageProps }) {
+function App({ Component, pageProps }) {
 
     return (
-      <>
+      <SSRProvider>
         <Head>
           <meta charSet='utf-8' />
           <title>coor</title>
         </Head>
-        <SSRProvider>
+        
           <Component {...pageProps} />
-        </SSRProvider>
-      </>
+      </SSRProvider>
     )
   }
+
+export default wrapper.withRedux(App);
+// export default App;

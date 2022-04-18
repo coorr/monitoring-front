@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useCallback,useRef } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -8,6 +8,7 @@ import AuthService from "../../service/user/Auth.service";
 import styles from '../components/css/User.module.css'
 import Router from "next/router";
 import Register_result from "./register.result";
+import useInput from "../hooks/useInput";
 
 const required = value => {
   if (!value) {
@@ -19,7 +20,7 @@ const required = value => {
   }
 };
 
-const email = value => {
+const vemail = value => {
   if (!isEmail(value)) {
     return (
       <div className="alert alert-danger" role="alert">
@@ -49,80 +50,59 @@ const vpassword = value => {
   }
 };
 
-export default class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      email: "",
-      password: "",
-      successful: false
-    };
-  }
 
-  onChangeUsername = (e) => {
-    this.setState({
-      username: e.target.value
-    });
-  }
 
-  onChangeEmail= (e) => {
-    this.setState({
-      email: e.target.value
-    });
-  }
 
-  onChangePassword= (e) => {
-    this.setState({
-      password: e.target.value
-    });
-  }
 
-  handleRegister= (e) => {
-    e.preventDefault();
+const Register = () => {
+  const form =useRef(null);
+  const checkBtn =useRef(null);
 
-    this.setState({
-      successful: false
-    });
+  const [username, onChangeUsername] = useInput('');
+  const [email, onChangeEmail] = useInput('');
+  const [password, onChangePassword] = useInput('');
+  const [passwordCheck, setPasswordCheck] =useState('')
+  const [passwordError, setPasswordError] =useState(false)
 
-    this.form.validateAll();
+  const onChangePasswordCheck = useCallback((e) => {
+    setPasswordCheck(e.target.value)
+    setPasswordError(e.target.value !== password)
+  }, [password])
 
-    if (this.checkBtn.context._errors.length === 0) {   // 서버보다 우선순위 먼저
-      AuthService.register(   
-        this.state.username,
-        this.state.email,
-        this.state.password
-      ).then(
-        response => {
-          this.setState({
-            successful: true
-          });
-          Router.push({
-            pathname: "/register.result",
-            query: {username: this.state.username, email: this.state.email}
-          })
 
-        },
-        error => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          alert(resMessage)
-          this.setState({
-            successful: false,
-          });
+  const handleRegister = useCallback((e) => {
+        e.preventDefault();
+        if(password !== passwordCheck) {
+          return setPasswordError(true)
         }
-      );
-    }
-  }
+   
+        form.validateAll();
 
-  render() {
-    return (
-      <>
+        if (checkBtn.context._errors.length === 0) {   // 서버보다 우선순위 먼저
+          AuthService.register(username,email,password)
+          .then(res => {
+              Router.push({
+                pathname: "/register.result",
+                query: {username: username, email: email}
+              }, "/register.result")
+    
+            },
+            error => {
+              const resMessage =
+                (error.response &&
+                  error.response.data &&
+                  error.response.data.message) ||
+                error.message ||
+                error.toString();
+    
+              alert(resMessage)
+            }
+          );
+        }
+      },[username,email,password,passwordCheck]);
+
+  return (
+    <>
       <Header />
       <div className="col-md-12">
         <div className="card card-container">
@@ -130,12 +110,11 @@ export default class Register extends Component {
         <br />
         <br />
           <Form
-            onSubmit={this.handleRegister}
+            onSubmit={handleRegister}
             ref={c => {
-              this.form = c;
+              form = c;
             }}
           >
-            {!this.state.successful && (
               <div>
                 <div className="form-group">
                 <label htmlFor="username" className={styles.login_font_input}>USERNAME</label>
@@ -143,8 +122,8 @@ export default class Register extends Component {
                     type="text"
                     className="form-control"
                     name="username"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
+                    value={username}
+                    onChange={onChangeUsername}
                     validations={[required, vusername]}
                   />
                 </div>
@@ -155,9 +134,9 @@ export default class Register extends Component {
                     type="text"
                     className="form-control"
                     name="email"
-                    value={this.state.email}
-                    onChange={this.onChangeEmail}
-                    validations={[required, email]}
+                    value={email}
+                    onChange={onChangeEmail}
+                    validations={[required, vemail]}
                   />
                 </div>
 
@@ -167,11 +146,24 @@ export default class Register extends Component {
                     type="password"
                     className="form-control"
                     name="password"
-                    value={this.state.password}
-                    onChange={this.onChangePassword}
+                    value={password}
+                    onChange={onChangePassword}
                     validations={[required, vpassword]}
                   />
                 </div>
+
+                <div className="form-group">
+                  <label htmlFor="PasswordCheck" className={styles.login_font_input}>PASSWORD CHECK</label>
+                  <Input
+                    type="password"
+                    className="form-control"
+                    name="passwordCheck"
+                    value={passwordCheck}
+                    onChange={onChangePasswordCheck}
+                    validations={[required]}
+                  />
+                </div>
+                { passwordError && <p style={{'color':'red'}}>비밀번호가 일치하지 않습니다.</p> }
                 <br />
                 <br />
 
@@ -179,17 +171,162 @@ export default class Register extends Component {
                   <button className="btn btn-primary btn-block">Sign Up</button>
                 </div>
               </div>
-            )}
             <CheckButton
               style={{ display: "none" }}
               ref={c => {
-                this.checkBtn = c;
+                checkBtn = c;
               }}
             />
           </Form>
         </div>
       </div>
       </>
-    );
-  }
+  )
 }
+
+export default Register;
+
+// export default class Register extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       username: "",
+//       email: "",
+//       password: "",
+//       successful: false
+//     };
+//   }
+
+//   onChangeUsername = (e) => {
+//     this.setState({
+//       username: e.target.value
+//     });
+//   }
+
+//   onChangeEmail= (e) => {
+//     this.setState({
+//       email: e.target.value
+//     });
+//   }
+
+//   onChangePassword= (e) => {
+//     this.setState({
+//       password: e.target.value
+//     });
+//   }
+
+//   handleRegister= (e) => {
+//     e.preventDefault();
+
+//     this.setState({
+//       successful: false
+//     });
+
+//     this.form.validateAll();
+
+//     if (this.checkBtn.context._errors.length === 0) {   // 서버보다 우선순위 먼저
+//       AuthService.register(   
+//         this.state.username,
+//         this.state.email,
+//         this.state.password
+//       ).then(
+//         response => {
+//           this.setState({
+//             successful: true
+//           });
+//           Router.push({
+//             pathname: "/register.result",
+//             query: {username: this.state.username, email: this.state.email}
+//           })
+
+//         },
+//         error => {
+//           const resMessage =
+//             (error.response &&
+//               error.response.data &&
+//               error.response.data.message) ||
+//             error.message ||
+//             error.toString();
+
+//           alert(resMessage)
+//           this.setState({
+//             successful: false,
+//           });
+//         }
+//       );
+//     }
+//   }
+
+//   render() {
+//     return (
+//       <>
+//       <Header />
+//       <div className="col-md-12">
+//         <div className="card card-container">
+//         <label className={styles.login_font_title}>Register</label>
+//         <br />
+//         <br />
+//           <Form
+//             onSubmit={this.handleRegister}
+//             ref={c => {
+//               this.form = c;
+//             }}
+//           >
+//             {!this.state.successful && (
+//               <div>
+//                 <div className="form-group">
+//                 <label htmlFor="username" className={styles.login_font_input}>USERNAME</label>
+//                   <Input
+//                     type="text"
+//                     className="form-control"
+//                     name="username"
+//                     value={this.state.username}
+//                     onChange={this.onChangeUsername}
+//                     validations={[required, vusername]}
+//                   />
+//                 </div>
+
+//                 <div className="form-group">
+//                 <label htmlFor="email" className={styles.login_font_input}>EAMIL</label>
+//                   <Input
+//                     type="text"
+//                     className="form-control"
+//                     name="email"
+//                     value={this.state.email}
+//                     onChange={this.onChangeEmail}
+//                     validations={[required, email]}
+//                   />
+//                 </div>
+
+//                 <div className="form-group">
+//                   <label htmlFor="Password" className={styles.login_font_input}>PASSWORD</label>
+//                   <Input
+//                     type="password"
+//                     className="form-control"
+//                     name="password"
+//                     value={this.state.password}
+//                     onChange={this.onChangePassword}
+//                     validations={[required, vpassword]}
+//                   />
+//                 </div>
+//                 <br />
+//                 <br />
+
+//                 <div className="form-group">
+//                   <button className="btn btn-primary btn-block">Sign Up</button>
+//                 </div>
+//               </div>
+//             )}
+//             <CheckButton
+//               style={{ display: "none" }}
+//               ref={c => {
+//                 this.checkBtn = c;
+//               }}
+//             />
+//           </Form>
+//         </div>
+//       </div>
+//       </>
+//     );
+//   }
+// }
