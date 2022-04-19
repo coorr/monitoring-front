@@ -1,20 +1,31 @@
-import React, { useState,useCallback } from 'react'
+import React, { useState,useCallback,useEffect } from 'react'
 import { Container,Navbar,Nav,NavDropdown } from "react-bootstrap";
 import styles from './css/Header.module.css'
 import AuthService from '../../service/user/Auth.service';
 import Router from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
-import { LogoutAction } from '../reducers/user';
+import { LOG_OUT_REQUEST } from '../reducers/user';
 
 
-const showAdminBoard = true;
-const currentUser = false;
 
 const Header = () => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
-  console.log(isLoggedIn);
+  const [admin, setAdmin ]  = useState(false);
+  const [currentUser, setCurrentUser ]  = useState(false);
+  // const { logInDone } = useSelector((state) => state.user)
+
+  useEffect(() => {
+    const admin = AuthService.getCurrentUser();
+    console.log(admin);
+    
+    if(admin) {
+      setCurrentUser(true)
+      if(admin.roles[0] === 'ROLE_ADMIN') {
+        setAdmin(true)
+      }
+    }
+  })
 
   const showDropdown = useCallback(() => {
     setShow(true)
@@ -22,14 +33,14 @@ const Header = () => {
   const hideDropdown = useCallback(() => {
     setShow(false)
   },[show]);
+  
 
   const logOut = useCallback(() => {
     AuthService.logout();
-    // this.setState({
-    //   showAdminBoard: false,
-    //   currentUser: undefined,
-    // });
-    dispatch(LogoutAction())
+    dispatch({
+      type: LOG_OUT_REQUEST
+    })
+    setCurrentUser(false)
     Router.push("/")
   }, []);
 
@@ -45,7 +56,7 @@ const Header = () => {
           <Navbar.Collapse id="basic-navbar-nav" >
             <Nav className="ms-auto" >
               {
-                showAdminBoard && (
+                admin && (
                   <Nav.Link href="addItem" id={styles.navLink}>등록하기</Nav.Link>
                 )
               }
@@ -66,7 +77,7 @@ const Header = () => {
               <Nav.Link href="help" id={styles.navLink}>help</Nav.Link>
               <Nav.Link href="register" id={styles.navLink}>cart</Nav.Link>
               {
-                isLoggedIn ? (
+                currentUser ? (
                   <Nav.Link id={styles.navLink} onClick={logOut}>LogOut</Nav.Link>
                 ) : (
                   <Nav.Link id={styles.navLink} onClick={login}>login</Nav.Link>

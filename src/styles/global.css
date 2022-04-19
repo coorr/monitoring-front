@@ -1,9 +1,10 @@
 /* label {
   display: block;
 }
+*/
 body{
   overflow-x: hidden;
-} */
+} 
 
 
 .dropdown-toggle::after { display:none !important; }
@@ -16,9 +17,9 @@ body{
 }
 .card {
   background-color: #f7f7f7;
-  padding: 20px 25px 30px;
-  margin: 0 auto 25px;
-  margin-top: 50px;
+  padding: 0px 0px 0px 10px;
+  /* margin: 0 !important; */
+  /* margin-top: 50px; */
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
@@ -47,5 +48,39 @@ body{
   border: 1px solid black !important; 
   border-radius: 0px !important; 
 } 
+.card {
+  /* margin: 0 !important; */
+}
+.card-body {
+  padding: 0 !important;
+  padding-top: 0.5rem !important;
+}
+.h5{
+  margin-bottom: 0 !important;
+}
 
-  
+/* @media screen and (max-width: 992px) {
+  .navbar-toggler {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 77px);
+    background-color: white;
+    border-top: 1px solid black;
+  }
+  .navigation-menu li {
+    text-align: center;
+    margin: 0;
+  }
+  .navigation-menu li a {
+    color: black;
+    width: 100%;
+    padding: 1.5rem 0;
+  }
+  .navigation-menu li:hover {
+    background-color: #eee;
+  }
+}
+   */

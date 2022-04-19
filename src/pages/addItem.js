@@ -6,7 +6,7 @@ import styles from '../components/css/User.module.css'
 import ItemService from '../../service/item/Item.service'
 import useInput from '../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem } from '../reducers/item';
+import { ADD_ITEM_REQUEST } from '../reducers/item';
 import Button from "react-bootstrap/Button";
 
 
@@ -35,17 +35,23 @@ const AddItem = () => {
   const [info, setInfo] = useState('');
   const [admin, setAdmin ]  = useState(false);
 
-  const { imagePath } = useSelector((state) => state.item);
+  const { imagePath, addItemDone } = useSelector((state) => state.item);
 
 
   useEffect(() => {
     const admin = AuthService.getCurrentUser().roles.includes("ROLE_ADMIN")
-    console.log(admin);
     if(!admin) {
       Router.push("/")
     }
     setAdmin(admin);  
   })
+
+  useEffect(() => {
+    if(addItemDone) {
+      setTitle(''); setPrice(''); setDiscountPrice(''); setCategory('')
+      setSize(''); setInfo(''); setMaterial('');
+    }
+  }, [addItemDone])
 
   const textResize = useCallback(() => {
     const obj = textRef.current;
@@ -64,7 +70,10 @@ const AddItem = () => {
       info: info
     }
   
-    dispatch(addItem)
+    dispatch({
+      type: ADD_ITEM_REQUEST,
+      data: itemData
+    })
     // ItemService.insertItemAll(itemData)
     //   .then(res => {
     //     console.log("아이템 정보 넘기기");
@@ -75,8 +84,7 @@ const AddItem = () => {
     //           Router.push("login")
     //     }
     //   })
-    setTitle(''); setPrice(''); setDiscountPrice(''); setCategory('')
-    setSize(''); setInfo(''); setMaterial('');
+    
     
   },[title,price,discountPrice,category,size,material,info]);
 

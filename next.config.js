@@ -4,6 +4,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   
   module.exports = withBundleAnalyzer({
     compress: true,
+    images: {
+      domains: ['images.unsplash.com', "lh3.googleusercontent.com"]
+    },
     webpack(config, { webpack }) {
       const prod = process.env.NODE_ENV === 'production';
       return {
@@ -15,3 +18,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
     },
   },);
 
+  // module.exports = {
+  //   images: {
+  //     domains: ['images.unsplash.com'],
+  //   },
+  // }

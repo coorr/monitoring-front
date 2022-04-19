@@ -16,6 +16,10 @@
     padding: 0px 40px 100px 40px;
   }
 
+#login_form_layout {
+    margin: 0 auto;
+}
+
 
 .textarea_form_control {
     border: 0px !important;

@@ -1,13 +1,13 @@
 import React, { useState,useCallback  } from 'react'
-import { useRouter } from 'next/router'
 import Header from '../components/header'
 import styles from '../components/css/User.module.css'
 import AuthService from '../../service/user/Auth.service'
 import Router from 'next/router'
+import { useSelector } from 'react-redux'
 
 const Register_result = () =>  {
-  const router = useRouter();
-  console.log(router.query.username);
+  const { username, email } = useSelector((state) => state.user);
+
 
   const handleComplete = useCallback(() => {
       Router.push("/login")
@@ -17,7 +17,7 @@ const Register_result = () =>  {
     <>
         <Header />
             <div className="col-md-12">
-            <div className="card card-container">
+            <div className="card card-container" id={styles.login_form_layout}>
             <label className={styles.login_font_title}>회원가입</label>
             <br />
             <br />
@@ -28,11 +28,11 @@ const Register_result = () =>  {
                     </div>
                     <br />
                     <div className="form-group">
-                        <label htmlFor="username" className={styles.login_font_input}>아이디 : {router.query.username} </label>
+                        <label htmlFor="username" className={styles.login_font_input}>아이디 : {username} </label>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="Password" className={styles.login_font_input}>이메일 : {router.query.email} </label>
+                        <label htmlFor="Password" className={styles.login_font_input}>이메일 : {email} </label>
                     </div>
                     <br />
                     <br />

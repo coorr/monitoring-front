@@ -9,6 +9,8 @@ import styles from '../components/css/User.module.css'
 import Router from "next/router";
 import Register_result from "./register.result";
 import useInput from "../hooks/useInput";
+import { useDispatch } from "react-redux";
+import { SIGNUP_REQUEST } from "../reducers/user";
 
 const required = value => {
   if (!value) {
@@ -57,6 +59,7 @@ const vpassword = value => {
 const Register = () => {
   const form =useRef(null);
   const checkBtn =useRef(null);
+  const dispatch = useDispatch();
 
   const [username, onChangeUsername] = useInput('');
   const [email, onChangeEmail] = useInput('');
@@ -81,6 +84,10 @@ const Register = () => {
         if (checkBtn.context._errors.length === 0) {   // 서버보다 우선순위 먼저
           AuthService.register(username,email,password)
           .then(res => {
+            dispatch({
+              type: SIGNUP_REQUEST,
+              data: { username, email }
+            });
               Router.push({
                 pathname: "/register.result",
                 query: {username: username, email: email}
@@ -105,7 +112,7 @@ const Register = () => {
     <>
       <Header />
       <div className="col-md-12">
-        <div className="card card-container">
+        <div className="card card-container" id={styles.login_form_layout}>
         <label className={styles.login_font_title}>Register</label>
         <br />
         <br />
@@ -186,147 +193,3 @@ const Register = () => {
 
 export default Register;
 
-// export default class Register extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       username: "",
-//       email: "",
-//       password: "",
-//       successful: false
-//     };
-//   }
-
-//   onChangeUsername = (e) => {
-//     this.setState({
-//       username: e.target.value
-//     });
-//   }
-
-//   onChangeEmail= (e) => {
-//     this.setState({
-//       email: e.target.value
-//     });
-//   }
-
-//   onChangePassword= (e) => {
-//     this.setState({
-//       password: e.target.value
-//     });
-//   }
-
-//   handleRegister= (e) => {
-//     e.preventDefault();
-
-//     this.setState({
-//       successful: false
-//     });
-
-//     this.form.validateAll();
-
-//     if (this.checkBtn.context._errors.length === 0) {   // 서버보다 우선순위 먼저
-//       AuthService.register(   
-//         this.state.username,
-//         this.state.email,
-//         this.state.password
-//       ).then(
-//         response => {
-//           this.setState({
-//             successful: true
-//           });
-//           Router.push({
-//             pathname: "/register.result",
-//             query: {username: this.state.username, email: this.state.email}
-//           })
-
-//         },
-//         error => {
-//           const resMessage =
-//             (error.response &&
-//               error.response.data &&
-//               error.response.data.message) ||
-//             error.message ||
-//             error.toString();
-
-//           alert(resMessage)
-//           this.setState({
-//             successful: false,
-//           });
-//         }
-//       );
-//     }
-//   }
-
-//   render() {
-//     return (
-//       <>
-//       <Header />
-//       <div className="col-md-12">
-//         <div className="card card-container">
-//         <label className={styles.login_font_title}>Register</label>
-//         <br />
-//         <br />
-//           <Form
-//             onSubmit={this.handleRegister}
-//             ref={c => {
-//               this.form = c;
-//             }}
-//           >
-//             {!this.state.successful && (
-//               <div>
-//                 <div className="form-group">
-//                 <label htmlFor="username" className={styles.login_font_input}>USERNAME</label>
-//                   <Input
-//                     type="text"
-//                     className="form-control"
-//                     name="username"
-//                     value={this.state.username}
-//                     onChange={this.onChangeUsername}
-//                     validations={[required, vusername]}
-//                   />
-//                 </div>
-
-//                 <div className="form-group">
-//                 <label htmlFor="email" className={styles.login_font_input}>EAMIL</label>
-//                   <Input
-//                     type="text"
-//                     className="form-control"
-//                     name="email"
-//                     value={this.state.email}
-//                     onChange={this.onChangeEmail}
-//                     validations={[required, email]}
-//                   />
-//                 </div>
-
-//                 <div className="form-group">
-//                   <label htmlFor="Password" className={styles.login_font_input}>PASSWORD</label>
-//                   <Input
-//                     type="password"
-//                     className="form-control"
-//                     name="password"
-//                     value={this.state.password}
-//                     onChange={this.onChangePassword}
-//                     validations={[required, vpassword]}
-//                   />
-//                 </div>
-//                 <br />
-//                 <br />
-
-//                 <div className="form-group">
-//                   <button className="btn btn-primary btn-block">Sign Up</button>
-//                 </div>
-//               </div>
-//             )}
-//             <CheckButton
-//               style={{ display: "none" }}
-//               ref={c => {
-//                 this.checkBtn = c;
-//               }}
-//             />
-//           </Form>
-//         </div>
-//       </div>
-//       </>
-//     );
-//   }
-// }
