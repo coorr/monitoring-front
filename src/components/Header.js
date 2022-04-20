@@ -13,11 +13,9 @@ const Header = () => {
   const [show, setShow] = useState(false);
   const [admin, setAdmin ]  = useState(false);
   const [currentUser, setCurrentUser ]  = useState(false);
-  // const { logInDone } = useSelector((state) => state.user)
 
   useEffect(() => {
     const admin = AuthService.getCurrentUser();
-    console.log(admin);
     
     if(admin) {
       setCurrentUser(true)

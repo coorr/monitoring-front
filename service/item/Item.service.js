@@ -6,7 +6,7 @@ const API_URL = config+"api/item/";
 
 class ItemService {
     insertItemAll(itemData) {
-      return axios.post(API_URL + "insertItemAll", itemData, { headers: { Authorization:  authHeader() }});
+      return axios.post(API_URL + "insertItemAll", itemData, { headers: { Authorization:  authHeader(), 'Content-Type' : 'multipart/form-data' }});
     }
     selectItemAll() {
       return axios.get(API_URL + "getItem", { headers: { Authorization:  authHeader() }});

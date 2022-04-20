@@ -6,7 +6,7 @@ import styles from '../components/css/User.module.css'
 import ItemService from '../../service/item/Item.service'
 import useInput from '../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADD_ITEM_REQUEST } from '../reducers/item';
+import { ADD_ITEM_REQUEST, UPLOAD_IMAGE_REQUEST } from '../reducers/item';
 import Button from "react-bootstrap/Button";
 
 
@@ -34,16 +34,23 @@ const AddItem = () => {
   const [material, setMaterial] = useState('');
   const [info, setInfo] = useState('');
   const [admin, setAdmin ]  = useState(false);
+  const file = [];
 
-  const { imagePath, addItemDone } = useSelector((state) => state.item);
-
+  const { imagePath, addItemDone, getItemError } = useSelector((state) => state.item);
 
   useEffect(() => {
-    const admin = AuthService.getCurrentUser().roles.includes("ROLE_ADMIN")
+    const admin = AuthService.getCurrentUser();
+
     if(!admin) {
       Router.push("/")
     }
-    setAdmin(admin);  
+    if(admin) {
+      if(admin.roles[0] === 'ROLE_USER') {
+        Router.push("/")
+      } else {
+        setAdmin(admin);  
+      }
+    }
   })
 
   useEffect(() => {
@@ -60,6 +67,11 @@ const AddItem = () => {
   },[]);
   
   const handleComplete = useCallback(() => {
+    console.log(imagePath);
+    const formData = new FormData();
+    imagePath.forEach((file) => {
+      formData.append('multipartFiles', file);
+  });
     const itemData = {
       title: title,
       price: price,
@@ -69,28 +81,28 @@ const AddItem = () => {
       material: material,
       info: info
     }
-  
+    formData.append('itemData', JSON.stringify(itemData));
+    console.log("formData", formData);
     dispatch({
       type: ADD_ITEM_REQUEST,
-      data: itemData
+      data: formData
     })
-    // ItemService.insertItemAll(itemData)
-    //   .then(res => {
-    //     console.log("아이템 정보 넘기기");
-    //   })
-    //   .catch(err => {
-    //     if(err.response.status === 401) {
-    //           AuthService.logout();
-    //           Router.push("login")
-    //     }
-    //   })
-    
-    
-  },[title,price,discountPrice,category,size,material,info]);
+  },[imagePath, title,price,discountPrice,category,size,material,info]);
 
   const onClickImageUpload = useCallback(() => {
     fileRef.current.click();
   }, [fileRef.current])
+
+  const onChangeImage = useCallback((e) => {
+      [].forEach.call(e.target.files, (f) => {
+        console.log(f);
+        file.push(f);
+      })
+      dispatch({ 
+        type: UPLOAD_IMAGE_REQUEST,
+        data: file
+      })
+  }, [file]);
   
   return (
     <>
@@ -172,15 +184,14 @@ const AddItem = () => {
 
               <div className="form-group">
                 <label htmlFor="info" className={styles.login_font_input}>사진</label>
-                <input type="file" multiple hidden ref={fileRef} />
+                <br />
+                <input onChange={onChangeImage} type="file" multiple hidden ref={fileRef} />
                 <Button onClick={onClickImageUpload} variant="info" >이미지</Button>
-                { imagePath.map((v) => (
-                  <div key={v} style={{display: 'inline-block'}}>
-                    <img src={v} style={{width:'150px'}} alt={v} />
-                    <div>
-                      <Button variant="info">제거</Button>
+
+                { imagePath.map((v,i) => (
+                    <div key={i}>
+                       <p>{v.name} <Button variant="info">제거</Button></p>
                     </div>
-                  </div>
                 ))}
               </div>
 

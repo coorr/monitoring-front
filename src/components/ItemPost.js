@@ -5,17 +5,17 @@ import { Card, Button } from "react-bootstrap";
 
 const ItemPost = ({item}) => {
   const [over, setOver] = useState(false);
-
+  console.log(item)
   return (
     <div>
         <Card >
-          <Card.Img 
+          {/* <Card.Img 
           variant="top" 
           src={over &&item.Image[1] !== undefined ? item.Image[1].src : item.Image[0].src}
           onMouseOver={e => setOver(true)}
           onMouseOut={e => setOver(false)}
           height={430}
-          />
+          /> */}
           
           <Card.Body>
             <Card.Title style={{ fontSize: '10px' }}>{item.title}</Card.Title>
