@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ItemPost from "../components/ItemPost";
 import styles from '../components/css/Product.module.scss'
 import { GET_ITEM_REQUEST } from "../reducers/item";
+import wrapper from "../store/configureStore";
+import { END } from "redux-saga";
 
 
 const index = () => {
@@ -21,8 +23,11 @@ const index = () => {
     function onScroll() {
       if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if(hasMoreItem && !getItemLoading) {
+          const lastId = item[item.length - 1]?.itemId;
+          const size = 10;
           dispatch({
             type: GET_ITEM_REQUEST,
+            data: { lastId, size}
           })
         }
       }
@@ -31,17 +36,25 @@ const index = () => {
     return () => {
       window.removeEventListener('scroll', onScroll);
     }
-  }, [hasMoreItem]);
+  }, [hasMoreItem, getItemLoading, item]);
 
   return (
     <>
       <Header />
-      {/* <div style={{height:'200px'}}></div> */}
       <div className={styles.p__grid}>
          {item.map((item,i) => <ItemPost key={i} item={item} />)}  
       </div>
     </>
   )
 }
+
+// export const getServerSideProps = wrapper.getServerSideProps(async(context) => {
+//   context.store.dispatch({
+//     type: GET_ITEM_REQUEST,
+//   })
+
+//   context.store.dispatch(END);
+//   await context.store.sagaTask.toPromise();
+// })
 
 export default index

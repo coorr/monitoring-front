@@ -1,9 +1,7 @@
 import produce from 'immer';
 
 const initialState = {
-    item: [
-    
-],
+    item: [],
     imagePath: [],
     itemAdded: false,
 
@@ -17,6 +15,9 @@ const initialState = {
     addItemDone:false,
     addItemError:null,
 
+    uploadImageLoading:false,
+    uploadImageDone:false,
+    uploadImageError:null,
     
 }
 
@@ -30,21 +31,7 @@ export const ADD_ITEM_FAILURE = 'ADD_ITEM_FAILURE';
 
 export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
 
-export const generateDummyPost = (number) => Array(number).fill().map(() => ({
-    id:3,
-    title:'시어서커 쇼츠 (다크네이비)',
-    price: 2000,
-    discountPrice: 3000,
-    Image: [{
-        src: "https://lh3.googleusercontent.com/OVRrTYuvKFpoqQBcUMC5L4-bawL-2EhvpJo4E8XJzNT4WprmG01SDCEoNosBFadG_ITErj6irOsDFMrh9tPUdBkefmB4nfNYBsvRfftpCXHw5QFJs3cWv_Vjv1QSpQVpKhJ3AnlygwznvyfjXDcjUyEvkbs3llqCwaoWdH8pDepcKvn6Oo4tAZGH7GV992L13wX6PwfnxxDrBUKOxzk2GaBRAyXtN2E6Hp05XYgpUWe9loptVMjd41Io42GAKKrr8uBign9D-dJtGFzTkL9tSNeAQGDYJOvu8ZPvj6LHe1zlYT29amiQdkpzr_eLdQKD2Mg6s2jimgbrbVNQB0yC6FYuT9LK21iBcC0P8aImr_cTtSMVSfIP3T6tb25ZgYhVwyI1yEM7Cirg2xAbas195RCRfEyeTLiGyFcSAJnV8nQ1JdXJEnXn4hxWLvKGGlXP3ErWzwTox271mJXgQXRrScCZAYTSF16Hp2iIlMEMKJjqZdUB1XV_yGZth8P6qE2OOcGbJwcr1TTU1IbpFjuHmUvUORInpt1vcRveQgCUX6vyJZ838nasITAu13V1gL4Yjd0Q1pLnZUvOTjBidcBOYCDgQcwyRL2KzriV1bBvAwtJpLsLuFlMyIvrW2At8ni19EoMhkTmxY5ztDRswrx_S1SlGO5ZrZgxJhBFVT48mSXtpjLxCNf6V26Q5k7sxQVnVg_Fzr6y6_SIZRPtbE9195WDxgniJagNYJPsJ_f07sEbD6Jf2mSaV39H0MU=w548-h834-no?authuser=0"
-    }]
-}));
-
-
-// export const generateDummyPost = 
-
 const reducer = (state = initialState, action) => {
-    console.log(action);
     return produce(state, (draft) => {
         switch (action.type) {
             case ADD_ITEM_REQUEST:
@@ -71,8 +58,8 @@ const reducer = (state = initialState, action) => {
                 draft.getItemLoading=false;
                 draft.getItemDone=true;
                 // draft.item = action.data.concat(draft.item);
-                draft.item = action.data;
-                draft.hasMoreItem = draft.item.length < 100;
+                draft.item = draft.item.concat(action.data);
+                draft.hasMoreItem = action.data.length === 10 || action.data.length === 30;
                 break;
             case GET_ITEM_FAILURE:
                 draft.getItemLoading=false;

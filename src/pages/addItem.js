@@ -53,12 +53,12 @@ const AddItem = () => {
     }
   })
 
-  useEffect(() => {
-    if(addItemDone) {
-      setTitle(''); setPrice(''); setDiscountPrice(''); setCategory('')
-      setSize(''); setInfo(''); setMaterial('');
-    }
-  }, [addItemDone])
+  // useEffect(() => {
+  //   if(addItemDone) {
+  //     setTitle(''); setPrice(''); setDiscountPrice(''); setCategory('')
+  //     setSize(''); setInfo(''); setMaterial('');
+  //   }
+  // }, [addItemDone])
 
   const textResize = useCallback(() => {
     const obj = textRef.current;
@@ -75,7 +75,7 @@ const AddItem = () => {
     const itemData = {
       title: title,
       price: price,
-      discount_price: discountPrice,
+      discountPrice: discountPrice,
       category: category,
       size: size,
       material: material,

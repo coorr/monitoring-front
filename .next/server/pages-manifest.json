@@ -1,6 +1,12 @@
 {
   "/_app": "pages/_app.js",
+  "/addItem": "pages/addItem.html",
+  "/help": "pages/help.html",
+  "/login": "pages/login.html",
+  "/register": "pages/register.html",
+  "/register.result": "pages/register.result.html",
   "/_error": "pages/_error.js",
+  "/": "pages/index.html",
   "/_document": "pages/_document.js",
-  "/addItem": "pages/addItem.js"
+  "/404": "pages/404.html"
 }

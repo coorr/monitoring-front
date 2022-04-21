@@ -24,17 +24,19 @@ function* addItem(action) {
   }  
 }
 
-function* getItem() {
+function* getItem(action) {
+  console.log("getItem API 호출 : "+  action);
   try {
-    const result =  yield ItemService.selectItemAll();
+    const result =  yield ItemService.selectItemAll(action.data !== undefined ? action.data.lastId : 0 , action.data !== undefined ? action.data.size : 30);
     yield put({       
       type: GET_ITEM_SUCCESS, 
       data: result.data
     }) 
   } catch (err) {
+    console.log("errrrrrrrrrr" + err);
     yield put({
       type: GET_ITEM_FAILURE,
-      error : err.response.data
+      // error : err.response.data
     })
   }  
 }

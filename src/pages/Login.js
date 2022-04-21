@@ -9,7 +9,7 @@ import Router from "next/router";
 import styles from '../components/css/User.module.css'
 import useInput from "../hooks/useInput";
 import { useDispatch, useSelector } from "react-redux";
-import { loginRequestAction } from "../reducers/user";
+import { LOG_IN_REQUEST } from "../reducers/user";
 
 
 const Login = () => {
@@ -37,7 +37,10 @@ const Login = () => {
     if (checkBtn.context._errors.length === 0) {
       AuthService.login(username, password)
       .then(res => {
-          dispatch(loginRequestAction(username))
+          dispatch({
+            type: LOG_IN_REQUEST,
+            data: username
+          })
           Router.push("/")
         },
         error => {
