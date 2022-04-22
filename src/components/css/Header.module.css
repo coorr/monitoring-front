@@ -1,6 +1,7 @@
 .headerColor { font-size: 35px !important; font-weight: bold !important; }
-.headerLayout { max-width: 95% !important; }
+.headerLayout { max-width: 98% !important; }
 
 #navLink { margin-right: 20px;}
 #dropdownMenu { background-color: white; margin-right:20px; }
 #dropdownMenuItem { background-color: white; }
+

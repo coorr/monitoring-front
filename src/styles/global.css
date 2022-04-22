@@ -1,15 +1,17 @@
-/* label {
-  display: block;
-}
-*/
 body{
   overflow-x: hidden;
 } 
+a {
+  text-decoration-line: none !important;
+  color:#000 !important;
+}
 
 
 .dropdown-toggle::after { display:none !important; }
 .dropdown-toggle{ background-color: #3f7bd4; border: 0px;}
 .dropdown-toggle:hover{ background-color: #3f7bd4; border: 0px;}
+.dropdown-item { font-size: 13px; }
+.dropdown-menu { border: 1px solid white !important; margin-top: 0px !important; }
 
 .card-container.card {
   max-width: 350px !important;
@@ -55,6 +57,22 @@ body{
 }
 .h5{
   margin-bottom: 0 !important;
+}
+
+.nav-link {
+  color: #000 !important;
+  font-size: 14px;
+  padding-right: 2.5rem !important;
+}
+
+.middle_space_screen {
+  height: 200px;
+}
+
+@media screen and (max-width: 992px) {
+  .middle_space_screen {
+      height: 0;
+  }
 }
 
 /* @media screen and (max-width: 992px) {

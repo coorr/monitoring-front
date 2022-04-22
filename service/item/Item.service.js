@@ -11,6 +11,9 @@ class ItemService {
     selectItemAll(lastId,size) {
       return axios.get(API_URL + "getItem?lastId="+lastId+"&size="+size, { headers: { Authorization:  authHeader() }});
     }
+    selectItemOne(id) {
+      return axios.get(API_URL + "getItemOne/"+id, { headers: { Authorization:  authHeader() }});
+    }
 }
 
 export default new ItemService();

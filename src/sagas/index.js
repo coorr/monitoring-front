@@ -5,7 +5,7 @@ import itemSaga from './item';
 import userSage from './user';
 
 // axios.defaults.baseURL = 'http://localhost:8080/';
-axios.defaults.baseURL = 'http://54.180.170.84:8080/';
+// axios.defaults.baseURL = 'http://54.180.170.84:8080/';
 
 // axios.defaults.withCredentials = true;
 

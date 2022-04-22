@@ -5,6 +5,8 @@ import AuthService from '../../service/user/Auth.service';
 import Router from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
+import Link from 'next/link';
+import next from 'next';
 
 
 
@@ -46,8 +48,13 @@ const Header = () => {
     Router.push("login")
   },[]);
 
+  const testLink = useCallback(() => {
+    Router.push("/addItem")
+  })
+
   return (
-     <Navbar  expand="lg"  >
+    <>
+    <Navbar  expand="lg"  >
         <Container className={styles.headerLayout}>
           <Navbar.Brand href="/" className={styles.headerColor}>COOR</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -55,7 +62,8 @@ const Header = () => {
             <Nav className="ms-auto" >
               {
                 admin && (
-                  <Nav.Link href="addItem" id={styles.navLink}>등록하기</Nav.Link>
+                  // <Link>
+                    <Nav.Link onClick={() => Router.push("/addItem")}  id={styles.navLink}>등록하기</Nav.Link>
                 )
               }
               <NavDropdown 
@@ -65,15 +73,15 @@ const Header = () => {
                 onMouseEnter={showDropdown} 
                 onMouseLeave={hideDropdown}
               >
-                <NavDropdown.Item href="addItem" id={styles.dropdownMenuItem}>New arrivals</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2" id={styles.dropdownMenuItem}>Outwear</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3"id={styles.dropdownMenuItem}>Knitwear</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>Sweatshirt</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>Shirt</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>T-shirt</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => Router.push("/help")} id={styles.dropdownMenuItem}>Outwear</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => Router.push("/help")}id={styles.dropdownMenuItem}>Knitwear</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => Router.push("/help")} id={styles.dropdownMenuItem}>Sweatshirt</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => Router.push("/help")} id={styles.dropdownMenuItem}>Shirt</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => Router.push("/help")} id={styles.dropdownMenuItem}>T-shirt</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="help" id={styles.navLink}>help</Nav.Link>
-              <Nav.Link href="register" id={styles.navLink}>cart</Nav.Link>
+              <Nav.Link onClick={() => Router.push("/help")} id={styles.navLink}>info</Nav.Link>
+              <Nav.Link onClick={() => Router.push("/help")} id={styles.navLink}>help</Nav.Link>
+              <Nav.Link onClick={() => Router.push("/register")} id={styles.navLink}>cart</Nav.Link>
               {
                 currentUser ? (
                   <Nav.Link id={styles.navLink} onClick={logOut}>LogOut</Nav.Link>
@@ -86,6 +94,7 @@ const Header = () => {
           </Navbar.Collapse>
           </Container>
       </Navbar>
+    </>
   )
 }
 
