@@ -6,9 +6,6 @@ import Link from 'next/link'
 const ItemPost = ({item}) => {
   const [over, setOver] = useState(false);
   const router = useRouter();
-  const onClickImage = useCallback(() => {
-    router.push(`/item/${item.itemId}`);
-  },);
 
 
   return (

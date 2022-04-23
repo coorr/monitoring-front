@@ -74,6 +74,11 @@ a {
       height: 0;
   }
 }
+.list-group-item {
+  border: 0px !important;
+  color: #9A9A9A !important;
+  font-size: 14px !important;
+}
 
 /* @media screen and (max-width: 992px) {
   .navbar-toggler {

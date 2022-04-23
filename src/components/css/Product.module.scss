@@ -13,6 +13,10 @@
     width: 60px !important;
     border: 1px solid #a8a8a8 !important;
 }
+#item_size_btn_2 {
+    width: 60px !important;
+    border: 1px solid #a8a8a8 !important;
+}
 #item_size_btn:hover {
     background-color: #a8a8a8 !important;
     color:white !important;
@@ -48,4 +52,22 @@
     border-bottom: 1px solid black !important; 
     box-shadow: none !important; 
 }
-// minHeight: '100px', padding:'0', border: "1px solid white !important"
+.item_add_remove_btn {
+    background-color: white;
+    border: 0;
+}
+.basket_order_layout {
+    color: #9A9A9A;
+    font-size: 14px;
+    padding: 15px;
+    // text-align: center;
+}
+.basket_order_text_bold{
+    color:black !important;
+}
+#basket_body_text {
+    margin-top: 5px !important;
+    padding: 0 !important;
+    margin-left: 30px !important;
+
+}

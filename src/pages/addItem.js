@@ -52,6 +52,7 @@ const AddItem = () => {
       }
     }
   })
+  // console.log(admin);
 
   // useEffect(() => {
   //   if(addItemDone) {

@@ -14,7 +14,6 @@ const index = () => {
   const { item, hasMoreItem, getItemLoading } = useSelector((state) => state.item)
 
   useEffect(() => {
-    console.log("넌 몇번 시작하니");
     dispatch({
       type: GET_ITEM_REQUEST,
     })

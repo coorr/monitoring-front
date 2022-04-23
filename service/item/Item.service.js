@@ -14,6 +14,11 @@ class ItemService {
     selectItemOne(id) {
       return axios.get(API_URL + "getItemOne/"+id, { headers: { Authorization:  authHeader() }});
     }
+
+
+    getCurrentItem() {
+      return JSON.parse(localStorage.getItem('localRecentProduct'));
+    }
 }
 
 export default new ItemService();
