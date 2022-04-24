@@ -1,1 +1,0 @@
-{"ast":null,"code":"export var config = \"http://localhost:8080/\";","map":{"version":3,"sources":["C:/Users/user/Downloads/shopping-front/src/config/config.js"],"names":["config"],"mappings":"AAAA,OAAO,IAAMA,MAAM,GAAG,wBAAf","sourcesContent":["export const config = \"http://localhost:8080/\";"]},"metadata":{},"sourceType":"module"}

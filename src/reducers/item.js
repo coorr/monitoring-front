@@ -29,6 +29,10 @@ const initialState = {
     
 }
 
+export const GET_ITEM_FIRST_REQUEST = 'GET_ITEM_FIRST_REQUEST';
+export const GET_ITEM_FIRST_SUCCESS = 'GET_ITEM_FIRST_SUCCESS';
+export const GET_ITEM_FIRST_FAILURE = 'GET_ITEM_FIRST_FAILURE';
+
 export const GET_ITEM_REQUEST = 'GET_ITEM_REQUEST';
 export const GET_ITEM_SUCCESS = 'GET_ITEM_SUCCESS';
 export const GET_ITEM_FAILURE = 'GET_ITEM_FAILURE';
@@ -66,6 +70,21 @@ const reducer = (state = initialState, action) => {
             case ADD_ITEM_FAILURE:
                 draft.addItemLoading=false;
                 draft.addItemError=action.error;
+                break;
+
+            case GET_ITEM_FIRST_REQUEST:
+                draft.getItemLoading = true;
+                draft.getItemDone = false;
+                draft.getItemError = null;
+                break;
+            case GET_ITEM_FIRST_SUCCESS:
+                draft.getItemLoading=false;
+                draft.getItemDone=true;
+                draft.item = action.data
+                break;
+            case GET_ITEM_FIRST_FAILURE:
+                draft.getItemLoading=false;
+                draft.getItemError=action.error;
                 break;
 
             case GET_ITEM_REQUEST:
@@ -130,8 +149,8 @@ const reducer = (state = initialState, action) => {
                 draft.total = draft.total - removeCount.itemTotal;
                 draft.count = draft.count - removeCount.itemCount
                 break;
-            case BASKET_ADD_ITEMLIST_REQUEST:
-                localStorage.setItem("localRecentProduct", JSON.stringify(action.data));
+            // case BASKET_ADD_ITEMLIST_REQUEST:
+                // localStorage.setItem("localRecentProduct", JSON.stringify(action.data));
             default:
                 return state;
         }

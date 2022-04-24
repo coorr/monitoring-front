@@ -6,28 +6,29 @@ import styles from '../components/css/Product.module.scss'
 import ItemService from '../../service/item/Item.service'
 import DeleteIcon from '../images/btn_price_delete.gif'
 import Image from 'next/image';
+import Footer from '../components/Footer'
 
 const basket = () => {
   const dispatch = useDispatch();
-  const [localItem, setLocalItem] = useState('');
-//   const [avoidReading, setAvoidReading] = useState(false);
-const test = [{ data:1, ts: 2},{ data:1, ts: 2}]
+  const [localItem, setLocalItem] = useState(false);
+  const [dd, setDd] = useState(true);
   
-  const { currentItem } = useSelector((state) => state.item);
 
 
   useEffect(() => {
-    if (!localItem.length) {
-    //   const jsonItems = localStorage.getItem("localRecentProduct");
-      const jsonItems = ItemService.getCurrentItem();
-    //   const localItems = JSON.parse(jsonItems);
-      setLocalItem(jsonItems);
+    const jsonItems = ItemService.getCurrentItem();
+
+    if (!localItem && jsonItems !== null) {
+          setLocalItem(jsonItems);
     }
   }, [localItem]);
 
   console.log(localItem);
   return (
       <>
+      {
+          localItem.length > 0 && (console.log(22))
+      }
         <Header />
         <div className="middle_space_screen" />
         <Container style={{maxWidth: '720px'}}>
@@ -51,12 +52,13 @@ const test = [{ data:1, ts: 2},{ data:1, ts: 2}]
                     
 
                     {
-                        localItem && localItem.map((v,i) => (
-                            <>
-                            <br/>
-                            <Card style={{flexDirection:'row'}}>
+                        localItem.length > 0 ? localItem.map((v,i) => (
+                            // <>
+                          <div key={v.keyIndex} >
+                          <br />
+                            <Card style={{flexDirection:'row'}} key={v.itemId}>
                                 <Card.Img 
-                                src={v.image && `http://localhost:8080/static/${v.image}`  }
+                                src={v.image ? `http://localhost:8080/static/${v.image}` : undefined }
                                 height={110}
                                 style={{width: "13%", margin: 0}}
                                 />
@@ -78,16 +80,29 @@ const test = [{ data:1, ts: 2},{ data:1, ts: 2}]
                                     </div>
                                 </Card.Body>
                             </Card>
-                            <br />
-                            </>
-                        ))
+                           <br />
+                           </div>
+                             // </>
+                        )) : (
+                            <div style={{textAlign: 'center'}}>
+                            <br/><br/>
+                            <div style={{borderBottom: '1px solid black'}} />
+                            <br/><br/><br/>
+                                <span style={{fontSize: "14px", color: "#707070"}}>장바구니가 비어 있습니다.</span>
+                            <br/><br/>
+                            <br/><br/>
+                            <div style={{borderBottom: '1px solid black'}} />
+                            </div>
+                        )
                     }
-
-                    
-
+                    <div style={{height: '500px'}} />
                 </Col>
+                {/* <Col>
+                    <div style={{height: '300px'}} />
+                </Col> */}
             </Row>
         </Container>
+        <Footer />
       </>
   )
 }

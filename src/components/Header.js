@@ -8,6 +8,7 @@ import { LOG_OUT_REQUEST } from '../reducers/user';
 import Link from 'next/link';
 import next from 'next';
 import {  useRouter } from 'next/router';
+import ItemService from '../../service/item/Item.service';
 
 
 
@@ -17,19 +18,26 @@ const Header = () => {
   const [show, setShow] = useState(false);
   const [admin, setAdmin ]  = useState(false);
   const [currentUser, setCurrentUser ]  = useState(false);
+  const [basket, setBasket ]  = useState([]);
   const {  currentItem  } = useSelector((state) => state.item)
 
   useEffect(() => {
-    const admin = AuthService.getCurrentUser();
+    const adminData = AuthService.getCurrentUser();
+    const basketLocal = ItemService.getCurrentItem();
     
-    if(admin) {
+    if(!admin && adminData !== null) {
       setCurrentUser(true)
-      if(admin.roles[0] === 'ROLE_ADMIN') {
-        setAdmin(true)
+      if(adminData.roles[0] === 'ROLE_ADMIN') {
+        setAdmin(adminData)
       }
     }
-  })
 
+    if(!basket.length && basketLocal !== null) {
+      setBasket(basketLocal)
+    }
+    
+  }, [admin, basket])
+    
   const showDropdown = useCallback(() => {
     setShow(true)
   },[show]);
@@ -44,11 +52,11 @@ const Header = () => {
       type: LOG_OUT_REQUEST
     })
     setCurrentUser(false)
-    Router.push("/")
+    router.push("/user/login")
   }, []);
 
   const login = useCallback(() => {
-    Router.push("login")
+    router.push("/user/login")
   },[]);
 
   const onClickTest = useCallback(() => {
@@ -65,7 +73,7 @@ const Header = () => {
             <Nav className="ms-auto" >
               {
                 admin && (
-                    <Nav.Link onClick={() => Router.push("/addItem")}  id={styles.navLink}>등록하기</Nav.Link>
+                    <Nav.Link onClick={() => router.push("/addItem")}  id={styles.navLink}>등록하기</Nav.Link>
                 )
               }
               <NavDropdown 
@@ -83,7 +91,7 @@ const Header = () => {
               </NavDropdown>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>info</Nav.Link>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>help</Nav.Link>
-              <Nav.Link onClick={() => router.push("/basket")} id={styles.navLink}>card{"("+currentItem.length+")"}</Nav.Link>
+              <Nav.Link onClick={() => router.push("/basket")} id={styles.navLink}>card{"("+basket.length+")"}</Nav.Link>
               {
                 currentUser ? (
                   <Nav.Link id={styles.navLink} onClick={logOut}>LogOut</Nav.Link>
@@ -101,88 +109,3 @@ const Header = () => {
 }
 
 export default Header
-
-// export default class Header extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       show: false,
-//       currentUser: '',
-//       showAdminBoard: false,
-//     }
-//   }
-
-//   componentDidMount() {
-//     const user = AuthService.getCurrentUser();
-//     if(user) {
-//       this.setState({ 
-//         currentUser: user,
-//         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-//        })
-//     }
-//   }
-
-//   showDropdown = () => {
-//     this.setState({ show: true})
-//   }
-//   hideDropdown = () => {
-//     this.setState({ show: false})
-//   }
-//   logOut = () => {
-//     AuthService.logout();
-//     this.setState({
-//       showAdminBoard: false,
-//       currentUser: undefined,
-//     });
-//     Router.push("/")
-//   }
-
-//   login = () => {
-//     Router.push("login")
-//   }
-
-//   render() {
-//     const { show,currentUser, showAdminBoard } = this.state;
-//     return (
-//      <Navbar  expand="lg"  >
-//         <Container className={styles.headerLayout}>
-//           <Navbar.Brand href="/" className={styles.headerColor}>COOR</Navbar.Brand>
-//           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-//           <Navbar.Collapse id="basic-navbar-nav" >
-//             <Nav className="ms-auto" >
-//               {
-//                 showAdminBoard && (
-//                   <Nav.Link href="addCloth" id={styles.navLink}>등록하기</Nav.Link>
-//                 )
-//               }
-//               <NavDropdown 
-//                 title="Store" 
-//                 id={styles.dropdownMenu}
-//                 show={show}
-//                 onMouseEnter={this.showDropdown} 
-//                 onMouseLeave={this.hideDropdown}
-//               >
-//                 <NavDropdown.Item href="allCloth" id={styles.dropdownMenuItem}>New arrivals</NavDropdown.Item>
-//                 <NavDropdown.Item href="#action/3.2" id={styles.dropdownMenuItem}>Outwear</NavDropdown.Item>
-//                 <NavDropdown.Item href="#action/3.3"id={styles.dropdownMenuItem}>Knitwear</NavDropdown.Item>
-//                 <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>Sweatshirt</NavDropdown.Item>
-//                 <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>Shirt</NavDropdown.Item>
-//                 <NavDropdown.Item href="#action/3.4" id={styles.dropdownMenuItem}>T-shirt</NavDropdown.Item>
-//               </NavDropdown>
-//               <Nav.Link href="help" id={styles.navLink}>help</Nav.Link>
-//               <Nav.Link href="register" id={styles.navLink}>cart</Nav.Link>
-//               {
-//                 currentUser ? (
-//                   <Nav.Link id={styles.navLink} onClick={this.logOut}>LogOut</Nav.Link>
-//                 ) : (
-//                   <Nav.Link id={styles.navLink} onClick={this.login}>login</Nav.Link>
-//                 )
-//               }
-              
-//             </Nav>
-//           </Navbar.Collapse>
-//           </Container>
-//       </Navbar>
-//     )
-//   }
-// }

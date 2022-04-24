@@ -7,18 +7,11 @@ import {
 } from '../reducers/user';
 
 
-
-// function logInAPI(data) {
-//   return axios.post("/user/login", data)
-// }
-
 function* logIn(action) {
   try {
-    // const result =  yield call(logInAPI, action.data);
-    // console.log(result);
     yield put({       
       type: LOG_IN_SUCCESS, 
-      data: action.data
+      data: action.data,
     }) 
   } catch (err) {
     yield put({
@@ -28,15 +21,9 @@ function* logIn(action) {
   }  
 }
 
-
-function logOutAPI() {
-  // return axios.post("/user/logout")
-}
 function* logOut() {
   try {
-    // yield call(logOutAPI);
-    // yield delay(1000);
-    yield put({       // action을 dispatch 하는 느낌의 put
+    yield put({       
       type: LOG_OUT_SUCCESS, 
     }) 
   } catch (err) {
@@ -47,13 +34,8 @@ function* logOut() {
   }  
 }
 
-
-// function signUpAPI(data) {
-//   return axios.post('/user', data);
-// }
 function* signUp(action) {
   try {
-    // const result =  yield call(signUpAPI, action.data);
     yield put({       
       type: SIGNUP_SUCCESS, 
       data: action.data

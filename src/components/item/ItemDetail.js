@@ -1,5 +1,5 @@
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASKET_ADD_ITEMLIST_REQUEST, CURRENT_ITEM_REQUEST, DOWN_COUNT_ITEMLIST_REQUEST, 
@@ -8,14 +8,25 @@ import styles from '../css/Product.module.scss';
 import DeleteIcon from '../../images/btn_price_delete.gif';
 import Image from 'next/image';
 import {  useRouter } from 'next/router';
+import AuthService from '../../../service/user/Auth.service';
+import Link from 'next/link';
 
 
 const ItemDetail = ({ itemDetail }) => {
     const router = useRouter();
     const [sizeValueArray, setSizeValueArray] = useState(['S','M','L'])
     const [sizeValue, setSizeValue] = useState('');
+    const [admin, setAdmin] = useState(false);
     const dispatch = useDispatch();
     const { currentItem, total, count } = useSelector((state) => state.item);
+
+    useEffect(() => {
+        const adminData = AuthService.getCurrentUser();
+
+        if (!admin&& adminData !== null && adminData.roles.includes("ROLE_ADMIN")) {
+            setAdmin(adminData);
+        }
+    },[admin])
 
     const onClickSizeValue = useCallback((e,index)  => {
         if(sizeValue === e.target.value) {
@@ -30,17 +41,19 @@ const ItemDetail = ({ itemDetail }) => {
         setSizeValue(e.target.value)
         const size= e.target.value;
         const itemCount = 1
+        const itemId = itemDetail.itemId;
         const title = itemDetail.title;
         const price = itemDetail.discount_price;
         const itemTotal = itemDetail.discount_price;
         const image = itemDetail.images[0].src;
         const discount = itemDetail.price-itemDetail.discount_price;
+        const keyIndex = itemDetail.itemId+"_"+index;
 
 
         
         dispatch({
             type: CURRENT_ITEM_REQUEST,
-            data: {index, title, size, itemCount, price, itemTotal, discount,image},
+            data: {itemId, keyIndex, title, size, itemCount, price, itemTotal, discount,image},
             total: price,
             count: 1
         })
@@ -74,16 +87,35 @@ const ItemDetail = ({ itemDetail }) => {
     });
 
     const onClickComplete = useCallback(() =>  {
-        dispatch({
-            type: BASKET_ADD_ITEMLIST_REQUEST,
-            data: currentItem
-        })
+        if(currentItem.length === 0) {
+            return alert("필수 옵션을 선택해주세요.")
+        }
+        const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
+        if(localRecentProduct !== null) {
+            currentItem.forEach(v => {
+                localRecentProduct.unshift(v)
+            })
+            localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
+        } else {
+            localStorage.setItem("localRecentProduct", JSON.stringify(currentItem));
+        }   
         
-        router.push("/basket")
+        router.push("/basket") 
     });
 
 
     console.log(currentItem);
+
+    const onClickItemRevised = useCallback(() => {
+        console.log(itemDetail);
+        const image = itemDetail.images;
+        console.log(image);
+        router.push({
+            pathname: "/item/revised/itemRevised",
+            query: {image : image.join(","),}
+            // locale: image
+        }, "/item/revised/itemRevised")
+    })
 
     return ( 
 
@@ -96,6 +128,13 @@ const ItemDetail = ({ itemDetail }) => {
       <Col xs={12} md={6}>
         <div className="mx-5">
             <div style={{ fontSize: "13px", color: "#555555"}}>
+                {
+                    admin && (
+                        <button onClick={onClickItemRevised} style={{backgroundColor:"skyblue", float: "right", border: "5px solid skyblue", fontWeight: "bold"}}>
+                            수정하기
+                        </button>
+                    )
+                }
                 <span className={styles.item_text}>{itemDetail.title}</span>
                 <span className={styles.item_text} style={{ textDecoration: 'line-through'}}>{itemDetail.price.toLocaleString('ko-KR')}원</span>
                 <span className={styles.item_text}>{itemDetail.discount_price.toLocaleString('ko-KR')}원</span>
@@ -107,7 +146,6 @@ const ItemDetail = ({ itemDetail }) => {
                     key={"size"+i} 
                     id={v === sizeValue ? styles.item_size_btn : styles.item_size_btn_2} 
                     value={v} 
-                    // onClick={onClickSizeValue(i, e,itemDetail.title, itemDetail.discount_price, i)}
                     onClick={(e) => onClickSizeValue(e,i)}
                  >
                      {v}

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import {  useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import Footer from '../../components/Footer';
 import Header from '../../components/header';
 import ItemDetail from '../../components/item/ItemDetail';
 import { GET_ITEM_ONE_REQUEST } from '../../reducers/item';
@@ -34,7 +35,7 @@ const Item = () =>  {
           )
         }
         {/* <ItemImage /> */}
-        {/* <Footer /> */}
+        <Footer />
       </>
   )
 }

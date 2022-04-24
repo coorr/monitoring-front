@@ -1,45 +1,46 @@
-import React, { useCallback,useState,useRef, useEffect } from 'react'
-import Header from '../components/header'
-import AuthService from '../../service/user/Auth.service';
-import Router from 'next/router'
-import styles from '../components/css/User.module.css'
-import ItemService from '../../service/item/Item.service'
-import useInput from '../hooks/useInput';
-import { useDispatch, useSelector } from 'react-redux';
-import { ADD_ITEM_REQUEST, REMOVE_IMAGE_REQUEST, UPLOAD_IMAGE_REQUEST } from '../reducers/item';
-import Button from "react-bootstrap/Button";
-import Footer from '../components/Footer';
+import React, {useState, useEffect, useRef, useCallback} from 'react'
+import { useRouter } from 'next/router'
+import Footer from '../../../components/Footer'
+import Header from '../../../components/header'
+import AuthService from '../../../../service/user/Auth.service'
+import styles from '../../../components/css/User.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button } from 'react-bootstrap'
 
-const AddItem = () => {
-  const dispatch = useDispatch();
-  const textRef =useRef(null);
-  const fileRef =useRef(null);
+const ItemRevised = () => {
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const textRef =useRef(null);
+    const fileRef =useRef(null);
+    console.log(router);
+    const [title, setTitle] = useState(router.query.title);
+    const [price, setPrice] = useState(router.query.price);
+    const [discountPrice, setDiscountPrice] = useState(router.query.discountPrice);
+    const [category, setCategory] = useState(router.query.category);
+    const [size, setSize] = useState(router.query.size);
+    const [material, setMaterial] = useState(router.query.material);
+    const [info, setInfo] = useState(router.query.info);
+    const [admin, setAdmin ]  = useState(false);
+    const file = [];
+    const itemDetail = router;
 
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
-  const [discountPrice, setDiscountPrice] = useState('');
-  const [category, setCategory] = useState('outwear');
-  const [size, setSize] = useState('');
-  const [material, setMaterial] = useState('');
-  const [info, setInfo] = useState('');
-  const [admin, setAdmin ]  = useState(false);
-  const file = [];
+    const { imagePath, addItemDone, getItemError } = useSelector((state) => state.item);
 
-  const { imagePath, addItemDone, getItemError } = useSelector((state) => state.item);
+    useEffect(() => {
+        const adminData = AuthService.getCurrentUser();
+        if(!admin && adminData === null) {
+            router.push("/")
+        } else if(!admin && adminData.roles[0] === 'ROLE_USER') {
+            router.push("/")
+        } else if(!admin &&  adminData.roles[0] === 'ROLE_ADMIN') {
+            setAdmin(adminData); 
+        }
+    },[admin])
+    console.log(admin);
+    console.log(itemDetail);
 
-  useEffect(() => {
-    const adminData = AuthService.getCurrentUser();
-    if(!admin && adminData === null) {
-      Router.push("/")
-    } else if(!admin && adminData.roles[0] === 'ROLE_USER') {
-      Router.push("/")
-    } else if(!admin &&  adminData.roles[0] === 'ROLE_ADMIN') {
-      setAdmin(adminData); 
-    }
-  },[admin])
-  console.log(admin);
 
-  // useEffect(() => {
+   // useEffect(() => {
   //   if(addItemDone) {
   //     setTitle(''); setPrice(''); setDiscountPrice(''); setCategory('')
   //     setSize(''); setInfo(''); setMaterial('');
@@ -96,18 +97,19 @@ const AddItem = () => {
     })
   });
   
-  return (
-    <>
-     {
-      admin && (
+
+    return (
         <>
-         <Header />
-         <div className="col-md-12">
-          <div className={styles.add_cloth_cotainer}>
+        {
+        admin && (
+        <>
+            <Header />
+            <div className="col-md-12">
+            <div className={styles.add_cloth_cotainer}>
             <label className={styles.login_font_title}>옷 등록</label>
             <br />
             <br />
-              <div className="form-group">
+                <div className="form-group">
                 <label htmlFor="username" className={styles.login_font_input}>옷 이름</label>
                 <input 
                     type="text" 
@@ -115,8 +117,8 @@ const AddItem = () => {
                     value={title} 
                     onChange={e => setTitle(e.target.value)} 
                 />
-              </div>
-              <div className="form-group">
+                </div>
+                <div className="form-group">
                 <label htmlFor="price" className={styles.login_font_input}>가격</label>
                 <input 
                     type="text" 
@@ -124,8 +126,8 @@ const AddItem = () => {
                     value={price} 
                     onChange={e => setPrice(e.target.value)} 
                 />
-              </div>
-              <div className="form-group">
+                </div>
+                <div className="form-group">
                 <label htmlFor="discount_price" className={styles.login_font_input}>할인가격</label>
                 <input 
                     type="text" 
@@ -133,18 +135,18 @@ const AddItem = () => {
                     value={discountPrice} 
                     onChange={e => setDiscountPrice(e.target.value)} 
                 />
-              </div>
-              <div className="form-group">
+                </div>
+                <div className="form-group">
                 <label htmlFor="category" className={styles.login_font_input}>카테고리</label>
                 <select onChange={e => setCategory(e.target.value)} defaultValue={category} className="form-control" style={{border: "1px solid #ddd !important"}} >
-                  <option value="outwear">Outwear</option>
-                  <option value="knitwear">Knitwear</option>
-                  <option value="sweatshirt">Sweatshirt</option>
-                  <option value="shirt">Shirt</option>
-                  <option value="t-shirt">T-Shirt</option>
+                    <option value="outwear">Outwear</option>
+                    <option value="knitwear">Knitwear</option>
+                    <option value="sweatshirt">Sweatshirt</option>
+                    <option value="shirt">Shirt</option>
+                    <option value="t-shirt">T-Shirt</option>
                 </select>
-              </div>
-              <div className="form-group">
+                </div>
+                <div className="form-group">
                 <label htmlFor="size" className={styles.login_font_input}>사이즈 정보</label>
                 <textarea 
                     type="text" 
@@ -152,8 +154,8 @@ const AddItem = () => {
                     value={size} 
                     onChange={e => setSize(e.target.value)} 
                 />
-              </div>
-              <div className="form-group">
+                </div>
+                <div className="form-group">
                 <label htmlFor="material" className={styles.login_font_input}>소재 정보</label>
                 <textarea 
                     type="text" 
@@ -161,8 +163,8 @@ const AddItem = () => {
                     value={material} 
                     onChange={e => setMaterial(e.target.value)} 
                 />
-              </div>
-              <div className="form-group">
+                </div>
+                <div className="form-group">
                 <label htmlFor="info" className={styles.login_font_input}>옷 정보</label>
                 <textarea 
                     ref={textRef}
@@ -173,9 +175,9 @@ const AddItem = () => {
                     wrap="hard"
                     onChange={e => setInfo(e.target.value)} 
                 />
-              </div>
+                </div>
 
-              <div className="form-group">
+                <div className="form-group">
                 <label htmlFor="info" className={styles.login_font_input}>사진</label>
                 <br />
                 <input onChange={onChangeImage} type="file" multiple hidden ref={fileRef} />
@@ -183,32 +185,29 @@ const AddItem = () => {
 
                 { imagePath.map((v,i) => (
                     <div key={i}>
-                       <p>{v.name} <Button variant="info" onClick={onClickRemoveImage(i)}>제거</Button></p>
+                        <p>{v.name} <Button variant="info" onClick={onClickRemoveImage(i)}>제거</Button></p>
                     </div>
                 ))}
-              </div>
+                </div>
 
-             
-
-              <br />
-              <div className="form-group">
+                <br />
+                <div className="form-group">
                 <button
-                  className="btn btn-primary btn-block"
-                  type="submit"
-                  onClick={handleComplete}
+                    className="btn btn-primary btn-block"
+                    type="submit"
+                    onClick={handleComplete}
                 >
-                  <span>완료</span>
+                    <span>완료</span>
                 </button>
-              </div>
-          </div>
+                </div>
+            </div>
         </div>
         <Footer />
         </>
-      )
+        )
     } 
-    </>
+   </>
   )
 }
 
-export default AddItem
-
+export default ItemRevised

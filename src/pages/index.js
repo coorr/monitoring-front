@@ -2,11 +2,12 @@ import React, { Component, useEffect } from "react";
 import Link from 'next/link'
 import Header from "../components/header";
 import { useDispatch, useSelector } from "react-redux";
-import ItemPost from "../components/ItemPost";
+import ItemPost from "../components/item/ItemPost";
 import styles from '../components/css/Product.module.scss'
-import { GET_ITEM_REQUEST } from "../reducers/item";
+import { GET_ITEM_FIRST_REQUEST, GET_ITEM_REQUEST } from "../reducers/item";
 import wrapper from "../store/configureStore";
 import { END } from "redux-saga";
+import Footer from "../components/Footer";
 
 
 const index = () => {
@@ -15,7 +16,7 @@ const index = () => {
 
   useEffect(() => {
     dispatch({
-      type: GET_ITEM_REQUEST,
+      type: GET_ITEM_FIRST_REQUEST,
     })
   },[]);
 
@@ -43,8 +44,9 @@ const index = () => {
       <Header />
       <div className="middle_space_screen" />
       <div className={styles.p__grid}>
-         {item.map((item,i) => <ItemPost key={i} item={item} />)}  
+         {item.map((item,i) => <ItemPost key={item.itemId} item={item} />)}  
       </div>
+      <Footer />
     </>
   )
 }

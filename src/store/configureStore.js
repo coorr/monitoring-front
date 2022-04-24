@@ -21,6 +21,7 @@ const configureStore = () => {
   store.sagaTask = sagaMiddleware.run(rootSaga); // saga 기능
   return store;
 };
+
 const wrapper = createWrapper(configureStore, {
   debug: process.env.NODE_ENV === 'development',
 });

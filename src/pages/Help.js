@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Footer from '../components/Footer'
 // import ClothService from '../components/ClothService'
 import Header from '../components/header'
 
@@ -12,6 +13,7 @@ export default class Help extends Component {
          <form>
            <button>나나</button>
          </form>
+         <Footer />
         </>
     )
   }
