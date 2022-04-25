@@ -8,12 +8,19 @@ class ItemService {
     insertItemAll(itemData) {
       return axios.post(API_URL + "insertItemAll", itemData, { headers: { Authorization:  authHeader(), 'Content-Type' : 'multipart/form-data' }});
     }
+    revisedItem(itemData) {
+      return axios.post(API_URL + "revisedItem", itemData,  { headers: { Authorization:  authHeader(), 'Content-Type' : 'multipart/form-data' }});
+    }
     selectItemAll(lastId,size) {
       return axios.get(API_URL + "getItem?lastId="+lastId+"&size="+size, { headers: { Authorization:  authHeader() }});
     }
-    selectItemOne(id) {
+    getItemOne(id) {
       return axios.get(API_URL + "getItemOne/"+id, { headers: { Authorization:  authHeader() }});
     }
+    removeItem(id) {
+      return axios.post(API_URL + "removeItem/"+id, { headers: { Authorization:  authHeader() }});
+    }
+
 
 
     getCurrentItem() {

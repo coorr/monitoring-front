@@ -6,25 +6,28 @@ import AuthService from '../../../../service/user/Auth.service'
 import styles from '../../../components/css/User.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
+import { REVISED_ITEM_REQUEST, UPLOAD_IMAGE_REQUEST } from '../../../reducers/item'
 
 const ItemRevised = () => {
     const router = useRouter();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch(); 
     const textRef =useRef(null);
     const fileRef =useRef(null);
-    console.log(router);
+
+    const [itemId, setItemId] = useState(router.query.id);
     const [title, setTitle] = useState(router.query.title);
     const [price, setPrice] = useState(router.query.price);
-    const [discountPrice, setDiscountPrice] = useState(router.query.discountPrice);
+    const [discountPrice, setDiscountPrice] = useState(router.query.discount_price);
     const [category, setCategory] = useState(router.query.category);
     const [size, setSize] = useState(router.query.size);
     const [material, setMaterial] = useState(router.query.material);
     const [info, setInfo] = useState(router.query.info);
     const [admin, setAdmin ]  = useState(false);
     const file = [];
-    const itemDetail = router;
-
-    const { imagePath, addItemDone, getItemError } = useSelector((state) => state.item);
+    
+    const [imagePath, setImagePath] = useState(router.query.image ? JSON.parse(router.query.image) : [])
+    const [newImagePath, setNewImagePath] = useState([])
+    // const { imagePath, addItemDone, getItemError } = useSelector((state) => state.item);
 
     useEffect(() => {
         const adminData = AuthService.getCurrentUser();
@@ -35,9 +38,12 @@ const ItemRevised = () => {
         } else if(!admin &&  adminData.roles[0] === 'ROLE_ADMIN') {
             setAdmin(adminData); 
         }
+
+        
     },[admin])
+
     console.log(admin);
-    console.log(itemDetail);
+    console.log(router.query);
 
 
    // useEffect(() => {
@@ -55,10 +61,13 @@ const ItemRevised = () => {
   
   const handleComplete = useCallback(() => {
     const formData = new FormData();
-    imagePath.forEach((file) => {
+    console.log(newImagePath);
+    newImagePath.forEach((file) => {
       formData.append('multipartFiles', file);
   });
-    const itemData = {
+
+  const itemData = {
+      id: itemId,
       title: title,
       price: price,
       discountPrice: discountPrice,
@@ -67,35 +76,35 @@ const ItemRevised = () => {
       material: material,
       info: info
     }
+  
     formData.append('itemData', JSON.stringify(itemData));
+    formData.append('imagePath', JSON.stringify(imagePath));
 
     dispatch({
-      type: ADD_ITEM_REQUEST,
-      data: formData
+      type: REVISED_ITEM_REQUEST,
+      data: formData,
     })
-  },[imagePath, title,price,discountPrice,category,size,material,info]);
+  },[newImagePath, imagePath,itemId, title,price,discountPrice,category,size,material,info]);
 
   const onClickImageUpload = useCallback(() => {
     fileRef.current.click();
   }, [fileRef.current])
 
   const onChangeImage = useCallback((e) => {
-      [].forEach.call(e.target.files, (f) => {
-        console.log(f);
+      [].forEach.call(e.target.files, (f,i) => {
         file.push(f);
       })
-      dispatch({ 
-        type: UPLOAD_IMAGE_REQUEST,
-        data: file
-      })
-  }, [file]);
+      setNewImagePath(newImagePath.concat(file))
+  }, [file,newImagePath]);
   
   const onClickRemoveImage = useCallback((index) => () => {
-    dispatch({
-      type: REMOVE_IMAGE_REQUEST,
-      data: index
-    })
+    setImagePath(imagePath.filter((v,i) => i !== index))
+  });  
+
+  const onClickRemoveNewImage = useCallback((index) => () => {
+    setNewImagePath(newImagePath.filter((v,i) => i !== index))
   });
+  console.log(imagePath);
   
 
     return (
@@ -180,12 +189,17 @@ const ItemRevised = () => {
                 <div className="form-group">
                 <label htmlFor="info" className={styles.login_font_input}>사진</label>
                 <br />
-                <input onChange={onChangeImage} type="file" multiple hidden ref={fileRef} />
+                <input  onChange={onChangeImage} type="file" multiple hidden ref={fileRef} />
                 <Button onClick={onClickImageUpload} variant="info" >이미지</Button>
 
                 { imagePath.map((v,i) => (
                     <div key={i}>
-                        <p>{v.name} <Button variant="info" onClick={onClickRemoveImage(i)}>제거</Button></p>
+                        <p>{v.name ? v.name : v.location} <Button variant="info" onClick={onClickRemoveImage(i)}>제거</Button></p>
+                    </div>
+                ))} 
+                { newImagePath.map((v,i) => (
+                    <div key={i}>
+                        <p>{v.name ? v.name : v.src} <Button variant="info" onClick={onClickRemoveNewImage(i)}>제거</Button></p>
                     </div>
                 ))}
                 </div>

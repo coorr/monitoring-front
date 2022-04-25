@@ -3,11 +3,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASKET_ADD_ITEMLIST_REQUEST, CURRENT_ITEM_REQUEST, DOWN_COUNT_ITEMLIST_REQUEST, 
-        PLUS_COUNT_ITEMLIST_REQUEST, REMOVE_COUNT_ITEMLIST_REQUEST } from '../../reducers/item'
+        PLUS_COUNT_ITEMLIST_REQUEST, REMOVE_COUNT_ITEMLIST_REQUEST, REMOVE_ITEM_REQUEST } from '../../reducers/item'
 import styles from '../css/Product.module.scss';
 import DeleteIcon from '../../images/btn_price_delete.gif';
 import Image from 'next/image';
-import {  useRouter } from 'next/router';
+import {  Router, useRouter } from 'next/router';
 import AuthService from '../../../service/user/Auth.service';
 import Link from 'next/link';
 
@@ -18,7 +18,7 @@ const ItemDetail = ({ itemDetail }) => {
     const [sizeValue, setSizeValue] = useState('');
     const [admin, setAdmin] = useState(false);
     const dispatch = useDispatch();
-    const { currentItem, total, count } = useSelector((state) => state.item);
+    const { currentItem, total, count, removeItemDone } = useSelector((state) => state.item);
 
     useEffect(() => {
         const adminData = AuthService.getCurrentUser();
@@ -103,19 +103,35 @@ const ItemDetail = ({ itemDetail }) => {
         router.push("/basket") 
     });
 
-
-    console.log(currentItem);
-
     const onClickItemRevised = useCallback(() => {
         console.log(itemDetail);
         const image = itemDetail.images;
         console.log(image);
         router.push({
             pathname: "/item/revised/itemRevised",
-            query: {image : image.join(","),}
-            // locale: image
+            query: {image : JSON.stringify(image), 
+                    id: itemDetail.itemId,
+                    title: itemDetail.title, 
+                    price: itemDetail.price, 
+                    discount_price: itemDetail.discount_price, 
+                    category: itemDetail.category, 
+                    size: itemDetail.size, 
+                    material: itemDetail.material, 
+                    info: itemDetail.info
+                }
         }, "/item/revised/itemRevised")
     })
+
+    const onClickRemoveItem = useCallback(() => {
+        dispatch({
+            type: REMOVE_ITEM_REQUEST,
+            data: itemDetail.itemId,
+        })
+        alert("삭제 되었습니다.")
+        router.push("/")
+    })
+
+    console.log(currentItem);
 
     return ( 
 
@@ -123,16 +139,21 @@ const ItemDetail = ({ itemDetail }) => {
     <Container>
     <Row>
       <Col xs={12} md={6}>
-        <img src={`http://localhost:8080/static/${itemDetail.images[0].src}`} alt="이미지" width="100%" height="900px" />
+        <img src={itemDetail.images.length > 0 ? `http://localhost:8080/static/${itemDetail.images[0].location}` : []} alt="이미지" width="100%" height="900px" />
       </Col>
       <Col xs={12} md={6}>
         <div className="mx-5">
             <div style={{ fontSize: "13px", color: "#555555"}}>
                 {
                     admin && (
-                        <button onClick={onClickItemRevised} style={{backgroundColor:"skyblue", float: "right", border: "5px solid skyblue", fontWeight: "bold"}}>
-                            수정하기
-                        </button>
+                    <>
+                    <button onClick={onClickItemRevised} style={{padding: "8px",backgroundColor:"white", float: "right", border: "1px solid #6693D7", fontSize:"12px", color:"#6693D7"}}>
+                        수정하기
+                    </button>
+                    <button onClick={onClickRemoveItem} style={{marginRight: "3px",padding: "8px",backgroundColor:"white", float: "right", border: "1px solid black", fontSize:"12px", color:"black"}}>
+                        삭제하기
+                    </button>
+                    </>
                     )
                 }
                 <span className={styles.item_text}>{itemDetail.title}</span>

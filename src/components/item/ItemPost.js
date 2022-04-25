@@ -16,7 +16,7 @@ const ItemPost = ({item}) => {
           <Card.Img 
           variant="top" 
           // src={over &&item.Image[1] !== undefined ? item.Image[1].src : item.Image[0].src}
-          src={item.images.length > 0 ? `http://localhost:8080/static/${item.images[0].src.toString()}` : undefined  }
+          src={item.images.length > 0 ? `http://localhost:8080/static/${item.images[0].location.toString()}` : undefined  }
           onMouseOver={e => setOver(true)}
           onMouseOut={e => setOver(false)}
           height={430}

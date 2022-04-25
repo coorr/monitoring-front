@@ -19,6 +19,14 @@ const initialState = {
     addItemDone:false,
     addItemError:null,
 
+    revisedItemLoading:false,
+    revisedItemDone:false,
+    revisedItemError:null,
+    
+    removeItemLoading:false,
+    removeItemDone:false,
+    removeItemError:null,
+
     uploadImageLoading:false,
     uploadImageDone:false,
     uploadImageError:null,
@@ -40,6 +48,14 @@ export const GET_ITEM_FAILURE = 'GET_ITEM_FAILURE';
 export const ADD_ITEM_REQUEST = 'ADD_ITEM_REQUEST';
 export const ADD_ITEM_SUCCESS = 'ADD_ITEM_SUCCESS';
 export const ADD_ITEM_FAILURE = 'ADD_ITEM_FAILURE';
+
+export const REVISED_ITEM_REQUEST = 'REVISED_ITEM_REQUEST';
+export const REVISED_ITEM_SUCCESS = 'REVISED_ITEM_SUCCESS';
+export const REVISED_ITEM_FAILURE = 'REVISED_ITEM_FAILURE';
+
+export const REMOVE_ITEM_REQUEST = 'REMOVE_ITEM_REQUEST';
+export const REMOVE_ITEM_SUCCESS = 'REMOVE_ITEM_SUCCESS';
+export const REMOVE_ITEM_FAILURE = 'REMOVE_ITEM_FAILURE';
 
 export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
 export const REMOVE_IMAGE_REQUEST = 'REMOVE_IMAGE_REQUEST';
@@ -70,6 +86,34 @@ const reducer = (state = initialState, action) => {
             case ADD_ITEM_FAILURE:
                 draft.addItemLoading=false;
                 draft.addItemError=action.error;
+                break;
+
+            case REVISED_ITEM_REQUEST:
+                draft.revisedItemLoading = true;
+                draft.revisedItemDone = false;
+                draft.revisedItemError = null;
+                break;
+            case REVISED_ITEM_SUCCESS:
+                draft.revisedItemLoading=false;
+                draft.revisedItemDone=true;
+                break;
+            case REVISED_ITEM_FAILURE:
+                draft.revisedItemLoading=false;
+                draft.revisedItemError=action.error;
+                break;
+
+            case REMOVE_ITEM_REQUEST:
+                draft.removeItemLoading = true;
+                draft.removeItemDone = false;
+                draft.removeItemError = null;
+                break;
+            case REMOVE_ITEM_SUCCESS:
+                draft.removeItemLoading=false;
+                draft.removeItemDone=true;
+                break;
+            case REMOVE_ITEM_FAILURE:
+                draft.removeItemLoading=false;
+                draft.removeItemError=action.error;
                 break;
 
             case GET_ITEM_FIRST_REQUEST:
