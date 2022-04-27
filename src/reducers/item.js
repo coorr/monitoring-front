@@ -64,6 +64,7 @@ export const DOWN_COUNT_ITEMLIST_REQUEST = 'DOWN_COUNT_ITEMLIST_REQUEST';
 export const REMOVE_COUNT_ITEMLIST_REQUEST = 'REMOVE_COUNT_ITEMLIST_REQUEST';
 export const PLUS_COUNT_ITEMLIST_REQUEST = "PLUS_COUNT_ITEMLIST_REQUEST";
 export const BASKET_ADD_ITEMLIST_REQUEST = "BASKET_ADD_ITEMLIST_REQUEST";
+export const BASKET_NULL_REQUEST = "BASKET_NULL_REQUEST";
 
 export const GET_ITEM_ONE_REQUEST = 'GET_ITEM_ONE_REQUEST';
 export const GET_ITEM_ONE_SUCCESS = 'GET_ITEM_ONE_SUCCESS';
@@ -172,29 +173,31 @@ const reducer = (state = initialState, action) => {
                 draft.currentItem = draft.currentItem.concat(action.data);
                 draft.total = draft.total+action.total;
                 draft.count = draft.count+action.count;
-                break;
+                draft.currentItemAdd = true;
+                break;  
             case DOWN_COUNT_ITEMLIST_REQUEST:
-                const downCount = draft.currentItem.find((v,i) => v.index === action.data)
+                const downCount = draft.currentItem.find((v,i) => v.keyIndex === action.data)
                 downCount.itemCount= downCount.itemCount-1
                 downCount.itemTotal= downCount.itemTotal+downCount.price;
                 draft.total = draft.total - downCount.price;
                 draft.count = draft.count - 1
                 break;
             case PLUS_COUNT_ITEMLIST_REQUEST:
-                const plusCount = draft.currentItem.find((v,i) => v.index === action.data)
+                const plusCount = draft.currentItem.find((v,i) => v.keyIndex === action.data)
                 plusCount.itemCount=plusCount.itemCount+1 
                 plusCount.itemTotal=plusCount.itemTotal+plusCount.price;
                 draft.total = draft.total + plusCount.price;
                 draft.count = draft.count + 1
                 break;
             case REMOVE_COUNT_ITEMLIST_REQUEST:
-                const removeCount = draft.currentItem.find((v,i) => v.index === action.data)
-                draft.currentItem = draft.currentItem.filter((v,i) => v.index !== action.data)
+                const removeCount = draft.currentItem.find((v,i) => v.keyIndex === action.data)
+                draft.currentItem = draft.currentItem.filter((v,i) => v.keyIndex !== action.data)
                 draft.total = draft.total - removeCount.itemTotal;
                 draft.count = draft.count - removeCount.itemCount
                 break;
-            // case BASKET_ADD_ITEMLIST_REQUEST:
-                // localStorage.setItem("localRecentProduct", JSON.stringify(action.data));
+            case BASKET_NULL_REQUEST:
+                draft.currentItem = [];
+                break;
             default:
                 return state;
         }

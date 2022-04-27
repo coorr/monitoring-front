@@ -1,15 +1,14 @@
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { BASKET_ADD_ITEMLIST_REQUEST, CURRENT_ITEM_REQUEST, DOWN_COUNT_ITEMLIST_REQUEST, 
+import {  BASKET_NULL_REQUEST, CURRENT_ITEM_REQUEST,  DOWN_COUNT_ITEMLIST_REQUEST, 
         PLUS_COUNT_ITEMLIST_REQUEST, REMOVE_COUNT_ITEMLIST_REQUEST, REMOVE_ITEM_REQUEST } from '../../reducers/item'
 import styles from '../css/Product.module.scss';
 import DeleteIcon from '../../images/btn_price_delete.gif';
 import Image from 'next/image';
-import {  Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import AuthService from '../../../service/user/Auth.service';
-import Link from 'next/link';
 
 
 const ItemDetail = ({ itemDetail }) => {
@@ -18,7 +17,7 @@ const ItemDetail = ({ itemDetail }) => {
     const [sizeValue, setSizeValue] = useState('');
     const [admin, setAdmin] = useState(false);
     const dispatch = useDispatch();
-    const { currentItem, total, count, removeItemDone } = useSelector((state) => state.item);
+    const { currentItem, total, count  } = useSelector((state) => state.item);
 
     useEffect(() => {
         const adminData = AuthService.getCurrentUser();
@@ -45,12 +44,10 @@ const ItemDetail = ({ itemDetail }) => {
         const title = itemDetail.title;
         const price = itemDetail.discount_price;
         const itemTotal = itemDetail.discount_price;
-        const image = itemDetail.images[0].src;
+        const image = itemDetail.images[0].location;
         const discount = itemDetail.price-itemDetail.discount_price;
         const keyIndex = itemDetail.itemId+"_"+index;
 
-
-        
         dispatch({
             type: CURRENT_ITEM_REQUEST,
             data: {itemId, keyIndex, title, size, itemCount, price, itemTotal, discount,image},
@@ -62,7 +59,7 @@ const ItemDetail = ({ itemDetail }) => {
 
     const onClickItemListDown = useCallback((index) => () => {
         for(var i=0; i<currentItem.length; i++) {
-            if(currentItem[i].index === index &&  currentItem[index].itemCount  === 1) {
+            if(currentItem[i].keyIndex === index &&  currentItem[i].itemCount  === 1) {
                 return alert("최소 주문수량은 1개 입니다.")
             }
         }
@@ -92,21 +89,43 @@ const ItemDetail = ({ itemDetail }) => {
         }
         const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
         if(localRecentProduct !== null) {
-            currentItem.forEach(v => {
+            const localKeyAry = localRecentProduct.map(v => v.keyIndex);
+            const sameItemDataAry = currentItem.filter(v => localKeyAry.includes(v.keyIndex))
+            const diffItemData = currentItem.filter(v => !localKeyAry.includes(v.keyIndex))
+
+            if(sameItemDataAry.length > 0 ) {
+                if(confirm("장비구니에 동일한 상품이 있습니다. \n장바구니에 추가하시겠습니까?")) {
+                    localRecentProduct.forEach((v,i) => {
+                        const ItemSameLocalData = sameItemDataAry.find(s => s.keyIndex === v.keyIndex)
+                        if(ItemSameLocalData !== undefined) {
+                            v.itemCount = v.itemCount + ItemSameLocalData.itemCount;
+                            v.itemTotal = v.itemTotal + ItemSameLocalData.itemTotal;
+                            v.discount = v.discount + ItemSameLocalData.discount;
+                        }                 
+                    })
+                } else {
+                    return;
+                }
+            }
+
+            diffItemData.forEach((v,i) => {
                 localRecentProduct.unshift(v)
             })
             localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
         } else {
             localStorage.setItem("localRecentProduct", JSON.stringify(currentItem));
         }   
-        
+
         router.push("/basket") 
+
+        dispatch({
+            type: BASKET_NULL_REQUEST
+        })
+
     });
 
     const onClickItemRevised = useCallback(() => {
-        console.log(itemDetail);
         const image = itemDetail.images;
-        console.log(image);
         router.push({
             pathname: "/item/revised/itemRevised",
             query: {image : JSON.stringify(image), 
@@ -123,12 +142,12 @@ const ItemDetail = ({ itemDetail }) => {
     })
 
     const onClickRemoveItem = useCallback(() => {
+        const history = router;
         dispatch({
             type: REMOVE_ITEM_REQUEST,
             data: itemDetail.itemId,
+            history: history
         })
-        alert("삭제 되었습니다.")
-        router.push("/")
     })
 
     console.log(currentItem);
@@ -191,10 +210,10 @@ const ItemDetail = ({ itemDetail }) => {
                    <span key={"item"+i}  style={{marginBottom: '3px'}}>{v.title + " - " + v.size}</span>
                   
                    <div  style={{float: 'right'}}>
-                     <button onClick={onClickItemListDown(v.index)} className={styles.item_add_remove_btn}>-</button> &nbsp;&nbsp;
+                     <button onClick={onClickItemListDown(v.keyIndex)} className={styles.item_add_remove_btn}>-</button> &nbsp;&nbsp;
                      <span>{v.itemCount}</span>&nbsp;&nbsp;
-                     <button onClick={onClickItemListPlus(v.index)} className={styles.item_add_remove_btn}>+</button>&nbsp;&nbsp;
-                     <button onClick={onClickItemListRemove(v.index)} className={styles.item_add_remove_btn}><Image src={DeleteIcon} /></button>
+                     <button onClick={onClickItemListPlus(v.keyIndex)} className={styles.item_add_remove_btn}>+</button>&nbsp;&nbsp;
+                     <button onClick={onClickItemListRemove(v.keyIndex)} className={styles.item_add_remove_btn}><Image src={DeleteIcon} /></button>
                    </div>
                    <br />
                  </>
@@ -235,4 +254,4 @@ const ItemDetail = ({ itemDetail }) => {
   )
 }
 
-export default ItemDetail
+export default memo(ItemDetail)

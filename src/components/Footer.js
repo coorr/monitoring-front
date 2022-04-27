@@ -15,6 +15,7 @@ const Footer = () =>  {
     },[]);
   return (
     <>
+      <div style={{height: '500px'}} />
         <div style={{borderTop: "0.5px solid #eee" ,  marginTop: '50px'}}/>
         <Container style={{height: "100px", maxWidth: '250px'}}>
             <Row>

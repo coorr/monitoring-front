@@ -14,6 +14,7 @@ const Item = () =>  {
   const { itemOne, getItemOneDone  } = useSelector((state) => state.item);
 
   useEffect(() => {
+    console.log(router);
     if(id !== undefined) {
       dispatch({
         type: GET_ITEM_ONE_REQUEST,
@@ -21,7 +22,6 @@ const Item = () =>  {
       })
     }
   },[id]);
-
 
 
   return (

@@ -1,16 +1,15 @@
-import React, { Component, useEffect } from "react";
-import Link from 'next/link'
+import React, { useEffect } from "react";
 import Header from "../components/header";
 import { useDispatch, useSelector } from "react-redux";
 import ItemPost from "../components/item/ItemPost";
 import styles from '../components/css/Product.module.scss'
 import { GET_ITEM_FIRST_REQUEST, GET_ITEM_REQUEST } from "../reducers/item";
-import wrapper from "../store/configureStore";
-import { END } from "redux-saga";
 import Footer from "../components/Footer";
+import { useRouter } from "next/router";
 
 
 const index = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { item, hasMoreItem, getItemLoading } = useSelector((state) => state.item)
 
@@ -38,6 +37,7 @@ const index = () => {
       window.removeEventListener('scroll', onScroll);
     }
   }, [hasMoreItem, getItemLoading, item]);
+
 
   return (
     <>

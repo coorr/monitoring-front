@@ -3,11 +3,11 @@ import Footer from '../components/Footer'
 // import ClothService from '../components/ClothService'
 import Header from '../components/header'
 
-export default class Help extends Component {
+export default class help extends Component {
   render() {
     return (
         <>
-         <Header />
+         {/* <Header /> */}
          <div>Help</div>
          <button>아아</button>
          <form>

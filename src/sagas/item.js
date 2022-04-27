@@ -14,7 +14,6 @@ import TokenCheck from '../store/tokenCheck';
 
 
 function* addRevisedItem(action) {
-  console.log(action);
   try {
     const result =  yield ItemService.revisedItem(action.data);
     alert("저장 되었습니다.")
@@ -101,16 +100,20 @@ function* getItemOne(action) {
 
 function* removeItem(action) {
   try {
-    const result =  yield ItemService.removeItem(action.data);
+    yield ItemService.removeItem(action.data);
+    const history = action.history;
     yield put({       
       type: REMOVE_ITEM_SUCCESS, 
     }) 
+    alert("삭제되었습니다.")
+    history.push('/');
   } catch (err) {
     TokenCheck(err.response.data)
     yield put({
       type: REMOVE_ITEM_FAILURE,
       error : err.response.data
     })
+    alert("실패하였습니다.")
   }  
 }
 

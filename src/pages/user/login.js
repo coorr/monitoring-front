@@ -19,7 +19,7 @@ const Login = () => {
   
   const [username, onChangeUsername] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const { logInLoading } = useSelector((state) => state.user)
+  const { logInDone } = useSelector((state) => state.user)
 
   const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ const Login = () => {
     }
     
 
-    form.validateAll();
+    // form.validateAll();
 
     if (checkBtn.context._errors.length === 0) {
       AuthService.login(username, password)
@@ -60,8 +60,8 @@ const Login = () => {
 
   return (
     <>
-     <Header />
-        <div className="col-md-12">
+     {/* <Header /> */}
+         <div className="col-md-12">
             <div className="card card-container" id={styles.login_form_layout}>
               
               <label className={styles.login_font_title}>Login</label>
@@ -101,11 +101,11 @@ const Login = () => {
                 <div className="form-group">
                   <button
                     className="btn btn-primary btn-block"
-                    disabled={logInLoading}
+                    disabled={logInDone}
                     type="submit"
                     // onSubmit={handleLogin}
                   >
-                    {logInLoading && (
+                    {logInDone && (
                       <span className="spinner-border spinner-border-sm"></span>
                     )}
                     <span>Login</span>
@@ -128,7 +128,7 @@ const Login = () => {
                   }}
                 />
               </Form>
-              </div>
+              </div> 
             </div>
             <Footer />
       </>

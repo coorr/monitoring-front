@@ -90,9 +90,9 @@ const Register = () => {
               data: { username, email }
             });
               Router.push({
-                pathname: "/register.result",
+                pathname: "/user/register.result",
                 query: {username: username, email: email}
-              }, "/register.result")
+              }, "/user/register.result")
     
             },
             error => {
@@ -111,7 +111,7 @@ const Register = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className="col-md-12">
         <div className="card card-container" id={styles.login_form_layout}>
         <label className={styles.login_font_title}>Register</label>

@@ -56,8 +56,9 @@ const Header = () => {
   }, []);
 
   const login = useCallback(() => {
+    console.log("login 시도 중");
     router.push("/user/login")
-  },[]);
+  });
 
   const onClickTest = useCallback(() => {
     router.push("/help")
@@ -91,12 +92,13 @@ const Header = () => {
               </NavDropdown>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>info</Nav.Link>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>help</Nav.Link>
-              <Nav.Link onClick={() => router.push("/basket")} id={styles.navLink}>card{"("+basket.length+")"}</Nav.Link>
+              <Nav.Link onClick={() => router.push("/baskey")}>card{"("+basket.length+")"}</Nav.Link>
+              {/* <Link href="/basket">card</Link> */}
               {
                 currentUser ? (
                   <Nav.Link id={styles.navLink} onClick={logOut}>LogOut</Nav.Link>
                 ) : (
-                  <Nav.Link id={styles.navLink} onClick={login}>login</Nav.Link>
+                  <Nav.Link id={styles.navLink} href="/user/login">login</Nav.Link>
                 )
               }
               

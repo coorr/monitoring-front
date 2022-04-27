@@ -7,17 +7,19 @@ import wrapper from '../store/configureStore';
 
 
 
+
 function App({ Component, pageProps }) {
 
     return (
-      <SSRProvider>
+      <>
         <Head>
           <meta charSet='utf-8' />
           <title>coor</title>
         </Head>
-        
+        <SSRProvider>
           <Component {...pageProps} />
-      </SSRProvider>
+        </SSRProvider>
+      </>
     )
   }
 

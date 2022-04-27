@@ -42,10 +42,6 @@ const ItemRevised = () => {
         
     },[admin])
 
-    console.log(admin);
-    console.log(router.query);
-
-
    // useEffect(() => {
   //   if(addItemDone) {
   //     setTitle(''); setPrice(''); setDiscountPrice(''); setCategory('')
@@ -61,7 +57,6 @@ const ItemRevised = () => {
   
   const handleComplete = useCallback(() => {
     const formData = new FormData();
-    console.log(newImagePath);
     newImagePath.forEach((file) => {
       formData.append('multipartFiles', file);
   });
@@ -112,7 +107,7 @@ const ItemRevised = () => {
         {
         admin && (
         <>
-            <Header />
+            {/* <Header /> */}
             <div className="col-md-12">
             <div className={styles.add_cloth_cotainer}>
             <label className={styles.login_font_title}>옷 등록</label>

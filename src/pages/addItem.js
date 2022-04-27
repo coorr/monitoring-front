@@ -80,7 +80,6 @@ const AddItem = () => {
 
   const onChangeImage = useCallback((e) => {
       [].forEach.call(e.target.files, (f) => {
-        console.log(f);
         file.push(f);
       })
       dispatch({ 
@@ -101,7 +100,7 @@ const AddItem = () => {
      {
       admin && (
         <>
-         <Header />
+         {/* <Header /> */}
          <div className="col-md-12">
           <div className={styles.add_cloth_cotainer}>
             <label className={styles.login_font_title}>옷 등록</label>

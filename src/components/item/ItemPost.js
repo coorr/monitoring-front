@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {memo, useCallback, useState} from 'react'
 import { Card } from "react-bootstrap";
 import { useRouter } from 'next/router';
 import Link from 'next/link'
@@ -6,7 +6,7 @@ import Link from 'next/link'
 const ItemPost = ({item}) => {
   const [over, setOver] = useState(false);
   const router = useRouter();
-
+  console.log(item);
 
   return (
     <div>
@@ -32,10 +32,10 @@ const ItemPost = ({item}) => {
             </a>
           </Link>
               <Card.Title style={{ fontSize: '10px', textDecoration : 'line-through' }}>
-                {item.price}원<br />
+                {item.price.toLocaleString('ko-KR')}원
               </Card.Title>
               <Card.Text style={{ fontSize: '10px' }}>
-                {item.discountPrice}원
+                {item.discount_price.toLocaleString('ko-KR')}원
               </Card.Text>
               <br />
           </Card.Body>
@@ -44,4 +44,4 @@ const ItemPost = ({item}) => {
   )
 }
 
-export default ItemPost
+export default memo(ItemPost)
