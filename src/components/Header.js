@@ -16,27 +16,34 @@ const Header = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const [admin, setAdmin ]  = useState(false);
+  const [admin, setAdmin ]  = useState('');
+  const [userId, setUserId ]  = useState('');
   const [currentUser, setCurrentUser ]  = useState(false);
-  const [basket, setBasket ]  = useState([]);
-  const {  currentItem  } = useSelector((state) => state.item)
+  const [basket, setBasket ]  = useState(false);
+  const {  currentItem, itemLength  } = useSelector((state) => state.item)
 
   useEffect(() => {
     const adminData = AuthService.getCurrentUser();
-    const basketLocal = ItemService.getCurrentItem();
-    
-    if(!admin && adminData !== null) {
+    console.log("11");
+    if(admin === '' && adminData !== null) {
       setCurrentUser(true)
+      setAdmin(null)
+      setUserId(adminData.id)
       if(adminData.roles[0] === 'ROLE_ADMIN') {
         setAdmin(adminData)
-      }
-    }
-
-    if(!basket.length && basketLocal !== null) {
-      setBasket(basketLocal)
+      } 
     }
     
-  }, [admin, basket])
+  }, [userId,currentUser,admin])
+
+  useEffect(() => {
+    const basketLocal = ItemService.getCurrentItem();
+    console.log("22");
+    if(userId === '' && !basket && basketLocal.length > 0) {
+      setBasket(basketLocal)
+    } 
+  },[userId, basket])
+  console.log(basket);
     
   const showDropdown = useCallback(() => {
     setShow(true)
@@ -81,8 +88,8 @@ const Header = () => {
                 title="Store" 
                 id={styles.dropdownMenu}
                 show={show}
-                onMouseEnter={showDropdown} 
-                onMouseLeave={hideDropdown}
+                // onMouseEnter={showDropdown} 
+                // onMouseLeave={hideDropdown}
               >
                 <NavDropdown.Item onClick={onClickTest} id={styles.dropdownMenuItem}>Outwear</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => router.push("/help")}id={styles.dropdownMenuItem}>Knitwear</NavDropdown.Item>
@@ -92,7 +99,7 @@ const Header = () => {
               </NavDropdown>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>info</Nav.Link>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>help</Nav.Link>
-              <Nav.Link onClick={() => router.push("/baskey")}>card{"("+basket.length+")"}</Nav.Link>
+              <Nav.Link onClick={() => router.push("/basket")}>card{"("}{ basket ? basket.length : itemLength}{")"}</Nav.Link>
               {/* <Link href="/basket">card</Link> */}
               {
                 currentUser ? (

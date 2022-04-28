@@ -15,7 +15,7 @@ export const initialState = {
 
 
     isLoggingOut: false,
-    user: null,
+    userId: null,
     username:null,
     email:null,
 
@@ -64,7 +64,7 @@ const reducer = (state = initialState, action) => {
             case LOG_IN_SUCCESS:
                 draft.logInLoading=false;
                 draft.logInDone=true;
-                draft.user= action.data;
+                draft.userId= action.data;
                 break;
             case LOG_IN_FAILURE:
                 draft.logInDone=false;
@@ -79,7 +79,7 @@ const reducer = (state = initialState, action) => {
             case LOG_OUT_SUCCESS:
                 draft.logOutLoading=false;
                 draft.logOutDone=true;
-                draft.user=null;
+                draft.userId=null;
                 draft.logInDone=false
                 break;
             case LOG_OUT_FAILURE:

@@ -19,7 +19,7 @@ const Login = () => {
   
   const [username, onChangeUsername] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const { logInDone } = useSelector((state) => state.user)
+  const { logInLoading } = useSelector((state) => state.user)
 
   const dispatch = useDispatch();
 
@@ -38,10 +38,10 @@ const Login = () => {
     if (checkBtn.context._errors.length === 0) {
       AuthService.login(username, password)
       .then(res => {
-        Router.push("/")
+        Router.push("/help")
           dispatch({
             type: LOG_IN_REQUEST,
-            data: username
+            data: res.id
           })
         },
         error => {
@@ -60,7 +60,7 @@ const Login = () => {
 
   return (
     <>
-     {/* <Header /> */}
+     <Header />
          <div className="col-md-12">
             <div className="card card-container" id={styles.login_form_layout}>
               
@@ -101,11 +101,11 @@ const Login = () => {
                 <div className="form-group">
                   <button
                     className="btn btn-primary btn-block"
-                    disabled={logInDone}
+                    disabled={logInLoading}
                     type="submit"
                     // onSubmit={handleLogin}
                   >
-                    {logInDone && (
+                    {logInLoading && (
                       <span className="spinner-border spinner-border-sm"></span>
                     )}
                     <span>Login</span>

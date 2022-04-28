@@ -15,7 +15,7 @@ const Register_result = () =>  {
 
   return (
     <>
-        {/* <Header /> */}
+        <Header />
             <div className="col-md-12">
             <div className="card card-container" id={styles.login_form_layout}>
             <label className={styles.login_font_title}>회원가입</label>

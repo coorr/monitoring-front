@@ -2,6 +2,27 @@ import axios from 'axios';
 import { all, fork, takeLatest, delay, put,call } from 'redux-saga/effects';
 import { 
   ADD_ITEM_FAILURE, ADD_ITEM_REQUEST, ADD_ITEM_SUCCESS, 
+  BASKET_ADD_USER_FAILURE, 
+  BASKET_ADD_USER_REQUEST, 
+  BASKET_ADD_USER_SUCCESS, 
+  BASKET_DOWN_USER_FAILURE, 
+  BASKET_DOWN_USER_REQUEST, 
+  BASKET_DOWN_USER_SUCCESS, 
+  BASKET_EMPTY_FAILURE, 
+  BASKET_EMPTY_REQUEST, 
+  BASKET_EMPTY_SUCCESS, 
+  BASKET_GET_FAILURE, 
+  BASKET_GET_REQUEST, 
+  BASKET_GET_SUCCESS, 
+  BASKET_GET_USER_FAILURE, 
+  BASKET_GET_USER_REQUEST, 
+  BASKET_GET_USER_SUCCESS, 
+  BASKET_PLUS_USER_FAILURE, 
+  BASKET_PLUS_USER_REQUEST, 
+  BASKET_PLUS_USER_SUCCESS, 
+  BASKET_REMOVE_USER_FAILURE, 
+  BASKET_REMOVE_USER_REQUEST, 
+  BASKET_REMOVE_USER_SUCCESS, 
   GET_ITEM_FAILURE, GET_ITEM_FIRST_FAILURE, GET_ITEM_FIRST_REQUEST, 
   GET_ITEM_FIRST_SUCCESS, GET_ITEM_ONE_FAILURE, GET_ITEM_ONE_REQUEST, 
   GET_ITEM_ONE_SUCCESS, GET_ITEM_REQUEST, GET_ITEM_SUCCESS, REMOVE_ITEM_FAILURE, REMOVE_ITEM_REQUEST, REMOVE_ITEM_SUCCESS, REVISED_ITEM_FAILURE, 
@@ -10,6 +31,7 @@ import {
 } from '../reducers/item';
 import ItemService from '../../service/item/Item.service'
 import TokenCheck from '../store/tokenCheck';
+import BasketService from '../../service/basket/Basket.service';
 
 
 
@@ -117,6 +139,125 @@ function* removeItem(action) {
   }  
 }
 
+function* basketAddUser(action) {
+  try {
+    const result = yield BasketService.basketAddUser(action.userId, action.data);
+    yield put({       
+      type: BASKET_ADD_USER_SUCCESS, 
+      data: result.data
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: BASKET_ADD_USER_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
+}
+
+function* basketGet(action) {
+  try {
+    const result = yield BasketService.getBasketByUserId(action.userId);
+    yield put({       
+      type: BASKET_GET_SUCCESS, 
+      data: result.data
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: BASKET_GET_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
+}
+
+function* basketGetUser(action) {
+  try {
+    const result = yield BasketService.getBasketByUserId(action.userId);
+    yield put({       
+      type: BASKET_GET_USER_SUCCESS, 
+      data: result.data
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: BASKET_GET_USER_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
+}
+
+function* basketRemoveUser(action) {
+  try {
+    const result = yield BasketService.removeBasketById(action.data, action.userId);
+    yield put({       
+      type: BASKET_REMOVE_USER_SUCCESS, 
+      data: result.data
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: BASKET_REMOVE_USER_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
+}
+
+function* basketDownUser(action) {
+  try {
+    const result = yield BasketService.basketDownUserById(action.data, action.userId);
+    yield put({       
+      type: BASKET_DOWN_USER_SUCCESS, 
+      data: result.data
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: BASKET_DOWN_USER_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
+}
+
+function* basketPlusUser(action) {
+  try {
+    const result = yield BasketService.basketPlusUserById(action.data, action.userId);
+    yield put({       
+      type: BASKET_PLUS_USER_SUCCESS, 
+      data: result.data
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: BASKET_PLUS_USER_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
+}
+
+function* basketEmpty(action) {
+  try {
+    yield BasketService.basketEmpty(action.userId);
+    yield put({       
+      type: BASKET_EMPTY_SUCCESS, 
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: BASKET_EMPTY_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
+}
+
+
 
 
 function* watchAddItem() {
@@ -137,6 +278,27 @@ function* watchGetItemOne() {
 function* watchRemoveItem() {
   yield takeLatest(REMOVE_ITEM_REQUEST, removeItem);
 }
+function* watchBasketAddUser() {
+  yield takeLatest(BASKET_ADD_USER_REQUEST, basketAddUser);
+}
+function* watchBasketGet() {
+  yield takeLatest(BASKET_GET_REQUEST, basketGet);
+}
+function* watchBasketGetUser() {
+  yield takeLatest(BASKET_GET_USER_REQUEST, basketGetUser);
+}
+function* watchBasketRemoveUser() {
+  yield takeLatest(BASKET_REMOVE_USER_REQUEST, basketRemoveUser);
+}
+function* watchBasketDownUser() {
+  yield takeLatest(BASKET_DOWN_USER_REQUEST, basketDownUser);
+}
+function* watchBasketPlusUser() {
+  yield takeLatest(BASKET_PLUS_USER_REQUEST, basketPlusUser);
+}
+function* watchBasketEmpty() {
+  yield takeLatest(BASKET_EMPTY_REQUEST, basketEmpty);
+}
 
 
 export default function* userSage() {
@@ -147,5 +309,12 @@ export default function* userSage() {
       fork(watchGetItem),
       fork(watchGetItemOne),
       fork(watchRemoveItem),
+      fork(watchBasketAddUser),
+      fork(watchBasketGet),
+      fork(watchBasketGetUser),
+      fork(watchBasketRemoveUser),
+      fork(watchBasketDownUser),
+      fork(watchBasketPlusUser),
+      fork(watchBasketEmpty),
     ])
   }

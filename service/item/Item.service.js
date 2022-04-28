@@ -19,6 +19,9 @@ class ItemService {
     }
     removeItem(id) {
       return axios.post(API_URL + "removeItem/"+id, { headers: { Authorization:  authHeader() }});
+    }  
+    basketAddUser(id, data) {
+      return axios.post(API_URL + "basketAddUser/"+id, data,  { headers: { Authorization:  authHeader() }});
     }
 
 

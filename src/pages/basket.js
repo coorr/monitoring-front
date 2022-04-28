@@ -3,65 +3,141 @@ import { useDispatch, useSelector } from 'react-redux'
 import Header from '../components/header'
 import { Container, Row, Col, Card,ListGroup, Button } from 'react-bootstrap'
 import styles from '../components/css/Product.module.scss'
-import ItemService from '../../service/item/Item.service'
 import DeleteIcon from '../images/btn_price_delete.gif'
 import Image from 'next/image';
 import Footer from '../components/Footer'
+import AuthService from '../../service/user/Auth.service'
+import ItemService from '../../service/item/Item.service'
+import { BASKET_ADD_USER_REQUEST, BASKET_DOWN_USER_REQUEST, BASKET_EMPTY_REQUEST, BASKET_GET_REQUEST, BASKET_LOCAL_ADD_REQUEST, BASKET_NULL_REQUEST, BASKET_PLUS_USER_REQUEST, BASKET_REMOVE_USER_REQUEST } from '../reducers/item'
 
 const basket = () => {
   const dispatch = useDispatch();
-  const [localItem, setLocalItem] = useState(false);
-  
+  const [userId, setUserId] = useState('')
+  const { currentItem, totalPrice } = useSelector((state) => state.item) 
 
 
   useEffect(() => {
-    const jsonItems = ItemService.getCurrentItem();
+    const userLocalData = AuthService.getCurrentUser();
+    const itemLocalData = ItemService.getCurrentItem();
 
-    if (!localItem && jsonItems !== null) {
-          setLocalItem(jsonItems);
+    if (userId.length === 0 && userLocalData !== null) {
+        setUserId(userLocalData.id);
     }
-  }, [localItem]);
+    if (itemLocalData.length > 0) {
+        dispatch({
+            type: BASKET_LOCAL_ADD_REQUEST,
+            data: itemLocalData
+        })
+    }
+    console.log("basket useEffect");
+  }, [userId]);
+
+  useEffect(()=> {
+    if(userId !== '') {
+        dispatch({
+            type: BASKET_GET_REQUEST,
+            userId: userId
+        })
+    }
+  },[userId])
+
+  console.log(currentItem);
+
+  
 
   const onClickBasketRemove = useCallback((keyIndex) => () => {
-    const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
-    if(localRecentProduct !== null) {
-        const basketRemove = localRecentProduct.filter((v) => v.keyIndex !== keyIndex)
-        localStorage.setItem("localRecentProduct", JSON.stringify(basketRemove));
-        setLocalItem(basketRemove)
-    } 
-  },[localItem])
+    if(userId !== null) {
+        dispatch({
+            type: BASKET_REMOVE_USER_REQUEST,
+            data: keyIndex,
+            userId
+        })
+    } else {
+        const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
+        if(localRecentProduct !== null) {
+            const basketRemove = localRecentProduct.filter((v) => v.keyIndex !== keyIndex)
+            localStorage.setItem("localRecentProduct", JSON.stringify(basketRemove));
+            dispatch({
+                type: BASKET_LOCAL_ADD_REQUEST,
+                data: basketRemove,
+            })
+        } 
+    }
+  })
 
   const onClickBasketDown = useCallback((keyIndex) => () => {
-    const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
-    if(localRecentProduct !== null) {
-        const basketRemove = localRecentProduct.find((v) => v.keyIndex === keyIndex)
-        if(basketRemove.itemCount === 1) {
-            return alert("최소 주문수량은 1개 입니다.")
+      if(userId !== ''){
+        const sameKeyCountOne = currentItem.find(v => v.keyIndex === keyIndex)
+        if(sameKeyCountOne.itemCount === 1) {
+            return alert("최소 주문수량은 1개입니다.")
         }
-        basketRemove.itemCount = basketRemove.itemCount - 1
-        basketRemove.itemTotal = basketRemove.itemTotal - basketRemove.price
-        localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
-        setLocalItem(localRecentProduct)
-    } 
-  },[localItem])
+        dispatch({
+            type: BASKET_DOWN_USER_REQUEST,
+            data: keyIndex,
+            userId
+        })
+      } else {
+        const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
+        if(localRecentProduct !== null) {
+            const basketRemove = localRecentProduct.find((v) => v.keyIndex === keyIndex)
+            if(basketRemove.itemCount === 1) {
+                return alert("최소 주문수량은 1개 입니다.")
+            }
+            basketRemove.itemCount = basketRemove.itemCount - 1
+            basketRemove.itemTotal = basketRemove.itemTotal - basketRemove.price
+            localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
+            dispatch({
+                type: BASKET_LOCAL_ADD_REQUEST,
+                data: basketRemove
+            })
+        } 
+      }
+  })
 
   const onClickBasketPlus = useCallback((keyIndex) => () => {
-    const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
-    if(localRecentProduct !== null) {
-        const basketRemove = localRecentProduct.find((v) => v.keyIndex === keyIndex)
-        // 주문량 조건 달기
-        basketRemove.itemCount = basketRemove.itemCount + 1
-        basketRemove.itemTotal = basketRemove.itemTotal + basketRemove.price
-        localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
-        setLocalItem(localRecentProduct)
-    } 
-  },[localItem])
+    if(userId !== ''){
+        dispatch({
+            type: BASKET_PLUS_USER_REQUEST,
+            data: keyIndex,
+            userId
+        })
+      } else {
+        const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
+        if(localRecentProduct !== null) {
+            const basketRemove = localRecentProduct.find((v) => v.keyIndex === keyIndex)
+            // 주문량 조건 달기
+            basketRemove.itemCount = basketRemove.itemCount + 1
+            basketRemove.itemTotal = basketRemove.itemTotal + basketRemove.price
+            localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
+            dispatch({
+                type: BASKET_LOCAL_ADD_REQUEST,
+                data: basketRemove
+            })
+        } 
+      }
+    
+  })
 
-  console.log(localItem);
+  const onClickBasketEmpty = useCallback(() => {
+      if(confirm("장바구니 비우시겠습니까?")) {
+        if(userId !== '') {
+            dispatch({
+                type: BASKET_EMPTY_REQUEST,
+                userId
+            })
+        } else {
+          localStorage.setItem("localRecentProduct", JSON.stringify([]));
+        }
+      } else {
+          return;
+      }
+      
+  })
+
   
   return (
       <>
-      {/* <Header /> */}
+      <Header />
         <div className="middle_space_screen" />
         <Container style={{maxWidth: '720px'}}>
             <Row>
@@ -82,16 +158,16 @@ const basket = () => {
                     <div style={{borderBottom: '1px solid black'}} />
                     
             {
-            localItem.length > 0 ? (
+            currentItem.length > 0 ? (
                 <>       
 
                     {
-                        localItem.map((v,i) => (
+                        currentItem.map((v,i) => (
                           <div key={v.keyIndex} >
                           <br />
                             <Card style={{flexDirection:'row'}} key={v.itemId}>
                                 <Card.Img 
-                                src={v.image ? `http://localhost:8080/static/${v.image}` : undefined }
+                                src={v.image ? `http://localhost:8080/static/${v.image[0].location}` : undefined }
                                 height={110}
                                 style={{width: "13%", margin: 0}}
                                 />
@@ -126,14 +202,13 @@ const basket = () => {
                     <br/>
                     <div className="form-group" style={{textAlign:"center", fontSize: "14px" }}>
                         <div style={{display: "inline-block", width:"500px"}}>
-                            <span style={{float: "left"}}>상품구매금액</span><span style={{float: 'right'}}>780,000 원</span><br/>
+                            <span style={{float: "left"}}>상품구매금액</span><span style={{float: 'right'}}>{totalPrice.toLocaleString('ko-KR')} 원</span><br/>
                             <span style={{float: "left"}}>배송비</span><span style={{float: 'right'}}>0 원</span><br/><br/>
-                            <span style={{float: "left", color: "#a8a8a8"}}>할인</span><span style={{float: 'right', color: "#a8a8a8"}}>78,000 원</span><br/><br/>
-                            <span style={{float: "left"}}>결제예정금액</span><span style={{float: 'right'}}>780,000 원</span><br/><br/><br/>
+                            <span style={{float: "left"}}>결제예정금액</span><span style={{float: 'right'}}>{totalPrice.toLocaleString('ko-KR')} 원</span><br/><br/><br/>
                         </div>
                     </div>
 
-                    <Button className={styles.basket_order_btn_null}>장바구니 비우기</Button>
+                    <Button onClick={onClickBasketEmpty} className={styles.basket_order_btn_null}>장바구니 비우기</Button>
                     <Button className={styles.basket_order_btn_order}>주문하기</Button>
 
 
@@ -151,6 +226,17 @@ const basket = () => {
             </div>
           )
       }
+       <br />
+       <br />
+       <div style={{fontSize: "11px"}}>
+        <span>장바구니 이용안내</span><br/>
+        <div style={{color: "#797979"}}>
+            <span>1. 선택하신 상품의 수량을 변경하면 자동으로 반영됩니다.</span><br/>  
+            <span>2. 장바구니와 관심상품을 이용하여 원하시는 상품만 주문하거나 관심상품으로 등록하실 수 있습니다.</span>  <br/>
+            <span>3. 파일첨부 옵션은 동일상품을 장바구니에 추가할 경우 마지막에 업로드 한 파일로 교체됩니다.</span>  <br/>
+            <span>4. [주문하기] 버튼을 누르시면 장바구니의 구분없이 선택된 모든 상품에 대한 주문/결제가 이루어집니다.</span>  <br/>   
+        </div>
+      </div>
          
             </Col>
         </Row>

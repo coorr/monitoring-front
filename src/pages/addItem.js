@@ -18,6 +18,7 @@ const AddItem = () => {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [discountPrice, setDiscountPrice] = useState('');
+  const [stockQuantity, setStockQuantity] = useState('');
   const [category, setCategory] = useState('outwear');
   const [size, setSize] = useState('');
   const [material, setMaterial] = useState('');
@@ -61,6 +62,7 @@ const AddItem = () => {
       title: title,
       price: price,
       discountPrice: discountPrice,
+      stockQuantity: stockQuantity,
       category: category,
       size: size,
       material: material,
@@ -100,7 +102,7 @@ const AddItem = () => {
      {
       admin && (
         <>
-         {/* <Header /> */}
+         <Header />
          <div className="col-md-12">
           <div className={styles.add_cloth_cotainer}>
             <label className={styles.login_font_title}>옷 등록</label>
@@ -131,6 +133,15 @@ const AddItem = () => {
                     className="form-control" 
                     value={discountPrice} 
                     onChange={e => setDiscountPrice(e.target.value)} 
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="stockQuantity" className={styles.login_font_input}>수량</label>
+                <input 
+                    type="text" 
+                    className="form-control" 
+                    value={stockQuantity} 
+                    onChange={e => setStockQuantity(e.target.value)} 
                 />
               </div>
               <div className="form-group">

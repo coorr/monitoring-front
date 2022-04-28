@@ -4,6 +4,7 @@ import Router from "next/router";
 export default function tokenCheck(state) {
     if(state === 'invalid authority') {
         AuthService.logout();
-        Router.push("login")
+        alert("세션이 만료되었습니다.")
+        Router.push("/user/login")
     }
 }

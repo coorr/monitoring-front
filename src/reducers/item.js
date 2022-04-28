@@ -4,8 +4,11 @@ const initialState = {
     item: [],
     imagePath: [],
     currentItem: [],
+    basketItem: [],
     total: null,
     count: 0,
+    totalPrice: 0,
+    itemLength:0,
     itemOne: null,
     itemAdded: false,
 
@@ -34,7 +37,36 @@ const initialState = {
     getItemOneLoading:false,
     getItemOneDone:false,
     getItemOneError:null,
+
+    basketAddUserLoading:false,
+    basketAddUserDone:false,
+    basketAddUserError:null,
+
+    basketGetLoading:false,
+    basketGetDone:false,
+    basketGetError:null,
+
+    basketGetUserLoading:false,
+    basketGetUserDone:false,
+    basketGetUserError:null,
+
+    basketRemoveUserLoading:false,
+    basketRemoveUserDone:false,
+    basketRemoveUserError:null,
+
+    basketDownUserLoading:false,
+    basketDownUserDone:false,
+    basketDownUserError:null,
+
+    basketPlusUserLoading:false,
+    basketPlusUserDone:false,
+    basketPlusUserError:null,
+
+    basketEmptyLoading:false,
+    basketEmptyDone:false,
+    basketEmptyError:null,
     
+  
 }
 
 export const GET_ITEM_FIRST_REQUEST = 'GET_ITEM_FIRST_REQUEST';
@@ -65,11 +97,39 @@ export const REMOVE_COUNT_ITEMLIST_REQUEST = 'REMOVE_COUNT_ITEMLIST_REQUEST';
 export const PLUS_COUNT_ITEMLIST_REQUEST = "PLUS_COUNT_ITEMLIST_REQUEST";
 export const BASKET_ADD_ITEMLIST_REQUEST = "BASKET_ADD_ITEMLIST_REQUEST";
 export const BASKET_NULL_REQUEST = "BASKET_NULL_REQUEST";
+export const BASKET_LOCAL_ADD_REQUEST = "BASKET_LOCAL_ADD_REQUEST";
 
 export const GET_ITEM_ONE_REQUEST = 'GET_ITEM_ONE_REQUEST';
 export const GET_ITEM_ONE_SUCCESS = 'GET_ITEM_ONE_SUCCESS';
 export const GET_ITEM_ONE_FAILURE = 'GET_ITEM_ONE_FAILURE';
 
+export const BASKET_ADD_USER_REQUEST = 'BASKET_ADD_USER_REQUEST';
+export const BASKET_ADD_USER_SUCCESS = 'BASKET_ADD_USER_SUCCESS';
+export const BASKET_ADD_USER_FAILURE = 'BASKET_ADD_USER_FAILURE';
+
+export const BASKET_GET_REQUEST = 'BASKET_GET_REQUEST';
+export const BASKET_GET_SUCCESS = 'BASKET_GET_SUCCESS';
+export const BASKET_GET_FAILURE = 'BASKET_GET_FAILURE';  
+
+export const BASKET_GET_USER_REQUEST = 'BASKET_GET_USER_REQUEST';
+export const BASKET_GET_USER_SUCCESS = 'BASKET_GET_USER_SUCCESS';
+export const BASKET_GET_USER_FAILURE = 'BASKET_GET_USER_FAILURE';
+
+export const BASKET_REMOVE_USER_REQUEST = 'BASKET_REMOVE_USER_REQUEST';
+export const BASKET_REMOVE_USER_SUCCESS = 'BASKET_REMOVE_USER_SUCCESS';
+export const BASKET_REMOVE_USER_FAILURE = 'BASKET_REMOVE_USER_FAILURE'; 
+
+export const BASKET_DOWN_USER_REQUEST = 'BASKET_DOWN_USER_REQUEST';
+export const BASKET_DOWN_USER_SUCCESS = 'BASKET_DOWN_USER_SUCCESS';
+export const BASKET_DOWN_USER_FAILURE = 'BASKET_DOWN_USER_FAILURE';
+
+export const BASKET_PLUS_USER_REQUEST = 'BASKET_PLUS_USER_REQUEST';
+export const BASKET_PLUS_USER_SUCCESS = 'BASKET_PLUS_USER_SUCCESS';
+export const BASKET_PLUS_USER_FAILURE = 'BASKET_PLUS_USER_FAILURE';
+
+export const BASKET_EMPTY_REQUEST = 'BASKET_EMPTY_REQUEST';
+export const BASKET_EMPTY_SUCCESS = 'BASKET_EMPTY_SUCCESS';
+export const BASKET_EMPTY_FAILURE = 'BASKET_EMPTY_FAILURE';
 
 const reducer = (state = initialState, action) => {
     return produce(state, (draft) => {
@@ -162,6 +222,117 @@ const reducer = (state = initialState, action) => {
                 draft.getItemOneLoading=false;
                 draft.getItemOneError=action.error;
                 break;
+
+            case BASKET_ADD_USER_REQUEST:
+                draft.basketAddUserLoading = true;
+                draft.basketAddUserDone = false;
+                draft.basketAddUserError = null;
+                break;
+            case BASKET_ADD_USER_SUCCESS:
+                draft.basketAddUserLoading=false;
+                draft.basketAddUserDone=true;
+                break;
+            case BASKET_ADD_USER_FAILURE:
+                draft.basketAddUserLoading=false;
+                draft.basketAddUserError=action.error;
+                break;
+
+            case BASKET_GET_REQUEST:
+                draft.basketGetLoading = true;
+                draft.basketGetDone = false;
+                draft.basketGetError = null;
+                break;
+            case BASKET_GET_SUCCESS:
+                draft.basketGetLoading=false;
+                draft.basketGetDone=true;
+                draft.currentItem= action.data;
+                const total = null;
+                action.data.forEach(v => {
+                    total += v.itemTotal
+                })
+                draft.totalPrice = total;
+                draft.itemLength = action.data.length;
+                break;
+            case BASKET_GET_FAILURE:
+                draft.basketGetLoading=false;
+                draft.basketGetError=action.error;
+                break;
+
+            case BASKET_GET_USER_REQUEST:
+                draft.basketGetUserLoading = true;
+                draft.basketGetUserDone = false;
+                draft.basketGetUserError = null;
+                break;
+            case BASKET_GET_USER_SUCCESS:
+                draft.basketGetUserLoading=false;
+                draft.basketGetUserDone=true;
+                draft.basketItem= action.data;
+                break;
+            case BASKET_GET_USER_FAILURE:
+                draft.basketGetUserLoading=false;
+                draft.basketGetUserError=action.error;
+                break;
+
+            case BASKET_REMOVE_USER_REQUEST:
+                draft.basketRemoveUserLoading = true;
+                draft.basketRemoveUserDone = false;
+                draft.basketRemoveUserError = null;
+                break;
+            case BASKET_REMOVE_USER_SUCCESS:
+                draft.basketRemoveUserLoading=false;
+                draft.basketRemoveUserDone=true;
+                draft.currentItem= action.data;
+                break;
+            case BASKET_REMOVE_USER_FAILURE:
+                draft.basketRemoveUserLoading=false;
+                draft.basketRemoveUserError=action.error;
+                break;
+
+            case BASKET_DOWN_USER_REQUEST:
+                draft.basketDownUserLoading = true;
+                draft.basketDownUserDone = false;
+                draft.basketDownUserError = null;
+                break;
+            case BASKET_DOWN_USER_SUCCESS:
+                draft.basketDownUserLoading=false;
+                draft.basketDownUserDone=true;
+                draft.currentItem= action.data;
+                break;
+            case BASKET_DOWN_USER_FAILURE:
+                draft.basketDownUserLoading=false;
+                draft.basketDownUserError=action.error;
+                break;
+
+            case BASKET_PLUS_USER_REQUEST:
+                draft.basketPlusUserLoading = true;
+                draft.basketPlusUserDone = false;
+                draft.basketPlusUserError = null;
+                break;
+            case BASKET_PLUS_USER_SUCCESS:
+                draft.basketPlusUserLoading=false;
+                draft.basketPlusUserDone=true;
+                draft.currentItem= action.data;
+                break;
+            case BASKET_PLUS_USER_FAILURE:
+                draft.basketPlusUserLoading=false;
+                draft.basketPlusUserError=action.error;
+                break;
+
+            case BASKET_EMPTY_REQUEST:
+                draft.basketEmptyLoading = true;
+                draft.basketEmptyDone = false;
+                draft.basketEmptyError = null;
+                break;
+            case BASKET_EMPTY_SUCCESS:
+                draft.basketEmptyLoading=false;
+                draft.basketEmptyDone=true;
+                draft.currentItem= [];
+                draft.totalPrice= 0;
+                break;
+            case BASKET_EMPTY_FAILURE:
+                draft.basketEmptyLoading=false;
+                draft.basketEmptyError=action.error;
+                break;
                 
             case UPLOAD_IMAGE_REQUEST:
                 draft.imagePath = draft.imagePath.concat(action.data);
@@ -197,6 +368,11 @@ const reducer = (state = initialState, action) => {
                 break;
             case BASKET_NULL_REQUEST:
                 draft.currentItem = [];
+                draft.total= null;
+                draft.count = 0;
+                break;
+            case BASKET_LOCAL_ADD_REQUEST:
+                draft.currentItem = action.data;
                 break;
             default:
                 return state;
