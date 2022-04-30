@@ -4,7 +4,7 @@ import ItemService from '../../service/item/Item.service'
 import AuthService from '../../service/user/Auth.service'
 import Footer from '../components/Footer'
 import Header from '../components/header'
-import { BASKET_ADD_USER_REQUEST, BASKET_GET_REQUEST } from '../reducers/item'
+import { BASKET_ADD_USER_REQUEST, BASKET_GET_REQUEST, BASKET_INSERT_NOTUSER_REQUEST } from '../reducers/item'
 
 const help = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const help = () => {
       if(userId !== '' && localItem.length > 0) {
           
           dispatch({
-              type: BASKET_ADD_USER_REQUEST,
+              type: BASKET_INSERT_NOTUSER_REQUEST,
               userId: userId,
               data: localItem
           })

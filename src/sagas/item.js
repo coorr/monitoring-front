@@ -17,6 +17,9 @@ import {
   BASKET_GET_USER_FAILURE, 
   BASKET_GET_USER_REQUEST, 
   BASKET_GET_USER_SUCCESS, 
+  BASKET_INSERT_NOTUSER_FAILURE, 
+  BASKET_INSERT_NOTUSER_REQUEST, 
+  BASKET_INSERT_NOTUSER_SUCCESS, 
   BASKET_PLUS_USER_FAILURE, 
   BASKET_PLUS_USER_REQUEST, 
   BASKET_PLUS_USER_SUCCESS, 
@@ -257,7 +260,22 @@ function* basketEmpty(action) {
   }  
 }
 
-
+function* basketInsertNotUser(action) {
+  try {
+    const result = yield BasketService.basketInsertNotUser(action.userId, action.data);
+    yield put({       
+      type: BASKET_INSERT_NOTUSER_SUCCESS, 
+      data: result.data
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: BASKET_INSERT_NOTUSER_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
+}
 
 
 function* watchAddItem() {
@@ -299,6 +317,9 @@ function* watchBasketPlusUser() {
 function* watchBasketEmpty() {
   yield takeLatest(BASKET_EMPTY_REQUEST, basketEmpty);
 }
+function* watchBasketInsertNotUser() {
+  yield takeLatest(BASKET_INSERT_NOTUSER_REQUEST, basketInsertNotUser);
+}
 
 
 export default function* userSage() {
@@ -316,5 +337,6 @@ export default function* userSage() {
       fork(watchBasketDownUser),
       fork(watchBasketPlusUser),
       fork(watchBasketEmpty),
+      fork(watchBasketInsertNotUser),
     ])
   }

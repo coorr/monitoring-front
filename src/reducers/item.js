@@ -66,7 +66,9 @@ const initialState = {
     basketEmptyDone:false,
     basketEmptyError:null,
     
-  
+    basketInsertNotUserLoading:false,
+    basketInsertNotUserDone:false,
+    basketInsertNotUserError:null,
 }
 
 export const GET_ITEM_FIRST_REQUEST = 'GET_ITEM_FIRST_REQUEST';
@@ -130,6 +132,10 @@ export const BASKET_PLUS_USER_FAILURE = 'BASKET_PLUS_USER_FAILURE';
 export const BASKET_EMPTY_REQUEST = 'BASKET_EMPTY_REQUEST';
 export const BASKET_EMPTY_SUCCESS = 'BASKET_EMPTY_SUCCESS';
 export const BASKET_EMPTY_FAILURE = 'BASKET_EMPTY_FAILURE';
+
+export const BASKET_INSERT_NOTUSER_REQUEST = 'BASKET_INSERT_NOTUSER_REQUEST';
+export const BASKET_INSERT_NOTUSER_SUCCESS = 'BASKET_INSERT_NOTUSER_SUCCESS';
+export const BASKET_INSERT_NOTUSER_FAILURE = 'BASKET_INSERT_NOTUSER_FAILURE';
 
 const reducer = (state = initialState, action) => {
     return produce(state, (draft) => {
@@ -332,6 +338,22 @@ const reducer = (state = initialState, action) => {
             case BASKET_EMPTY_FAILURE:
                 draft.basketEmptyLoading=false;
                 draft.basketEmptyError=action.error;
+                break;
+
+            case BASKET_INSERT_NOTUSER_REQUEST:
+                draft.basketInsertNotUserLoading = true;
+                draft.basketInsertNotUserDone = false;
+                draft.basketInsertNotUserError = null;
+                break;
+            case BASKET_INSERT_NOTUSER_SUCCESS:
+                draft.basketInsertNotUserLoading=false;
+                draft.basketInsertNotUserDone=true;
+                draft.currentItem= action.data;
+                draft.itemLength = action.data.length
+                break;
+            case BASKET_INSERT_NOTUSER_FAILURE:
+                draft.basketInsertNotUserLoading=false;
+                draft.basketInsertNotUserError=action.error;
                 break;
                 
             case UPLOAD_IMAGE_REQUEST:

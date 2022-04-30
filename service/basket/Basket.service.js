@@ -23,6 +23,9 @@ class BasketService {
     basketEmpty(userId) {
       return axios.post(API_URL + "basketEmpty/"+userId, { headers: { Authorization:  authHeader() }})
     }
+    basketInsertNotUser(userId, data) {
+      return axios.post(API_URL + "insertNotUserBasket/"+userId, data,  { headers: { Authorization:  authHeader() }});
+    }
 
 }
 

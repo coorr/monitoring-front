@@ -184,12 +184,12 @@ const basket = () => {
                                         <span style={{float: 'right', marginRight: '100px'}}>{v.itemTotal.toLocaleString('ko-KR')}원</span>
                                     </Card.Title>
                                     <Card.Title style={{ fontSize: '14px', paddingBottom: '3px' }}>
-                                        <span>[옵션:{v.size}]</span>
+                                        <span>[옵션: {v.size}]</span>
                                     </Card.Title>
                                     <button style={{backgroundColor: "white", border:"1px solid black", fontSize: '12px'}}>옵션변경</button>
                                     <div>
-                                        <button onClick={onClickBasketDown(v.keyIndex)} className={styles.item_add_remove_btn}>-</button>
-                                        <span>{v.itemCount}</span>
+                                        <button onClick={onClickBasketDown(v.keyIndex)} className={styles.item_add_remove_btn}>-</button>&nbsp;
+                                        <span style={{fontSize : "12px"}}>{v.itemCount}</span>&nbsp;
                                         <button onClick={onClickBasketPlus(v.keyIndex)} className={styles.item_add_remove_btn}>+</button>
                                     </div>
                                 </Card.Body>

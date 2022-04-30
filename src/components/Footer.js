@@ -7,12 +7,19 @@ import ReactTooltip from 'react-tooltip';
 
 
 const Footer = () =>  {
-
+    const [isActive, setIsActive] = useState(false)
     const [isMounted,setIsMounted] = useState(false); 
 
     useEffect(() => {
         setIsMounted(true);
     },[]);
+
+    const handleFocus = useCallback(() => {
+        setIsActive(true)
+        this.setState({
+           isActive: true
+        }, () => ReactTooltip.rebuild())
+      },)
   return (
     <>
       <div style={{height: '500px'}} />
@@ -22,10 +29,10 @@ const Footer = () =>  {
                 <Col>
                     <br />
                     &nbsp;&nbsp;&nbsp;
-                    <a target="_blank" data-for="enrich" data-tip>
-                         <button  style={{ backgroundColor: "white", border: 0}}>
+                    <a target="_blank" data-for="enrich" data-tip >
+                         {/* <button  style={{ backgroundColor: "white", border: 0}}> */}
                              <AiOutlineGoogle size={40} />
-                        </button>
+                        {/* </button> */}
                     </a>
                     {
                         isMounted && 
@@ -33,6 +40,7 @@ const Footer = () =>  {
                             style={{backgroundColor: 'black', color: 'white'}}
                             effect='solid'
                             id="enrich"
+                            // delayHide={1500}
                             getContent={() => "wlsdiqkdrk@gmail.com"}
                     />
                     }
