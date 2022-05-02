@@ -25,7 +25,22 @@ class BasketService {
     }
     basketInsertNotUser(userId, data) {
       return axios.post(API_URL + "insertNotUserBasket/"+userId, data,  { headers: { Authorization:  authHeader() }});
+    } 
+    duplicateSizeQuantityCheck(data) {
+      return axios.post(API_URL + "duplicateSizeQuantityCheck/",  data,  { headers: { Authorization:  authHeader() }});
     }
+  //   duplicateSizeQuantityCheck(data) {
+  //     return fetch(API_URL + "duplicateSizeQuantityCheck/", { 
+  //       method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Authorization": authHeader()
+  //     },
+  //     body: JSON.stringify({
+  //         data: data
+  //     })
+  //   })
+  // }
 
 }
 

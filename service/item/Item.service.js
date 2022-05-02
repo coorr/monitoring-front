@@ -29,6 +29,9 @@ class ItemService {
     getCurrentItem() {
       return JSON.parse(localStorage.getItem('localRecentProduct'));
     }
+    getItemLength() {
+      return JSON.parse(localStorage.getItem('itemLength'));
+    }
 }
 
 export default new ItemService();

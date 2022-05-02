@@ -3,8 +3,6 @@ import Header from '../components/header'
 import AuthService from '../../service/user/Auth.service';
 import Router from 'next/router'
 import styles from '../components/css/User.module.css'
-import ItemService from '../../service/item/Item.service'
-import useInput from '../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_ITEM_REQUEST, REMOVE_IMAGE_REQUEST, UPLOAD_IMAGE_REQUEST } from '../reducers/item';
 import Button from "react-bootstrap/Button";
@@ -18,7 +16,9 @@ const AddItem = () => {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [discountPrice, setDiscountPrice] = useState('');
-  const [stockQuantity, setStockQuantity] = useState('');
+  const [quantityS, setQuantityS] = useState('');
+  const [quantityM, setQuantityM] = useState('');
+  const [quantityL, setQuantityL] = useState('');
   const [category, setCategory] = useState('outwear');
   const [size, setSize] = useState('');
   const [material, setMaterial] = useState('');
@@ -62,7 +62,9 @@ const AddItem = () => {
       title: title,
       price: price,
       discountPrice: discountPrice,
-      stockQuantity: stockQuantity,
+      quantityS: quantityS,
+      quantityM: quantityM,
+      quantityL: quantityL,
       category: category,
       size: size,
       material: material,
@@ -74,7 +76,7 @@ const AddItem = () => {
       type: ADD_ITEM_REQUEST,
       data: formData
     })
-  },[imagePath, title,price,discountPrice,category,size,material,info]);
+  },[imagePath,quantityS,quantityM,quantityL, title,price,discountPrice,category,size,material,info]);
 
   const onClickImageUpload = useCallback(() => {
     fileRef.current.click();
@@ -136,13 +138,30 @@ const AddItem = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="stockQuantity" className={styles.login_font_input}>수량</label>
-                <input 
-                    type="text" 
-                    className="form-control" 
-                    value={stockQuantity} 
-                    onChange={e => setStockQuantity(e.target.value)} 
-                />
+                <label htmlFor="quantityS" className={styles.login_font_input}>수량</label>
+                <div style={{display: 'flex'}}>
+                  <span style={{color : "red", fontWeight: 'bold'}}>S </span>&nbsp;
+                  <input 
+                      type="text" 
+                      className={styles.quentity_input}
+                      value={quantityS} 
+                      onChange={e => setQuantityS(e.target.value)} 
+                  />&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span style={{color : "red", fontWeight: 'bold'}}>M </span>&nbsp;
+                  <input 
+                      type="text" 
+                      className={styles.quentity_input}
+                      value={quantityM} 
+                      onChange={e => setQuantityM(e.target.value)} 
+                  />&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span style={{color : "red", fontWeight: 'bold'}}>L </span>&nbsp;
+                  <input 
+                      type="text" 
+                      className={styles.quentity_input}
+                      value={quantityL} 
+                      onChange={e => setQuantityL(e.target.value)} 
+                  />
+                </div>
               </div>
               <div className="form-group">
                 <label htmlFor="category" className={styles.login_font_input}>카테고리</label>

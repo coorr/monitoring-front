@@ -18,6 +18,9 @@ const ItemRevised = () => {
     const [title, setTitle] = useState(router.query.title);
     const [price, setPrice] = useState(router.query.price);
     const [discountPrice, setDiscountPrice] = useState(router.query.discount_price);
+    const [quantityS, setQuantityS] = useState(router.query.quantityS);
+    const [quantityM, setQuantityM] = useState(router.query.quantityM);
+    const [quantityL, setQuantityL] = useState(router.query.quantityL);
     const [category, setCategory] = useState(router.query.category);
     const [size, setSize] = useState(router.query.size);
     const [material, setMaterial] = useState(router.query.material);
@@ -27,7 +30,6 @@ const ItemRevised = () => {
     
     const [imagePath, setImagePath] = useState(router.query.image ? JSON.parse(router.query.image) : [])
     const [newImagePath, setNewImagePath] = useState([])
-    // const { imagePath, addItemDone, getItemError } = useSelector((state) => state.item);
 
     useEffect(() => {
         const adminData = AuthService.getCurrentUser();
@@ -50,12 +52,14 @@ const ItemRevised = () => {
   // }, [addItemDone])
 
   const textResize = useCallback(() => {
+    
     const obj = textRef.current;
     obj.style.height='auto';
     obj.style.height= obj.scrollHeight + 'px';
   },[]);
   
   const handleComplete = useCallback(() => {
+    console.log("quantityS",quantityS);
     const formData = new FormData();
     newImagePath.forEach((file) => {
       formData.append('multipartFiles', file);
@@ -66,6 +70,9 @@ const ItemRevised = () => {
       title: title,
       price: price,
       discountPrice: discountPrice,
+      quantityS: quantityS,
+      quantityM: quantityM,
+      quantityL: quantityL,
       category: category,
       size: size,
       material: material,
@@ -79,7 +86,7 @@ const ItemRevised = () => {
       type: REVISED_ITEM_REQUEST,
       data: formData,
     })
-  },[newImagePath, imagePath,itemId, title,price,discountPrice,category,size,material,info]);
+  },[newImagePath,quantityS,quantityM,quantityL, imagePath,itemId, title,price,discountPrice,category,size,material,info]);
 
   const onClickImageUpload = useCallback(() => {
     fileRef.current.click();
@@ -107,7 +114,7 @@ const ItemRevised = () => {
         {
         admin && (
         <>
-            {/* <Header /> */}
+            <Header />
             <div className="col-md-12">
             <div className={styles.add_cloth_cotainer}>
             <label className={styles.login_font_title}>옷 등록</label>
@@ -140,6 +147,32 @@ const ItemRevised = () => {
                     onChange={e => setDiscountPrice(e.target.value)} 
                 />
                 </div>
+                <div className="form-group">
+                <label htmlFor="quantityS" className={styles.login_font_input}>수량</label>
+                <div style={{display: 'flex'}}>
+                  <span style={{color : "red", fontWeight: 'bold'}}>S </span>&nbsp;
+                  <input 
+                      type="text" 
+                      className={styles.quentity_input}
+                      value={quantityS} 
+                      onChange={e => setQuantityS(e.target.value)} 
+                  />&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span style={{color : "red", fontWeight: 'bold'}}>M </span>&nbsp;
+                  <input 
+                      type="text" 
+                      className={styles.quentity_input}
+                      value={quantityM} 
+                      onChange={e => setQuantityM(e.target.value)} 
+                  />&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span style={{color : "red", fontWeight: 'bold'}}>L </span>&nbsp;
+                  <input 
+                      type="text" 
+                      className={styles.quentity_input}
+                      value={quantityL} 
+                      onChange={e => setQuantityL(e.target.value)} 
+                  />
+                </div>
+              </div>
                 <div className="form-group">
                 <label htmlFor="category" className={styles.login_font_input}>카테고리</label>
                 <select onChange={e => setCategory(e.target.value)} defaultValue={category} className="form-control" style={{border: "1px solid #ddd !important"}} >

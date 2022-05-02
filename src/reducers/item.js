@@ -69,6 +69,10 @@ const initialState = {
     basketInsertNotUserLoading:false,
     basketInsertNotUserDone:false,
     basketInsertNotUserError:null,
+
+    duplicateSizeQuantityCheckLoading:false,
+    duplicateSizeQuantityCheckDone:false,
+    duplicateSizeQuantityCheckError:null,
 }
 
 export const GET_ITEM_FIRST_REQUEST = 'GET_ITEM_FIRST_REQUEST';
@@ -136,6 +140,10 @@ export const BASKET_EMPTY_FAILURE = 'BASKET_EMPTY_FAILURE';
 export const BASKET_INSERT_NOTUSER_REQUEST = 'BASKET_INSERT_NOTUSER_REQUEST';
 export const BASKET_INSERT_NOTUSER_SUCCESS = 'BASKET_INSERT_NOTUSER_SUCCESS';
 export const BASKET_INSERT_NOTUSER_FAILURE = 'BASKET_INSERT_NOTUSER_FAILURE';
+
+export const DUPLICATE_SIZE_QUANTITY_CHECK_REQUEST = 'DUPLICATE_SIZE_QUANTITY_CHECK_REQUEST';
+export const DUPLICATE_SIZE_QUANTITY_CHECK_SUCCESS = 'DUPLICATE_SIZE_QUANTITY_CHECK_SUCCESS';
+export const DUPLICATE_SIZE_QUANTITY_CHECK_FAILURE = 'DUPLICATE_SIZE_QUANTITY_CHECK_FAILURE';
 
 const reducer = (state = initialState, action) => {
     return produce(state, (draft) => {
@@ -350,10 +358,25 @@ const reducer = (state = initialState, action) => {
                 draft.basketInsertNotUserDone=true;
                 draft.currentItem= action.data;
                 draft.itemLength = action.data.length
+                localStorage.setItem("itemLength", JSON.stringify(action.data.length));
                 break;
             case BASKET_INSERT_NOTUSER_FAILURE:
                 draft.basketInsertNotUserLoading=false;
                 draft.basketInsertNotUserError=action.error;
+                break;
+
+            case DUPLICATE_SIZE_QUANTITY_CHECK_REQUEST:
+                draft.duplicateSizeQuantityCheckLoading = true;
+                draft.duplicateSizeQuantityCheckDone = false;
+                draft.duplicateSizeQuantityCheckError = null;
+                break;
+            case DUPLICATE_SIZE_QUANTITY_CHECK_SUCCESS:
+                draft.duplicateSizeQuantityCheckLoading=false;
+                draft.duplicateSizeQuantityCheckDone=true;
+                break;
+            case DUPLICATE_SIZE_QUANTITY_CHECK_FAILURE:
+                draft.duplicateSizeQuantityCheckLoading=false;
+                draft.duplicateSizeQuantityCheckError=action.error;
                 break;
                 
             case UPLOAD_IMAGE_REQUEST:

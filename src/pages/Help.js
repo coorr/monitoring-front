@@ -15,10 +15,10 @@ const help = () => {
     const userLocalData = AuthService.getCurrentUser();
     const itemLocalData = ItemService.getCurrentItem();
 
-    if (userId.length === 0 && userLocalData !== null) {
+    if (userId === '' && userLocalData !== null) {
         setUserId(userLocalData.id);
     }
-    if (!localItem && itemLocalData !== null) {
+    if (!localItem&& itemLocalData !== null) {
         setLocalItem(itemLocalData)
     }
   }, [userId,localItem]);

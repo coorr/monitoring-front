@@ -21,7 +21,7 @@ function* logIn(action) {
   }  
 }
 
-function* logOut() {
+function* logOut(action) {
   try {
     yield put({       
       type: LOG_OUT_SUCCESS, 

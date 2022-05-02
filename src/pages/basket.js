@@ -8,9 +8,12 @@ import Image from 'next/image';
 import Footer from '../components/Footer'
 import AuthService from '../../service/user/Auth.service'
 import ItemService from '../../service/item/Item.service'
-import { BASKET_ADD_USER_REQUEST, BASKET_DOWN_USER_REQUEST, BASKET_EMPTY_REQUEST, BASKET_GET_REQUEST, BASKET_LOCAL_ADD_REQUEST, BASKET_NULL_REQUEST, BASKET_PLUS_USER_REQUEST, BASKET_REMOVE_USER_REQUEST } from '../reducers/item'
+import { BASKET_DOWN_USER_REQUEST, BASKET_EMPTY_REQUEST, BASKET_GET_REQUEST, 
+    BASKET_LOCAL_ADD_REQUEST,  BASKET_PLUS_USER_REQUEST, BASKET_REMOVE_USER_REQUEST } from '../reducers/item'
+import { useRouter } from 'next/router'
 
 const basket = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [userId, setUserId] = useState('')
   const { currentItem, totalPrice } = useSelector((state) => state.item) 
@@ -41,12 +44,10 @@ const basket = () => {
     }
   },[userId])
 
-  console.log(currentItem);
-
   
 
   const onClickBasketRemove = useCallback((keyIndex) => () => {
-    if(userId !== null) {
+    if(userId !== '') {
         dispatch({
             type: BASKET_REMOVE_USER_REQUEST,
             data: keyIndex,
@@ -61,6 +62,7 @@ const basket = () => {
                 type: BASKET_LOCAL_ADD_REQUEST,
                 data: basketRemove,
             })
+            window.location.reload();
         } 
     }
   })
@@ -79,16 +81,16 @@ const basket = () => {
       } else {
         const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
         if(localRecentProduct !== null) {
-            const basketRemove = localRecentProduct.find((v) => v.keyIndex === keyIndex)
-            if(basketRemove.itemCount === 1) {
+            const basketDown = localRecentProduct.find((v) => v.keyIndex === keyIndex)
+            if(basketDown.itemCount === 1) {
                 return alert("최소 주문수량은 1개 입니다.")
             }
-            basketRemove.itemCount = basketRemove.itemCount - 1
-            basketRemove.itemTotal = basketRemove.itemTotal - basketRemove.price
+            basketDown.itemCount = basketDown.itemCount - 1
+            basketDown.itemTotal = basketDown.itemTotal - basketDown.price
             localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
             dispatch({
                 type: BASKET_LOCAL_ADD_REQUEST,
-                data: basketRemove
+                data: localRecentProduct
             })
         } 
       }
@@ -104,14 +106,15 @@ const basket = () => {
       } else {
         const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
         if(localRecentProduct !== null) {
-            const basketRemove = localRecentProduct.find((v) => v.keyIndex === keyIndex)
+            const basketPlus = localRecentProduct.find((v) => v.keyIndex === keyIndex)
+            console.log(basketPlus);
             // 주문량 조건 달기
-            basketRemove.itemCount = basketRemove.itemCount + 1
-            basketRemove.itemTotal = basketRemove.itemTotal + basketRemove.price
+            basketPlus.itemCount = basketPlus.itemCount + 1
+            basketPlus.itemTotal = basketPlus.itemTotal + basketPlus.price
             localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
             dispatch({
                 type: BASKET_LOCAL_ADD_REQUEST,
-                data: basketRemove
+                data: localRecentProduct
             })
         } 
       }
@@ -126,12 +129,20 @@ const basket = () => {
                 userId
             })
         } else {
+            dispatch({
+                type: BASKET_LOCAL_ADD_REQUEST,
+                data: []
+            })
           localStorage.setItem("localRecentProduct", JSON.stringify([]));
+          window.location.reload();
         }
       } else {
           return;
       }
-      
+  })
+
+  const onClickOrderPage = useCallback(() => {
+      router.push("/order/order")
   })
 
   
@@ -209,7 +220,7 @@ const basket = () => {
                     </div>
 
                     <Button onClick={onClickBasketEmpty} className={styles.basket_order_btn_null}>장바구니 비우기</Button>
-                    <Button className={styles.basket_order_btn_order}>주문하기</Button>
+                    <Button onClick={onClickOrderPage}className={styles.basket_order_btn_order}>주문하기</Button>
 
 
                        

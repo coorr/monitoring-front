@@ -20,6 +20,7 @@ const Header = () => {
   const [userId, setUserId ]  = useState('');
   const [currentUser, setCurrentUser ]  = useState(false);
   const [basket, setBasket ]  = useState(false);
+  const [ userItemLength, setUserItemLength] = useState('')
   const {  currentItem, itemLength  } = useSelector((state) => state.item)
 
   useEffect(() => {
@@ -39,11 +40,19 @@ const Header = () => {
   useEffect(() => {
     const basketLocal = ItemService.getCurrentItem();
     console.log("22");
-    if(userId === '' && !basket && basketLocal.length > 0) {
+    if(userId === '' && !basket && basketLocal !== null) {
       setBasket(basketLocal)
     } 
   },[userId, basket])
-  console.log(basket);
+
+  useEffect(() => {
+    const itemLength = ItemService.getItemLength();
+    console.log("33");
+
+    if(userItemLength === '' && userId !== ''  && itemLength !== null) {
+      setUserItemLength(itemLength)
+    }
+  },[userId,userItemLength])
     
   const showDropdown = useCallback(() => {
     setShow(true)
@@ -56,11 +65,12 @@ const Header = () => {
   const logOut = useCallback(() => {
     AuthService.logout();
     dispatch({
-      type: LOG_OUT_REQUEST
+      type: LOG_OUT_REQUEST,
     })
     setCurrentUser(false)
-    router.push("/user/login")
-  }, []);
+    // router.push("/")
+    window.location.reload();
+  });
 
   const login = useCallback(() => {
     console.log("login 시도 중");
@@ -70,7 +80,7 @@ const Header = () => {
   const onClickTest = useCallback(() => {
     router.push("/help")
   })
-
+  console.log(userId);
   return (
     <>
     <Navbar  expand="lg"  >
@@ -99,7 +109,7 @@ const Header = () => {
               </NavDropdown>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>info</Nav.Link>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>help</Nav.Link>
-              <Nav.Link onClick={() => router.push("/basket")}>card{"("}{ basket ? basket.length : itemLength}{")"}</Nav.Link>
+              <Nav.Link onClick={() => router.push("/basket")}>card{"("}{ userId === '' ? basket.length : userItemLength}{")"}</Nav.Link>
               {/* <Link href="/basket">card</Link> */}
               {
                 currentUser ? (

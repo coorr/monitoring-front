@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { all, fork, takeLatest, delay, put,call } from 'redux-saga/effects';
+import { all, fork, takeLatest, delay, put,call,cancelled  } from 'redux-saga/effects';
 import { 
   ADD_ITEM_FAILURE, ADD_ITEM_REQUEST, ADD_ITEM_SUCCESS, 
   BASKET_ADD_USER_FAILURE, 
@@ -26,6 +26,9 @@ import {
   BASKET_REMOVE_USER_FAILURE, 
   BASKET_REMOVE_USER_REQUEST, 
   BASKET_REMOVE_USER_SUCCESS, 
+  DUPLICATE_SIZE_QUANTITY_CHECK_FAILURE, 
+  DUPLICATE_SIZE_QUANTITY_CHECK_REQUEST, 
+  DUPLICATE_SIZE_QUANTITY_CHECK_SUCCESS, 
   GET_ITEM_FAILURE, GET_ITEM_FIRST_FAILURE, GET_ITEM_FIRST_REQUEST, 
   GET_ITEM_FIRST_SUCCESS, GET_ITEM_ONE_FAILURE, GET_ITEM_ONE_REQUEST, 
   GET_ITEM_ONE_SUCCESS, GET_ITEM_REQUEST, GET_ITEM_SUCCESS, REMOVE_ITEM_FAILURE, REMOVE_ITEM_REQUEST, REMOVE_ITEM_SUCCESS, REVISED_ITEM_FAILURE, 
@@ -36,7 +39,13 @@ import ItemService from '../../service/item/Item.service'
 import TokenCheck from '../store/tokenCheck';
 import BasketService from '../../service/basket/Basket.service';
 
-
+const safe = (handler = null, saga, ...args) => function* (action) {
+  try {
+    yield call(saga, ...args, action)
+  } catch (err) {
+    yield call(handler, ...args, err)
+  }
+}
 
 function* addRevisedItem(action) {
   try {
@@ -145,17 +154,23 @@ function* removeItem(action) {
 function* basketAddUser(action) {
   try {
     const result = yield BasketService.basketAddUser(action.userId, action.data);
+    const history = action.history;
     yield put({       
       type: BASKET_ADD_USER_SUCCESS, 
       data: result.data
     }) 
+    history.push("/basket")
   } catch (err) {
     TokenCheck(err.response.data)
     yield put({
       type: BASKET_ADD_USER_FAILURE,
-      error : err.response.data
+      error : err.response.data.message,
     })
-    alert("실패하였습니다.")
+    if(err.response.data.message) {
+      alert(err.response.data.message)
+    }
+
+    
   }  
 }
 
@@ -221,9 +236,11 @@ function* basketDownUser(action) {
     TokenCheck(err.response.data)
     yield put({
       type: BASKET_DOWN_USER_FAILURE,
-      error : err.response.data
+      error : err.response.data.message
     })
-    alert("실패하였습니다.")
+    if(err.response.data.message) {
+      alert(err.response.data.message)
+    }
   }  
 }
 
@@ -238,9 +255,11 @@ function* basketPlusUser(action) {
     TokenCheck(err.response.data)
     yield put({
       type: BASKET_PLUS_USER_FAILURE,
-      error : err.response.data
+      error : err.response.data.message
     })
-    alert("실패하였습니다.")
+    if(err.response.data.message) {
+      alert(err.response.data.message)
+    }
   }  
 }
 
@@ -277,6 +296,63 @@ function* basketInsertNotUser(action) {
   }  
 }
 
+function uploadImagesAPI(data) {
+  return axios.post('api/basket/duplicateSizeQuantityCheck', data);
+}
+
+function* duplicateSizeQuantityCheck(action) {
+  const currentItem = action.data;
+  try {
+    yield BasketService.duplicateSizeQuantityCheck(action.data);
+    // yield call (uploadImagesAPI, action.data);
+    const history = action.history
+    yield put({       
+      type: DUPLICATE_SIZE_QUANTITY_CHECK_SUCCESS, 
+    }) 
+    const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
+            if(localRecentProduct !== null) {
+                const localKeyAry = localRecentProduct.map(v => v.keyIndex);
+                const sameItemDataAry = currentItem.filter(v => localKeyAry.includes(v.keyIndex))
+                const diffItemData = currentItem.filter(v => !localKeyAry.includes(v.keyIndex))
+    
+                if(sameItemDataAry.length > 0 ) {
+                    if(confirm("장비구니에 동일한 상품이 있습니다. \n장바구니에 추가하시겠습니까?")) {
+                        localRecentProduct.forEach((v,i) => {
+                            const ItemSameLocalData = sameItemDataAry.find(s => s.keyIndex === v.keyIndex)
+                            if(ItemSameLocalData !== undefined) {
+                                v.itemCount = v.itemCount + ItemSameLocalData.itemCount;
+                                v.itemTotal = v.itemTotal + ItemSameLocalData.itemTotal;
+                                v.discount = v.discount + ItemSameLocalData.discount;
+                            }                 
+                        })
+                    } else {
+                        return;
+                    }
+                }
+    
+                diffItemData.forEach((v,i) => {
+                    localRecentProduct.unshift(v)
+                })
+                localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
+            } else {
+                localStorage.setItem("localRecentProduct", JSON.stringify(currentItem));
+            }   
+    history.push("/basket")
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: DUPLICATE_SIZE_QUANTITY_CHECK_FAILURE,
+    })
+    if(err.response.data.message) {
+      alert(err.response.data.message)
+    }
+  }  
+}
+
+const onError = (err) => {
+  console.log(err)
+}
+
 
 function* watchAddItem() {
   yield takeLatest(ADD_ITEM_REQUEST, addItem);
@@ -297,7 +373,7 @@ function* watchRemoveItem() {
   yield takeLatest(REMOVE_ITEM_REQUEST, removeItem);
 }
 function* watchBasketAddUser() {
-  yield takeLatest(BASKET_ADD_USER_REQUEST, basketAddUser);
+  yield takeLatest(BASKET_ADD_USER_REQUEST, safe(onError,basketAddUser));
 }
 function* watchBasketGet() {
   yield takeLatest(BASKET_GET_REQUEST, basketGet);
@@ -320,6 +396,9 @@ function* watchBasketEmpty() {
 function* watchBasketInsertNotUser() {
   yield takeLatest(BASKET_INSERT_NOTUSER_REQUEST, basketInsertNotUser);
 }
+function* watchDuplicateSizeQuantityCheck() {
+  yield takeLatest(DUPLICATE_SIZE_QUANTITY_CHECK_REQUEST, duplicateSizeQuantityCheck);
+}
 
 
 export default function* userSage() {
@@ -338,5 +417,6 @@ export default function* userSage() {
       fork(watchBasketPlusUser),
       fork(watchBasketEmpty),
       fork(watchBasketInsertNotUser),
+      fork(watchDuplicateSizeQuantityCheck),
     ])
   }
