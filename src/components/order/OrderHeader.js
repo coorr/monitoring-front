@@ -10,14 +10,14 @@ const  orderHeader = () => {
   const router = useRouter();
   return (
     <>
-    <Navbar  expand="lg"  id={styles.orderHeaderMargin} >
-        <Container className={styles.orderHeaderLayout} >
+    {/* <Container className={styles.orderHeaderLayout} > */}
+    <Navbar  expand="lg"  >
+    <Container className={styles.orderHeaderLayout} >
+        
           <Navbar.Brand href="/basket" >
               <IoIosArrowBack size={24} />
           </Navbar.Brand>
-          <Container style={{textAlign: 'center'}}>
             <Navbar.Brand href="/" className={styles.headerTitle}>COOR</Navbar.Brand>
-          </Container>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" >
             <Nav className="ms-auto" >
@@ -27,8 +27,10 @@ const  orderHeader = () => {
               
             </Nav>
           </Navbar.Collapse>
-          </Container>
+      </Container>
+          
       </Navbar>
+      {/* </Container> */}
     </>
   )
 }

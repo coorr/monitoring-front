@@ -33,7 +33,7 @@ const Login = () => {
     }
     
 
-    // form.validateAll();
+    form.validateAll();
 
     if (checkBtn.context._errors.length === 0) {
       AuthService.login(username, password)

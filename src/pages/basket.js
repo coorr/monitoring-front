@@ -11,6 +11,7 @@ import ItemService from '../../service/item/Item.service'
 import { BASKET_DOWN_USER_REQUEST, BASKET_EMPTY_REQUEST, BASKET_GET_REQUEST, 
     BASKET_LOCAL_ADD_REQUEST,  BASKET_PLUS_USER_REQUEST, BASKET_REMOVE_USER_REQUEST } from '../reducers/item'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const basket = () => {
   const router = useRouter();
@@ -47,24 +48,26 @@ const basket = () => {
   
 
   const onClickBasketRemove = useCallback((keyIndex) => () => {
-    if(userId !== '') {
-        dispatch({
-            type: BASKET_REMOVE_USER_REQUEST,
-            data: keyIndex,
-            userId
-        })
-    } else {
-        const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
-        if(localRecentProduct !== null) {
-            const basketRemove = localRecentProduct.filter((v) => v.keyIndex !== keyIndex)
-            localStorage.setItem("localRecentProduct", JSON.stringify(basketRemove));
+    if(confirm("선택하신 상품을 삭제하시겠습니까?")) {
+        if(userId !== '') {
             dispatch({
-                type: BASKET_LOCAL_ADD_REQUEST,
-                data: basketRemove,
+                type: BASKET_REMOVE_USER_REQUEST,
+                data: keyIndex,
+                userId
             })
-            window.location.reload();
-        } 
-    }
+        } else {
+            const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
+            if(localRecentProduct !== null) {
+                const basketRemove = localRecentProduct.filter((v) => v.keyIndex !== keyIndex)
+                localStorage.setItem("localRecentProduct", JSON.stringify(basketRemove));
+                dispatch({
+                    type: BASKET_LOCAL_ADD_REQUEST,
+                    data: basketRemove,
+                })
+                window.location.reload();
+            } 
+        }
+    } else { return; }
   })
 
   const onClickBasketDown = useCallback((keyIndex) => () => {
@@ -184,7 +187,7 @@ const basket = () => {
                                 />
                                 <Card.Body id={styles.basket_body_text}>
                                     <Card.Title style={{ fontSize: '14px', paddingBottom: '1px' }}>
-                                        {v.title}
+                                       <Link href={`/item/${v.itemId}`}><a >{v.title}</a></Link>
                                         <button 
                                             className={styles.item_add_remove_btn}  
                                             style={{float: 'right', color: '#9A9A9A'}}
@@ -212,7 +215,7 @@ const basket = () => {
                     <div style={{borderBottom: '1px solid black'}} />
                     <br/>
                     <div className="form-group" style={{textAlign:"center", fontSize: "14px" }}>
-                        <div style={{display: "inline-block", width:"500px"}}>
+                        <div style={{display: "inline-block", width:"70%"}}>
                             <span style={{float: "left"}}>상품구매금액</span><span style={{float: 'right'}}>{totalPrice.toLocaleString('ko-KR')} 원</span><br/>
                             <span style={{float: "left"}}>배송비</span><span style={{float: 'right'}}>0 원</span><br/><br/>
                             <span style={{float: "left"}}>결제예정금액</span><span style={{float: 'right'}}>{totalPrice.toLocaleString('ko-KR')} 원</span><br/><br/><br/>

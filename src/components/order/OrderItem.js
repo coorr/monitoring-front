@@ -1,11 +1,38 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Container, Row, Col, Card,ListGroup, Button } from 'react-bootstrap'
 import styles from '../../components/css/Product.module.scss'
 import DeleteIcon from '../../images/btn_price_delete.gif'
 import Image from 'next/image';
+import { BASKET_REMOVE_USER_REQUEST } from '../../reducers/item';
+import AuthService from '../../../service/user/Auth.service';
+import { useDispatch } from 'react-redux';
 
 const OrderItem = ({item}) => {
+    const dispatch = useDispatch();
+    const [userId, setUserId] = useState('')
+
+    useEffect(() => {
+        const userLocalData = AuthService.getCurrentUser();
+
+        if (userId.length === 0 && userLocalData !== null) {
+            setUserId(userLocalData.id);
+        }
+    }, [userId]);
+
+    const onClickBasketRemove = useCallback((keyIndex) => () => {
+        if(confirm("선택하신 상품을 삭제하시겠습니까?")) {
+            if(userId !== '') {
+                dispatch({
+                    type: BASKET_REMOVE_USER_REQUEST,
+                    data: keyIndex,
+                    userId
+                })
+            }
+        } else { return; }
+    },[userId])
+
     console.log(item);
+
   return (
     <div>
     <br />
@@ -18,14 +45,9 @@ const OrderItem = ({item}) => {
         <Card.Body id={styles.basket_body_text}>
             <Card.Title style={{ fontSize: '15px'}}>
                 {item.title}
-                <button 
-                    className={styles.item_add_remove_btn}  
-                    style={{float: 'right', color: '#9A9A9A'}}
-                    // onClick={onClickBasketRemove(item.keyIndex)}
-                >
+                <button onClick={onClickBasketRemove(item.keyIndex)} className={styles.item_add_remove_btn}  style={{float: 'right', color: '#9A9A9A'}}>
                     <Image src={DeleteIcon} />
                 </button>
-                
             </Card.Title>
             <Card.Title style={{ fontSize: '14px', paddingBottom: '3px', color: "rgb(121, 121, 121)", lineHeight: 1.5}}>
                 <span>[옵션: {item.size}]</span><br />

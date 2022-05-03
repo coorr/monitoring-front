@@ -79,6 +79,9 @@ a {
   color: #9A9A9A !important;
   font-size: 14px !important;
 }
+input[type="text"]:disabled {
+  background: white;
+}
 
 /* input[type="checkbox"]{
   display: none;

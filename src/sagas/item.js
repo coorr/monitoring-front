@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { all, fork, takeLatest, delay, put,call,cancelled  } from 'redux-saga/effects';
 import { 
   ADD_ITEM_FAILURE, ADD_ITEM_REQUEST, ADD_ITEM_SUCCESS, 
@@ -32,20 +31,13 @@ import {
   GET_ITEM_FAILURE, GET_ITEM_FIRST_FAILURE, GET_ITEM_FIRST_REQUEST, 
   GET_ITEM_FIRST_SUCCESS, GET_ITEM_ONE_FAILURE, GET_ITEM_ONE_REQUEST, 
   GET_ITEM_ONE_SUCCESS, GET_ITEM_REQUEST, GET_ITEM_SUCCESS, REMOVE_ITEM_FAILURE, REMOVE_ITEM_REQUEST, REMOVE_ITEM_SUCCESS, REVISED_ITEM_FAILURE, 
-  REVISED_ITEM_REQUEST, REVISED_ITEM_SUCCESS, UPLOAD_IMAGE_FAILURE, UPLOAD_IMAGE_REQUEST, 
+  REVISED_ITEM_REQUEST, REVISED_ITEM_SUCCESS, SOLD_OUT_BASKET_FAILURE, SOLD_OUT_BASKET_REQUEST, SOLD_OUT_BASKET_SUCCESS, UPLOAD_IMAGE_FAILURE, UPLOAD_IMAGE_REQUEST, 
   UPLOAD_IMAGE_SUCCESS
 } from '../reducers/item';
 import ItemService from '../../service/item/Item.service'
 import TokenCheck from '../store/tokenCheck';
 import BasketService from '../../service/basket/Basket.service';
-
-const safe = (handler = null, saga, ...args) => function* (action) {
-  try {
-    yield call(saga, ...args, action)
-  } catch (err) {
-    yield call(handler, ...args, err)
-  }
-}
+import OrderService from '../../service/order/Order.service';
 
 function* addRevisedItem(action) {
   try {
@@ -296,10 +288,6 @@ function* basketInsertNotUser(action) {
   }  
 }
 
-function uploadImagesAPI(data) {
-  return axios.post('api/basket/duplicateSizeQuantityCheck', data);
-}
-
 function* duplicateSizeQuantityCheck(action) {
   const currentItem = action.data;
   try {
@@ -349,9 +337,23 @@ function* duplicateSizeQuantityCheck(action) {
   }  
 }
 
-const onError = (err) => {
-  console.log(err)
+function* soldOutBasket(action) {
+  try {
+    const result = yield OrderService.soldOutItemRemove(action.userId);
+    yield put({       
+      type: SOLD_OUT_BASKET_SUCCESS, 
+      data: result.data
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: SOLD_OUT_BASKET_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
 }
+
 
 
 function* watchAddItem() {
@@ -373,7 +375,7 @@ function* watchRemoveItem() {
   yield takeLatest(REMOVE_ITEM_REQUEST, removeItem);
 }
 function* watchBasketAddUser() {
-  yield takeLatest(BASKET_ADD_USER_REQUEST, safe(onError,basketAddUser));
+  yield takeLatest(BASKET_ADD_USER_REQUEST, basketAddUser);
 }
 function* watchBasketGet() {
   yield takeLatest(BASKET_GET_REQUEST, basketGet);
@@ -399,6 +401,9 @@ function* watchBasketInsertNotUser() {
 function* watchDuplicateSizeQuantityCheck() {
   yield takeLatest(DUPLICATE_SIZE_QUANTITY_CHECK_REQUEST, duplicateSizeQuantityCheck);
 }
+function* watchSoldOutBasket() {
+  yield takeLatest(SOLD_OUT_BASKET_REQUEST, soldOutBasket);
+}
 
 
 export default function* userSage() {
@@ -418,5 +423,6 @@ export default function* userSage() {
       fork(watchBasketEmpty),
       fork(watchBasketInsertNotUser),
       fork(watchDuplicateSizeQuantityCheck),
+      fork(watchSoldOutBasket),
     ])
   }

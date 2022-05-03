@@ -5,9 +5,11 @@
 #dropdownMenu { background-color: white; margin-right:20px; }
 #dropdownMenuItem { background-color: white; }
 
-.orderHeaderLayout{ max-width: 50% !important; }
+.orderHeaderLayout{ max-width: 920px !important; }
 #orderHeaderMargin{ padding-top: 5px !important; }
 
 .headerTitle{ font-size: 20px !important; font-weight: bold !important; }
-/* #headerNavLink { margin-right: 10px;} */
+/* .postCodeStyle{display: block; position: relative; top: 0%; width: 400px; height: 600px !important; padding: 7px; } */
+.postCodeStyle{ height: 450px !important;}
+.postHeaderColor {background-color: #666;}
 

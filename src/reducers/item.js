@@ -10,7 +10,10 @@ const initialState = {
     totalPrice: 0,
     itemLength:0,
     itemOne: null,
-    itemAdded: false,
+    isOpenPost: false,
+    roadNumber: '',
+    address: '',
+    
 
     hasMoreItem: true,
     
@@ -73,6 +76,10 @@ const initialState = {
     duplicateSizeQuantityCheckLoading:false,
     duplicateSizeQuantityCheckDone:false,
     duplicateSizeQuantityCheckError:null,
+
+    soldOutBasketLoading:false,
+    soldOutBasketDone:false,
+    soldOutBasketError:null,
 }
 
 export const GET_ITEM_FIRST_REQUEST = 'GET_ITEM_FIRST_REQUEST';
@@ -104,6 +111,8 @@ export const PLUS_COUNT_ITEMLIST_REQUEST = "PLUS_COUNT_ITEMLIST_REQUEST";
 export const BASKET_ADD_ITEMLIST_REQUEST = "BASKET_ADD_ITEMLIST_REQUEST";
 export const BASKET_NULL_REQUEST = "BASKET_NULL_REQUEST";
 export const BASKET_LOCAL_ADD_REQUEST = "BASKET_LOCAL_ADD_REQUEST";
+export const IS_POST_OPEN_REQUEST = "IS_POST_OPEN_REQUEST";
+export const ADDRESS_ORDER_REQUEST = "ADDRESS_ORDER_REQUEST";
 
 export const GET_ITEM_ONE_REQUEST = 'GET_ITEM_ONE_REQUEST';
 export const GET_ITEM_ONE_SUCCESS = 'GET_ITEM_ONE_SUCCESS';
@@ -144,6 +153,11 @@ export const BASKET_INSERT_NOTUSER_FAILURE = 'BASKET_INSERT_NOTUSER_FAILURE';
 export const DUPLICATE_SIZE_QUANTITY_CHECK_REQUEST = 'DUPLICATE_SIZE_QUANTITY_CHECK_REQUEST';
 export const DUPLICATE_SIZE_QUANTITY_CHECK_SUCCESS = 'DUPLICATE_SIZE_QUANTITY_CHECK_SUCCESS';
 export const DUPLICATE_SIZE_QUANTITY_CHECK_FAILURE = 'DUPLICATE_SIZE_QUANTITY_CHECK_FAILURE';
+
+export const SOLD_OUT_BASKET_REQUEST = 'SOLD_OUT_BASKET_REQUEST';
+export const SOLD_OUT_BASKET_SUCCESS = 'SOLD_OUT_BASKET_SUCCESS';
+export const SOLD_OUT_BASKET_FAILURE = 'SOLD_OUT_BASKET_FAILURE';
+
 
 const reducer = (state = initialState, action) => {
     return produce(state, (draft) => {
@@ -378,6 +392,21 @@ const reducer = (state = initialState, action) => {
                 draft.duplicateSizeQuantityCheckLoading=false;
                 draft.duplicateSizeQuantityCheckError=action.error;
                 break;
+
+            case SOLD_OUT_BASKET_REQUEST:
+                draft.soldOutBasketLoading = true;
+                draft.soldOutBasketDone = false;
+                draft.soldOutBasketError = null;
+                break;
+            case SOLD_OUT_BASKET_SUCCESS:
+                draft.soldOutBasketLoading=false;
+                draft.soldOutBasketDone=true;
+                draft.currentItem=action.data;
+                break;
+            case SOLD_OUT_BASKET_FAILURE:
+                draft.soldOutBasketLoading=false;
+                draft.soldOutBasketError=action.error;
+                break;
                 
             case UPLOAD_IMAGE_REQUEST:
                 draft.imagePath = draft.imagePath.concat(action.data);
@@ -418,6 +447,13 @@ const reducer = (state = initialState, action) => {
                 break;
             case BASKET_LOCAL_ADD_REQUEST:
                 draft.currentItem = action.data;
+                break;
+            case IS_POST_OPEN_REQUEST:
+                draft.isOpenPost= !draft.isOpenPost;
+                break;
+            case ADDRESS_ORDER_REQUEST:
+                draft.address= action.address;
+                draft.roadNumber = action.roadNumber;
                 break;
             default:
                 return state;
