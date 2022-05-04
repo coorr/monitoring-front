@@ -1,0 +1,25 @@
+.time_control_on {  
+    font-size: 13px; 
+    border: 1px solid black;  
+    background-color: #9A9A9A ; 
+    padding: 3px 8px;
+    color: white;
+}
+.time_control_off {  
+    font-size: 13px; 
+    border: 1px solid black;  
+    background-color: white ; 
+    padding: 3px 8px;
+    color: black;
+}
+
+.table_order_date {
+    letter-spacing: -1px;
+    font-size: 14px;
+    font-family: 'Asap', sans-serif;
+    font-family: 'Nunito', sans-serif;
+}
+.table_order_image {
+    text-align: none !important;
+    vertical-align: none !important;
+}

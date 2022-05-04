@@ -98,8 +98,8 @@ const Header = () => {
                 title="Store" 
                 id={styles.dropdownMenu}
                 show={show}
-                // onMouseEnter={showDropdown} 
-                // onMouseLeave={hideDropdown}
+                onMouseEnter={showDropdown} 
+                onMouseLeave={hideDropdown}
               >
                 <NavDropdown.Item onClick={onClickTest} id={styles.dropdownMenuItem}>Outwear</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => router.push("/help")}id={styles.dropdownMenuItem}>Knitwear</NavDropdown.Item>
@@ -109,15 +109,18 @@ const Header = () => {
               </NavDropdown>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>info</Nav.Link>
               <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>help</Nav.Link>
-              <Nav.Link onClick={() => router.push("/basket")}>card{"("}{ userId === '' ? basket.length : userItemLength}{")"}</Nav.Link>
-              {/* <Link href="/basket">card</Link> */}
               {
                 currentUser ? (
-                  <Nav.Link id={styles.navLink} onClick={logOut}>LogOut</Nav.Link>
+                  <>
+                    <Nav.Link id={styles.navLink} onClick={logOut}>LogOut</Nav.Link>
+                    <Nav.Link id={styles.navLink} onClick={() => router.push("/mypage/list")}>MyPage</Nav.Link>
+                  </>
                 ) : (
                   <Nav.Link id={styles.navLink} href="/user/login">login</Nav.Link>
                 )
               }
+              <Nav.Link onClick={() => router.push("/basket")}>card{"("}{ userId === '' ? basket.length : userItemLength}{")"}</Nav.Link>
+              
               
             </Nav>
           </Navbar.Collapse>

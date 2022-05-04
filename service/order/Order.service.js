@@ -13,6 +13,9 @@ class OrderService {
     }
     soldOutItemRemove(userId) {
       return axios.post(API_URL + "soldOutItemRemove/"+userId,  { headers: { Authorization:  authHeader() }});
+    } 
+    getOrderUserById(userId) {
+      return axios.get(API_URL + "getOrderUserById/"+userId,  { headers: { Authorization:  authHeader() }});
     }
 
 }

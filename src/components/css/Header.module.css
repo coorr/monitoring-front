@@ -1,5 +1,6 @@
 .headerColor { font-size: 35px !important; font-weight: bold !important; }
-.headerLayout { max-width: 98% !important; }
+.headerLayout { max-width: 98% !important; font-family: 'Asap', sans-serif;
+    font-family: 'Nunito', sans-serif; }
 
 #navLink { margin-right: 20px;}
 #dropdownMenu { background-color: white; margin-right:20px; }
