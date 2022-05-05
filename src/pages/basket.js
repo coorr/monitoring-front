@@ -12,6 +12,7 @@ import { BASKET_DOWN_USER_REQUEST, BASKET_EMPTY_REQUEST, BASKET_GET_REQUEST,
     BASKET_LOCAL_ADD_REQUEST,  BASKET_PLUS_USER_REQUEST, BASKET_REMOVE_USER_REQUEST } from '../reducers/item'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { location } from '../config/location'
 
 const basket = () => {
   const router = useRouter();
@@ -186,7 +187,7 @@ const basket = () => {
                           <br />
                             <Card style={{flexDirection:'row'}} key={v.itemId}>
                                 <Card.Img 
-                                src={v.image ? `http://localhost:8080/static/${v.image[0].location}` : undefined }
+                                src={v.image ? location+`${v.image[0].location}` : undefined }
                                 height={110}
                                 style={{width: "13%", margin: 0}}
                                 />

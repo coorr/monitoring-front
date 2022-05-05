@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { BASKET_REMOVE_USER_REQUEST } from '../../reducers/item';
 import AuthService from '../../../service/user/Auth.service';
 import { useDispatch } from 'react-redux';
+import { location } from '../../config/location';
 
 const OrderItem = ({item}) => {
     const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const OrderItem = ({item}) => {
     <br />
     <Card style={{flexDirection:'row'}} >
         <Card.Img 
-        src={item.image ? `http://localhost:8080/static/${item.image[0].location}` : undefined }
+        src={item.image ? location+`${item.image[0].location}` : undefined }
         height={110}
         style={{width: "13%", margin: 0}}
         />
