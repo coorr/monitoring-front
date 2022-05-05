@@ -45,14 +45,14 @@ const Header = () => {
     } 
   },[userId, basket])
 
-  useEffect(() => {
-    const itemLength = ItemService.getItemLength();
-    console.log("33");
+  // useEffect(() => {
+  //   const itemLength = ItemService.getItemLength();
+  //   console.log("33");
 
-    if(userItemLength === '' && userId !== ''  && itemLength !== null) {
-      setUserItemLength(itemLength)
-    }
-  },[userId,userItemLength])
+  //   if(userItemLength === '' && userId !== ''  && itemLength !== null) {
+  //     setUserItemLength(itemLength)
+  //   }
+  // },[userId,userItemLength])
     
   const showDropdown = useCallback(() => {
     setShow(true)
@@ -119,7 +119,8 @@ const Header = () => {
                   <Nav.Link id={styles.navLink} href="/user/login">login</Nav.Link>
                 )
               }
-              <Nav.Link  onClick={() => router.push("/basket")}>card{"("}{ userId === '' ? basket.length : userItemLength}{")"}</Nav.Link>
+              {/* <Nav.Link  onClick={() => router.push("/basket")}>card{"("}{ userId === '' ? basket.length : userItemLength}{")"}</Nav.Link> */}
+              <Nav.Link  onClick={() => router.push("/basket")}>card</Nav.Link>
               
               
             </Nav>

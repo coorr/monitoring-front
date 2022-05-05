@@ -24,7 +24,7 @@ const basket = () => {
     const userLocalData = AuthService.getCurrentUser();
     const itemLocalData = ItemService.getCurrentItem();
 
-    if (userId.length === 0 && userLocalData !== null) {
+    if (userId === '' && userLocalData !== null) {
         setUserId(userLocalData.id);
     }
     if (itemLocalData.length > 0) {
@@ -44,6 +44,7 @@ const basket = () => {
         })
     }
   },[userId])
+  console.log("currentItem : ", currentItem)
 
   
 
