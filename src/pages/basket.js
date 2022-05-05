@@ -20,140 +20,140 @@ const basket = () => {
   const { currentItem, totalPrice } = useSelector((state) => state.item) 
 
 
-  useEffect(() => {
-    const userLocalData = AuthService.getCurrentUser();
-    const itemLocalData = ItemService.getCurrentItem();
+//   useEffect(() => {
+//     const userLocalData = AuthService.getCurrentUser();
+//     const itemLocalData = ItemService.getCurrentItem();
 
-    if (userId === '' && userLocalData !== null) {
-        setUserId(userLocalData.id);
-    }
-    if (itemLocalData.length > 0) {
-        dispatch({
-            type: BASKET_LOCAL_ADD_REQUEST,
-            data: itemLocalData
-        })
-    }
-    console.log("basket useEffect");
-  }, [userId]);
+//     if (userId === '' && userLocalData !== null) {
+//         setUserId(userLocalData.id);
+//     }
+//     if (itemLocalData.length > 0) {
+//         dispatch({
+//             type: BASKET_LOCAL_ADD_REQUEST,
+//             data: itemLocalData
+//         })
+//     }
+//     console.log("basket useEffect");
+//   }, [userId]);
 
-  useEffect(()=> {
-    if(userId !== '') {
-        dispatch({
-            type: BASKET_GET_REQUEST,
-            userId: userId
-        })
-    }
-  },[userId])
-  console.log("currentItem : ", currentItem)
+//   useEffect(()=> {
+//     if(userId !== '') {
+//         dispatch({
+//             type: BASKET_GET_REQUEST,
+//             userId: userId
+//         })
+//     }
+//   },[userId])
+//   console.log("currentItem : ", currentItem)
 
   
 
-  const onClickBasketRemove = useCallback((keyIndex) => () => {
-    if(confirm("선택하신 상품을 삭제하시겠습니까?")) {
-        if(userId !== '') {
-            dispatch({
-                type: BASKET_REMOVE_USER_REQUEST,
-                data: keyIndex,
-                userId
-            })
-        } else {
-            const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
-            if(localRecentProduct !== null) {
-                const basketRemove = localRecentProduct.filter((v) => v.keyIndex !== keyIndex)
-                localStorage.setItem("localRecentProduct", JSON.stringify(basketRemove));
-                dispatch({
-                    type: BASKET_LOCAL_ADD_REQUEST,
-                    data: basketRemove,
-                })
-                window.location.reload();
-            } 
-        }
-    } else { return; }
-  })
+//   const onClickBasketRemove = useCallback((keyIndex) => () => {
+//     if(confirm("선택하신 상품을 삭제하시겠습니까?")) {
+//         if(userId !== '') {
+//             dispatch({
+//                 type: BASKET_REMOVE_USER_REQUEST,
+//                 data: keyIndex,
+//                 userId
+//             })
+//         } else {
+//             const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
+//             if(localRecentProduct !== null) {
+//                 const basketRemove = localRecentProduct.filter((v) => v.keyIndex !== keyIndex)
+//                 localStorage.setItem("localRecentProduct", JSON.stringify(basketRemove));
+//                 dispatch({
+//                     type: BASKET_LOCAL_ADD_REQUEST,
+//                     data: basketRemove,
+//                 })
+//                 window.location.reload();
+//             } 
+//         }
+//     } else { return; }
+//   })
 
-  const onClickBasketDown = useCallback((keyIndex) => () => {
-      if(userId !== ''){
-        const sameKeyCountOne = currentItem.find(v => v.keyIndex === keyIndex)
-        if(sameKeyCountOne.itemCount === 1) {
-            return alert("최소 주문수량은 1개입니다.")
-        }
-        dispatch({
-            type: BASKET_DOWN_USER_REQUEST,
-            data: keyIndex,
-            userId
-        })
-      } else {
-        const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
-        if(localRecentProduct !== null) {
-            const basketDown = localRecentProduct.find((v) => v.keyIndex === keyIndex)
-            if(basketDown.itemCount === 1) {
-                return alert("최소 주문수량은 1개 입니다.")
-            }
-            basketDown.itemCount = basketDown.itemCount - 1
-            basketDown.itemTotal = basketDown.itemTotal - basketDown.price
-            localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
-            dispatch({
-                type: BASKET_LOCAL_ADD_REQUEST,
-                data: localRecentProduct
-            })
-        } 
-      }
-  })
+//   const onClickBasketDown = useCallback((keyIndex) => () => {
+//       if(userId !== ''){
+//         const sameKeyCountOne = currentItem.find(v => v.keyIndex === keyIndex)
+//         if(sameKeyCountOne.itemCount === 1) {
+//             return alert("최소 주문수량은 1개입니다.")
+//         }
+//         dispatch({
+//             type: BASKET_DOWN_USER_REQUEST,
+//             data: keyIndex,
+//             userId
+//         })
+//       } else {
+//         const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
+//         if(localRecentProduct !== null) {
+//             const basketDown = localRecentProduct.find((v) => v.keyIndex === keyIndex)
+//             if(basketDown.itemCount === 1) {
+//                 return alert("최소 주문수량은 1개 입니다.")
+//             }
+//             basketDown.itemCount = basketDown.itemCount - 1
+//             basketDown.itemTotal = basketDown.itemTotal - basketDown.price
+//             localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
+//             dispatch({
+//                 type: BASKET_LOCAL_ADD_REQUEST,
+//                 data: localRecentProduct
+//             })
+//         } 
+//       }
+//   })
 
-  const onClickBasketPlus = useCallback((keyIndex) => () => {
-    if(userId !== ''){
-        dispatch({
-            type: BASKET_PLUS_USER_REQUEST,
-            data: keyIndex,
-            userId
-        })
-      } else {
-        const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
-        if(localRecentProduct !== null) {
-            const basketPlus = localRecentProduct.find((v) => v.keyIndex === keyIndex)
-            console.log(basketPlus);
-            // 주문량 조건 달기
-            basketPlus.itemCount = basketPlus.itemCount + 1
-            basketPlus.itemTotal = basketPlus.itemTotal + basketPlus.price
-            localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
-            dispatch({
-                type: BASKET_LOCAL_ADD_REQUEST,
-                data: localRecentProduct
-            })
-        } 
-      }
+//   const onClickBasketPlus = useCallback((keyIndex) => () => {
+//     if(userId !== ''){
+//         dispatch({
+//             type: BASKET_PLUS_USER_REQUEST,
+//             data: keyIndex,
+//             userId
+//         })
+//       } else {
+//         const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
+//         if(localRecentProduct !== null) {
+//             const basketPlus = localRecentProduct.find((v) => v.keyIndex === keyIndex)
+//             console.log(basketPlus);
+//             // 주문량 조건 달기
+//             basketPlus.itemCount = basketPlus.itemCount + 1
+//             basketPlus.itemTotal = basketPlus.itemTotal + basketPlus.price
+//             localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
+//             dispatch({
+//                 type: BASKET_LOCAL_ADD_REQUEST,
+//                 data: localRecentProduct
+//             })
+//         } 
+//       }
     
-  })
+//   })
 
-  const onClickBasketEmpty = useCallback(() => {
-      if(confirm("장바구니 비우시겠습니까?")) {
-        if(userId !== '') {
-            dispatch({
-                type: BASKET_EMPTY_REQUEST,
-                userId
-            })
-        } else {
-            dispatch({
-                type: BASKET_LOCAL_ADD_REQUEST,
-                data: []
-            })
-          localStorage.setItem("localRecentProduct", JSON.stringify([]));
-          window.location.reload();
-        }
-      } else {
-          return;
-      }
-  })
+//   const onClickBasketEmpty = useCallback(() => {
+//       if(confirm("장바구니 비우시겠습니까?")) {
+//         if(userId !== '') {
+//             dispatch({
+//                 type: BASKET_EMPTY_REQUEST,
+//                 userId
+//             })
+//         } else {
+//             dispatch({
+//                 type: BASKET_LOCAL_ADD_REQUEST,
+//                 data: []
+//             })
+//           localStorage.setItem("localRecentProduct", JSON.stringify([]));
+//           window.location.reload();
+//         }
+//       } else {
+//           return;
+//       }
+//   })
 
-  const onClickOrderPage = useCallback(() => {
-      router.push("/order/order")
-  })
+//   const onClickOrderPage = useCallback(() => {
+//       router.push("/order/order")
+//   })
 
   
   return (
       <>
       <Header />
-        <div className="middle_space_screen" />
+        {/* <div className="middle_space_screen" />
         <Container style={{maxWidth: '720px'}}>
             <Row>
                 <Col>
@@ -176,7 +176,7 @@ const basket = () => {
             currentItem.length > 0 ? (
                 <>       
 
-                    {/* {
+                    {
                         currentItem.map((v,i) => (
                           <div key={v.keyIndex} >
                           <br />
@@ -212,7 +212,7 @@ const basket = () => {
                            <br />
                            </div>
                         ))
-                    } */}
+                    }
                     <div style={{borderBottom: '1px solid black'}} />
                     <br/>
                     <div className="form-group" style={{textAlign:"center", fontSize: "14px" }}>
@@ -252,7 +252,7 @@ const basket = () => {
          
             </Col>
         </Row>
-    </Container>
+    </Container> */}
     <Footer />
       </>
   )
