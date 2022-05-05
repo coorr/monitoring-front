@@ -12,7 +12,8 @@ import Image from 'next/image';
 
 const curretTime = new Date(new Date().getTime() - 7889400000);
 const format = "YYYY.MM.DD";
-const changeFormat = "YYYYMMDD000000";
+const startFormat = "YYYYMMDD235959";
+const endFormat = "YYYYMMDD000000";
 
 const list = () => {
   const router = useRouter();
@@ -20,7 +21,7 @@ const list = () => {
   const [userId, setUserId] = useState('')
   const [timeControl, setTimeControl] = useState(["오늘", "1개월", "3개월"])
   const [timeOne, setTimeOne] = useState("3개월");
-  const [endDate, setEndDate] = useState( Moment(curretTime, format).format(changeFormat));
+  const [endDate, setEndDate] = useState( Moment(curretTime, format).format(endFormat));
 
   const { orderList } = useSelector((state) => state.order);
 
@@ -37,7 +38,7 @@ const list = () => {
         dispatch({
             type: GET_ORDER_ALL_REQUEST,
             userId,
-            startDate: Moment(new Date(), format).format(changeFormat),
+            startDate: Moment(new Date(), format).format(startFormat),
             endDate: endDate
         })
     }
@@ -49,30 +50,30 @@ const list = () => {
     setTimeOne(e.target.value)
     
     if(e.target.value === "오늘") {
-        setEndDate(Moment(new Date(), format).format(changeFormat))
+        setEndDate(Moment(new Date(), format).format(endFormat))
         dispatch({
             type: GET_ORDER_ALL_REQUEST,
             userId,
-            startDate: Moment(new Date(), format).format(changeFormat),
-            endDate: Moment(new Date(), format).format(changeFormat)
+            startDate: Moment(new Date(), format).format(startFormat),
+            endDate: Moment(new Date(), format).format(endFormat)
         })
     } else if(e.target.value === "1개월") {
         const newTime = new Date(new Date().getTime() - 2629800000);
-        setEndDate(Moment(newTime, format).format(changeFormat))
+        setEndDate(Moment(newTime, format).format(endFormat))
         dispatch({
             type: GET_ORDER_ALL_REQUEST,
             userId,
-            startDate: Moment(new Date(), format).format(changeFormat),
-            endDate: Moment(newTime, format).format(changeFormat)
+            startDate: Moment(new Date(), format).format(startFormat),
+            endDate: Moment(newTime, format).format(endFormat)
         })
     } else if(e.target.value === "3개월") {
         const newTime = new Date(new Date().getTime() - 7889400000);
-        setEndDate(Moment(newTime, format).format(changeFormat))
+        setEndDate(Moment(newTime, format).format(endFormat))
         dispatch({
             type: GET_ORDER_ALL_REQUEST,
             userId,
-            startDate: Moment(new Date(), format).format(changeFormat),
-            endDate: Moment(newTime, format).format(changeFormat)
+            startDate: Moment(new Date(), format).format(startFormat),
+            endDate: Moment(newTime, format).format(endFormat)
         })
     } 
   },[userId, timeOne, endDate])
@@ -82,7 +83,7 @@ const list = () => {
         dispatch({
             type: CANCEL_ORDER_REQUEST,
             orderId,
-            startDate: Moment(new Date(), format).format(changeFormat),
+            startDate: Moment(new Date(), format).format(startFormat),
             endDate
         })
       } else { return; }
@@ -148,23 +149,23 @@ const list = () => {
                                                     }
                                                 </td> 
                                                 }
-                                                <td style={{padding: '8px'}}>
+                                                <td style={{padding: '8px', textAlign: 'center'}}>
                                                     <Image 
                                                         src={item.image ? `http://localhost:8080/static/${item.image[0].location}` : undefined }
                                                         width={80}
                                                         height={80}
                                                     />
                                                 </td> 
-                                                <td className={styles.table_order_title}>
-                                                    {item.title}
-                                                    <p style={{color: '#757575'}}>[옵션: {item.size}]</p> 
+                                                <td className={styles.table_order_title} id={styles.tabel_order_title_id}>
+                                                    <span style={{float:'left'}}>{item.title}</span> <br/>
+                                                    <p style={{float:'left', color: '#757575'}}>[옵션: {item.size}]</p> 
                                                 </td> 
                                                 <td className={styles.table_font_family}>{item.count}</td>
                                                 <td className={styles.table_font_family}>{item.total.toLocaleString('ko-KR')}원</td>
                                                 <td className={v.orderStatus === 'ORDER' ? styles.table_order_status_blue : styles.table_order_status_red}>
                                                     {v.orderStatus === 'ORDER' ? "주문준비" : "주문취소"}
                                                 </td> 
-                                                <td>-</td>
+                                                <td style={{textAlign: 'center'}}>-</td>
                                             </tr> 
                                         ))}
                                         </tbody>

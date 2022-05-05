@@ -23,15 +23,17 @@
     font-size: 14px;
     font-family: 'Asap', sans-serif;
     font-family: 'Nunito', sans-serif;
+    text-align: center;
 }
 .table_order_title {
     vertical-align: top !important;
-    float: left;
+    /* float: left; */
     padding-top: 8px;
 }
 .table_font_family {
     font-family: 'Asap', sans-serif;
     font-family: 'Nunito', sans-serif;
+    text-align: center;
 }
 .table_order_cancel_btn {
     width: 70px;
@@ -42,7 +44,9 @@
 }
 .table_order_status_blue {
     color: #008bcc;
+    text-align: center;
 }
 .table_order_status_red {
     color: red;
+    text-align: center;
 }
