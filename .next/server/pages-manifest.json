@@ -1,0 +1,17 @@
+{
+  "/_app": "pages/_app.js",
+  "/Help": "pages/Help.html",
+  "/_document": "pages/_document.js",
+  "/addItem": "pages/addItem.html",
+  "/basket": "pages/basket.html",
+  "/item/[id]": "pages/item/[id].html",
+  "/item/revised/itemRevised": "pages/item/revised/itemRevised.html",
+  "/mypage/list": "pages/mypage/list.html",
+  "/user/login": "pages/user/login.html",
+  "/order/order": "pages/order/order.html",
+  "/user/register.result": "pages/user/register.result.html",
+  "/user/register": "pages/user/register.html",
+  "/_error": "pages/_error.js",
+  "/": "pages/index.html",
+  "/404": "pages/404.html"
+}
