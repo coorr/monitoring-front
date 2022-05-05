@@ -119,7 +119,7 @@ const Header = () => {
                   <Nav.Link id={styles.navLink} href="/user/login">login</Nav.Link>
                 )
               }
-              <Nav.Link onClick={() => router.push("/basket")}>card{"("}{ userId === '' ? basket.length : userItemLength}{")"}</Nav.Link>
+              <Nav.Link  onClick={() => router.push("/basket")}>card{"("}{ userId === '' ? basket.length : userItemLength}{")"}</Nav.Link>
               
               
             </Nav>

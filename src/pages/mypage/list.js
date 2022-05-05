@@ -6,16 +6,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import styles from '../../components/css/Page.module.css'
 import AuthService from '../../../service/user/Auth.service';
-import { GET_ORDER_ALL_REQUEST } from '../../reducers/order';
+import { CANCEL_ORDER_REQUEST, GET_ORDER_ALL_REQUEST } from '../../reducers/order';
 import Moment from 'moment';
 import Image from 'next/image';
+
+const curretTime = new Date(new Date().getTime() - 7889400000);
+const format = "YYYY.MM.DD";
+const changeFormat = "YYYYMMDD000000";
 
 const list = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [userId, setUserId] = useState('')
   const [timeControl, setTimeControl] = useState(["오늘", "1개월", "3개월"])
-  const [timeOne, setTimeOne] = useState("오늘");
+  const [timeOne, setTimeOne] = useState("3개월");
+  const [endDate, setEndDate] = useState( Moment(curretTime, format).format(changeFormat));
 
   const { orderList } = useSelector((state) => state.order);
 
@@ -31,14 +36,58 @@ const list = () => {
     if(userId !== '') {
         dispatch({
             type: GET_ORDER_ALL_REQUEST,
-            userId
+            userId,
+            startDate: Moment(new Date(), format).format(changeFormat),
+            endDate: endDate
         })
     }
 },[userId])
 
   const onClickTimeControl = useCallback((e) => {
+      console.log(new Date());
+      console.log(new Date(new Date().getTime() - 7889400));
     setTimeOne(e.target.value)
-  },[timeControl, timeOne])
+    
+    if(e.target.value === "오늘") {
+        setEndDate(Moment(new Date(), format).format(changeFormat))
+        dispatch({
+            type: GET_ORDER_ALL_REQUEST,
+            userId,
+            startDate: Moment(new Date(), format).format(changeFormat),
+            endDate: Moment(new Date(), format).format(changeFormat)
+        })
+    } else if(e.target.value === "1개월") {
+        const newTime = new Date(new Date().getTime() - 2629800000);
+        setEndDate(Moment(newTime, format).format(changeFormat))
+        dispatch({
+            type: GET_ORDER_ALL_REQUEST,
+            userId,
+            startDate: Moment(new Date(), format).format(changeFormat),
+            endDate: Moment(newTime, format).format(changeFormat)
+        })
+    } else if(e.target.value === "3개월") {
+        const newTime = new Date(new Date().getTime() - 7889400000);
+        setEndDate(Moment(newTime, format).format(changeFormat))
+        dispatch({
+            type: GET_ORDER_ALL_REQUEST,
+            userId,
+            startDate: Moment(new Date(), format).format(changeFormat),
+            endDate: Moment(newTime, format).format(changeFormat)
+        })
+    } 
+  },[userId, timeOne, endDate])
+
+  const onClickOrderCancel = useCallback((orderId) => () => {
+      if(confirm("주문취소 하시겠습니까?\n반복적인 주문취소는 주문제한 사유가 될 수 있습니다.")) {
+        dispatch({
+            type: CANCEL_ORDER_REQUEST,
+            orderId,
+            startDate: Moment(new Date(), format).format(changeFormat),
+            endDate
+        })
+      } else { return; }
+        
+  },[endDate])
   
   console.log(orderList);
 
@@ -49,7 +98,7 @@ const list = () => {
         <Container style={{maxWidth: '820px'}}>
             <Row>
                 <Col>
-                    <span style={{display: 'flex', fontSize: '14px'}}>주문조회</span><br />
+                    <span style={{display: 'flex', fontSize: '14px'}}>주문조회</span>
                     <select style={{padding: '3px', fontSize : '13px'}}>
                         <option>전체 주문처리상태</option>
                         <option>배송준비중</option>
@@ -61,111 +110,64 @@ const list = () => {
                             key={v}
                             onClick={onClickTimeControl}  
                             className={v === timeOne ? styles.time_control_on : styles.time_control_off }
+                            value={v}
                             
                         >   
                             {v}
                         </button>
                     ))}
-
-{/* <table>
-                                <tr style={{borderBottom: '1px solid black', color: "#9A9A9A", fontSize: '14px'}}> 
-                                    <th>주문일자</th>
-                                    <th>이미지</th> 
-                                    <th>상품 정보</th> 
-                                    <th>수량</th>
-                                    <th>상품구매금액</th>
-                                    <th>주문처리상태</th>
-                                    <th>취소</th>
-                                </tr> 
-                                <tr> 
-                                    <td rowspan="2">1</td> 
-                                    <td rowspan="2">ABCDE</td> 
-                                    <td>Data2 a</td> 
-                                    <td>1</td>
-                                    <td>100</td>
-                                    <td>100</td>
-                                    <td rowspan="2">620</td>
-                                </tr> 
-                                <tr> 
-                                    <td>Data2 b</td> 
-                                    <td>4</td> 
-                                    <td>130</td> 
-                                    <td>152</td>
-                                </tr>
-                                <tr> 
-                                    <td rowspan="3">2</td> 
-                                    <td rowspan="3">ABC</td> 
-                                    <td>Data2 c</td> 
-                                    <td>2</td>
-                                    <td>400</td>
-                                    <td>800</td>
-                                    <td rowspan="3">1560</td>
-                                </tr> 
-                                <tr> 
-                                    <td>Data2 d</td> 
-                                    <td>2</td> 
-                                    <td>200</td> 
-                                    <td>400</td>
-                                </tr>
-                                <tr> 
-                                    <td>Data2 e</td> 
-                                    <td>3</td> 
-                                    <td>120</td> 
-                                    <td>360</td>
-                                </tr>
-                                <tr> 
-                                    <td>3</td> 
-                                    <td>ASS</td> 
-                                    <td>Data 2 f</td> 
-                                    <td>1</td> 
-                                    <td>100</td> 
-                                    <td>100</td> 
-                                    <td>100</td> 
-                                </tr>
-                                </table> */}
-
                     <div style={{borderBottom: '1px solid black', marginTop: '8px'}} />
                     
-
                     {
                         orderList.length > 0 ? (
                             <>
                                 <table>
+                                    <thead>
                                     <tr style={{borderBottom: '1px solid black', color: "#9A9A9A", fontSize: '14px'}}> 
                                         <th>주문일자</th>
-                                        <th>이미지</th> 
-                                        <th>상품 정보</th> 
+                                        <th className={styles.table_header_image}>이미지</th> 
+                                        <th style={{width: '220px'}}>&nbsp;&nbsp;상품 정보&nbsp;&nbsp;</th> 
                                         <th>수량</th>
                                         <th>상품구매금액</th>
                                         <th>주문처리상태</th>
                                         <th>취소</th>
                                     </tr> 
+                                    </thead>
                                  {
                                     orderList.map((v) => (
-                                        <>
-                                        
+                                        <tbody key={v.orderId}>
                                         { v.orderItems.map((item, i) => (
-                                            <tr> 
+                                            <tr key={item.orderItemId}> 
                                                 { i === 0 && 
-                                                <td className={styles.table_order_date} rowspan={v.orderItems.length}>
-                                                    {Moment(v.orderDate, "YYYY.MM.DD").format("YYYY-MM-DD")}
+                                                <td className={styles.table_order_date} rowSpan={v.orderItems.length}>
+                                                    {Moment(v.orderDate, format).format("YYYY-MM-DD")}<br/>
+                                                    { v.orderStatus !== 'CANCEL' && 
+                                                        <button onClick={onClickOrderCancel(v.orderId)} className={styles.table_order_cancel_btn}>
+                                                            주문취소
+                                                        </button>
+                                                    }
                                                 </td> 
                                                 }
-                                                <td className={styles.table_order_image}>
+                                                <td style={{padding: '8px'}}>
                                                     <Image 
                                                         src={item.image ? `http://localhost:8080/static/${item.image[0].location}` : undefined }
-                                                        width={65}
-                                                        height={65}
-                                                    />    
+                                                        width={80}
+                                                        height={80}
+                                                    />
                                                 </td> 
-                                                <td>{item.title}</td> 
-                                                <td>{item.count}</td>
-                                                <td>{item.total}</td>
-                                                <td>{v.deliveryStatus}</td>
-                                                <td>취소</td>
+                                                <td className={styles.table_order_title}>
+                                                    {item.title}
+                                                    <p style={{color: '#757575'}}>[옵션: {item.size}]</p> 
+                                                </td> 
+                                                <td className={styles.table_font_family}>{item.count}</td>
+                                                <td className={styles.table_font_family}>{item.total.toLocaleString('ko-KR')}원</td>
+                                                <td className={v.orderStatus === 'ORDER' ? styles.table_order_status_blue : styles.table_order_status_red}>
+                                                    {v.orderStatus === 'ORDER' ? "주문준비" : "주문취소"}
+                                                </td> 
+                                                <td>-</td>
                                             </tr> 
                                         ))}
-                                        </>
+                                        </tbody>
                                         
                                     ))
                                 }

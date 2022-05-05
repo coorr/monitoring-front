@@ -22,14 +22,8 @@ table th {
 table td {
   font-size: 13px;
   text-align: center;
-  padding: 8px;
 }
-table tr {
-  padding: 5px !important;
-}
-tr {
-  padding: 5px !important;
-}
+
 
 
 .dropdown-toggle::after { display:none !important; }
