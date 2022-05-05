@@ -70,8 +70,7 @@ function authHeader() {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "v": () => (/* binding */ config)
 /* harmony export */ });
-// export const config = "http://localhost:8080/";
-const config = "http://54.180.170.84:8080/"; // 배포 url
+const config = "http://localhost:8080/"; // export const config = "http://54.180.170.84:8080/"; // 배포 url
 
 
 /***/ })
