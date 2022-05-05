@@ -7,10 +7,13 @@ import TokenCheck from '../store/tokenCheck';
 function* orderSave(action) {
   try {
     const result = yield OrderService.saveOrderDeliveryItem(action.userId, action.data);
+    const history = action.history;
     yield put({       
       type: ORDER_SAVE_SUCCESS, 
       data: result.data,
     }) 
+    alert("주문처리가 완료되었습니다.")
+    history.push("/mypage/list")
   } catch (err) {
     TokenCheck(err.response.data)
     yield put({

@@ -117,7 +117,8 @@ const order = () => {
     dispatch({
       type: ORDER_SAVE_REQUEST,
       data: deliveryData,
-      userId
+      userId,
+      history: router
     })
   })
 
