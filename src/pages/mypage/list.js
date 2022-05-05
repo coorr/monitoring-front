@@ -9,6 +9,7 @@ import AuthService from '../../../service/user/Auth.service';
 import { CANCEL_ORDER_REQUEST, GET_ORDER_ALL_REQUEST } from '../../reducers/order';
 import Moment from 'moment';
 import Image from 'next/image';
+import { location } from '../../config/location';
 
 const curretTime = new Date(new Date().getTime() - 7889400000);
 const format = "YYYY.MM.DD";
@@ -151,7 +152,7 @@ const list = () => {
                                                 }
                                                 <td style={{padding: '8px', textAlign: 'center'}}>
                                                     <Image 
-                                                        src={item.image ? `http://localhost:8080/static/${item.image[0].location}` : undefined }
+                                                        src={item.image ? location+`${item.image[0].location}` : undefined }
                                                         width={80}
                                                         height={80}
                                                     />

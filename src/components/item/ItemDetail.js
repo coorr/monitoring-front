@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import AuthService from '../../../service/user/Auth.service';
 import BasketService from '../../../service/basket/Basket.service';
+import { location } from '../../config/location';
 
 
 const ItemDetail = ({ itemDetail }) => {
@@ -42,16 +43,6 @@ const ItemDetail = ({ itemDetail }) => {
         })
     },[admin,userId])
     console.log("itemDetail" , itemDetail);
-
-    // useEffect(()=> {
-    //     if(duplicateSizeQuantityCheckError !== null) {
-    //         alert(duplicateSizeQuantityCheckError)
-    //     } else if(duplicateSizeQuantityCheckDone) {
-    //         router.push("/basket")
-    //     }
-    // },[duplicateSizeQuantityCheckDone,duplicateSizeQuantityCheckError])
-
-
 
     const onClickSizeValue = useCallback((e,index)  => {
         if(sizeValue === e.target.value) {
@@ -184,7 +175,7 @@ const ItemDetail = ({ itemDetail }) => {
     <Container>
     <Row>
       <Col xs={12} md={6}>
-        <img src={itemDetail.images.length > 0 ? `http://localhost:8080/static/${itemDetail.images[0].location}` : []} alt="이미지" width="100%" height="900px" />
+        <img src={itemDetail.images.length > 0 ? location+`${itemDetail.images[0].location}` : []} alt="이미지" width="100%" height="900px" />
       </Col>
       <Col xs={12} md={6}>
         <div className="mx-5">

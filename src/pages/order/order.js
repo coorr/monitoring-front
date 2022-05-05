@@ -168,7 +168,6 @@ const order = () => {
                     <button onClick={onChangeOpenPost} style={{border: '1px solid black', backgroundColor:'white', color: 'black'}}>주소 검색</button>
                     {isOpenPost  && (
                         <PostModel show={isOpenPost} onHide={onChangeOpenPost} />
-                        // <DaumPostcode style={styles.postCodeStyle} autoClose onComplete={onCompletePost } />
                     )}
                 </div>
                 <br />
