@@ -77,13 +77,6 @@ const Header = ()=>{
         userId,
         basket
     ]);
-    // useEffect(() => {
-    //   const itemLength = ItemService.getItemLength();
-    //   console.log("33");
-    //   if(userItemLength === '' && userId !== ''  && itemLength !== null) {
-    //     setUserItemLength(itemLength)
-    //   }
-    // },[userId,userItemLength])
     const showDropdown = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
         setShow(true);
     }, [
