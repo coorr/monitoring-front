@@ -1,7 +1,7 @@
 {
   "/_app": "pages/_app.js",
-  "/_document": "pages/_document.js",
   "/addItem": "pages/addItem.html",
+  "/_document": "pages/_document.js",
   "/basket": "pages/basket.html",
   "/help": "pages/help.html",
   "/item/[id]": "pages/item/[id].html",
@@ -10,8 +10,8 @@
   "/order/order": "pages/order/order.html",
   "/user/login": "pages/user/login.html",
   "/user/register": "pages/user/register.html",
-  "/user/register.result": "pages/user/register.result.html",
   "/_error": "pages/_error.js",
+  "/user/register.result": "pages/user/register.result.html",
   "/": "pages/index.html",
   "/404": "pages/404.html"
 }

@@ -18,7 +18,6 @@ exports.modules = {
 /* harmony export */   "IE": () => (/* binding */ DUPLICATE_SIZE_QUANTITY_CHECK_SUCCESS),
 /* harmony export */   "Ib": () => (/* binding */ BASKET_INSERT_NOTUSER_FAILURE),
 /* harmony export */   "Im": () => (/* binding */ BASKET_PLUS_USER_SUCCESS),
-/* harmony export */   "K7": () => (/* binding */ BASKET_LOCAL_ADD_REQUEST),
 /* harmony export */   "Kt": () => (/* binding */ CURRENT_ITEM_REQUEST),
 /* harmony export */   "Ls": () => (/* binding */ BASKET_GET_REQUEST),
 /* harmony export */   "PM": () => (/* binding */ REMOVE_ITEM_REQUEST),
@@ -67,7 +66,7 @@ exports.modules = {
 /* harmony export */   "xV": () => (/* binding */ BASKET_PLUS_USER_FAILURE),
 /* harmony export */   "zc": () => (/* binding */ ADDRESS_ORDER_REQUEST)
 /* harmony export */ });
-/* unused harmony export BASKET_ADD_ITEMLIST_REQUEST */
+/* unused harmony exports BASKET_ADD_ITEMLIST_REQUEST, BASKET_LOCAL_ADD_REQUEST */
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7133);
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immer__WEBPACK_IMPORTED_MODULE_0__);
 
