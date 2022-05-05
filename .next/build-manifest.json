@@ -5,9 +5,9 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/BESxIbUqg2JBrWyjDtuKT/_buildManifest.js",
-    "static/BESxIbUqg2JBrWyjDtuKT/_ssgManifest.js",
-    "static/BESxIbUqg2JBrWyjDtuKT/_middlewareManifest.js"
+    "static/Ob19uGwLeSw4tfQknpLzM/_buildManifest.js",
+    "static/Ob19uGwLeSw4tfQknpLzM/_ssgManifest.js",
+    "static/Ob19uGwLeSw4tfQknpLzM/_middlewareManifest.js"
   ],
   "pages": {
     "/": [
@@ -26,7 +26,7 @@
       "static/chunks/framework-fc97f3f1282ce3ed.js",
       "static/chunks/main-f962425130346e35.js",
       "static/css/6b082c2031a0e826.css",
-      "static/chunks/pages/_app-fa75affb47286854.js"
+      "static/chunks/pages/_app-de622d5e2c63556f.js"
     ],
     "/_error": [
       "static/chunks/webpack-cb7634a8b6194820.js",
@@ -116,7 +116,7 @@
       "static/chunks/257-b8f4ddeca7be7e18.js",
       "static/chunks/675-6195e5d2cc19482d.js",
       "static/css/cd6588e5f1a61e92.css",
-      "static/chunks/pages/order/order-ccafa37edeb137b8.js"
+      "static/chunks/pages/order/order-730d077fb2037679.js"
     ],
     "/user/login": [
       "static/chunks/webpack-cb7634a8b6194820.js",
@@ -126,9 +126,9 @@
       "static/chunks/d7eeaac4-5f1d1ae48e94e412.js",
       "static/chunks/257-b8f4ddeca7be7e18.js",
       "static/chunks/827-76f6877a49c24dba.js",
-      "static/chunks/654-847d107022f3a366.js",
+      "static/chunks/654-f20a88014d6af6a7.js",
       "static/css/e60165af5eceb4d5.css",
-      "static/chunks/pages/user/login-d90bfb589845cccd.js"
+      "static/chunks/pages/user/login-e689f53dd971dd89.js"
     ],
     "/user/register": [
       "static/chunks/webpack-cb7634a8b6194820.js",
@@ -138,10 +138,10 @@
       "static/chunks/d7eeaac4-5f1d1ae48e94e412.js",
       "static/chunks/257-b8f4ddeca7be7e18.js",
       "static/chunks/827-76f6877a49c24dba.js",
-      "static/chunks/654-847d107022f3a366.js",
+      "static/chunks/654-f20a88014d6af6a7.js",
       "static/chunks/966-0eb7d7e4558f4974.js",
       "static/css/e60165af5eceb4d5.css",
-      "static/chunks/pages/user/register-f3ac917e0718815e.js"
+      "static/chunks/pages/user/register-f779ef6796255e67.js"
     ],
     "/user/register.result": [
       "static/chunks/webpack-cb7634a8b6194820.js",
