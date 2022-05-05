@@ -27,12 +27,16 @@ const basket = () => {
     if (userId === '' && userLocalData !== null) {
         setUserId(userLocalData.id);
     }
-    if (itemLocalData.length > 0) {
-        dispatch({
-            type: BASKET_LOCAL_ADD_REQUEST,
-            data: itemLocalData
-        })
+
+    if(itemLocalData !== null) {
+        if (itemLocalData.length > 0) {
+            dispatch({
+                type: BASKET_LOCAL_ADD_REQUEST,
+                data: itemLocalData
+            })
+        }
     }
+   
     console.log("basket useEffect");
   }, [userId]);
 
@@ -153,7 +157,7 @@ const basket = () => {
   return (
       <>
       <Header />
-        {/* <div className="middle_space_screen" />
+        <div className="middle_space_screen" />
         <Container style={{maxWidth: '720px'}}>
             <Row>
                 <Col>
@@ -252,7 +256,7 @@ const basket = () => {
          
             </Col>
         </Row>
-    </Container> */}
+    </Container>
     <Footer />
       </>
   )
