@@ -176,7 +176,7 @@ const basket = () => {
             currentItem.length > 0 ? (
                 <>       
 
-                    {
+                    {/* {
                         currentItem.map((v,i) => (
                           <div key={v.keyIndex} >
                           <br />
@@ -212,7 +212,7 @@ const basket = () => {
                            <br />
                            </div>
                         ))
-                    }
+                    } */}
                     <div style={{borderBottom: '1px solid black'}} />
                     <br/>
                     <div className="form-group" style={{textAlign:"center", fontSize: "14px" }}>
@@ -224,11 +224,8 @@ const basket = () => {
                     </div>
 
                     <Button onClick={onClickBasketEmpty} className={styles.basket_order_btn_null}>장바구니 비우기</Button>
-                    <Button onClick={onClickOrderPage}className={styles.basket_order_btn_order}>주문하기</Button>
-
-
-                       
-            </>
+                    <Button onClick={onClickOrderPage}className={styles.basket_order_btn_order}>주문하기</Button>  
+              </>
           ) : (
             <div style={{textAlign: 'center'}}>
                 <br/><br/>
