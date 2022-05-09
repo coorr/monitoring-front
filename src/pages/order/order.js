@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import OrderHeader from '../../components/order/orderHeader';
 import { Container, Row, Col, Card,ListGroup, Button } from 'react-bootstrap'
 import styles from '../../components/css/Order.module.css'
-import { BASKET_GET_REQUEST, IS_POST_OPEN_REQUEST, SOLD_OUT_BASKET_REQUEST } from '../../reducers/item';
+import { BASKET_GET_REQUEST, BASKET_LENGTH_ORDER_SAVE_REQUEST, IS_POST_OPEN_REQUEST, SOLD_OUT_BASKET_REQUEST } from '../../reducers/item';
 import AuthService from '../../../service/user/Auth.service';
 import OrderItem from '../../components/order/OrderItem';
 import Footer from '../../components/Footer';
@@ -61,7 +61,9 @@ const order = () => {
           }
         })
         .catch(err => {
-          alert(err.response.data.message)
+          if(err.response.data.message) {
+            alert(err.response.data.message)
+          }
           return router.push("/basket")
         })
       }
@@ -119,6 +121,11 @@ const order = () => {
       data: deliveryData,
       userId,
       history: router
+    })
+
+    dispatch({
+      type: BASKET_LENGTH_ORDER_SAVE_REQUEST,
+      userId
     })
   })
 
