@@ -47,8 +47,7 @@ const Header = ()=>{
     const { 0: admin , 1: setAdmin  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)("");
     const { 0: userId , 1: setUserId  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)("");
     const { 0: currentUser , 1: setCurrentUser  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
-    const { 0: basket , 1: setBasket  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
-    const { 0: userItemLength , 1: setUserItemLength  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)("");
+    const { 0: basket , 1: setBasket  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
     const { currentItem , itemLength  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_5__.useSelector)((state)=>state.item
     );
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
@@ -70,7 +69,7 @@ const Header = ()=>{
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
         const basketLocal = _service_item_Item_service__WEBPACK_IMPORTED_MODULE_9__/* ["default"].getCurrentItem */ .Z.getCurrentItem();
         console.log("22");
-        if (userId === "" && !basket && basketLocal !== null) {
+        if (userId === "" && basket.length === 0 && basketLocal !== null) {
             setBasket(basketLocal);
         }
     }, [
@@ -97,7 +96,6 @@ const Header = ()=>{
         window.location.reload();
     });
     const login = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
-        console.log("login \uC2DC\uB3C4 \uC911");
         router.push("/user/login");
     });
     const onClickTest = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
@@ -113,7 +111,7 @@ const Header = ()=>{
                     /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.Navbar.Brand, {
                         href: "/",
                         className: (_css_Header_module_css__WEBPACK_IMPORTED_MODULE_10___default().headerColor),
-                        children: "COOR"
+                        children: "LOOK"
                     }),
                     /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.Navbar.Toggle, {
                         "aria-controls": "basic-navbar-nav"
@@ -168,16 +166,10 @@ const Header = ()=>{
                                     ]
                                 }),
                                 /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.Nav.Link, {
-                                    onClick: ()=>router.push("/help")
+                                    onClick: ()=>router.push("/info")
                                     ,
                                     id: (_css_Header_module_css__WEBPACK_IMPORTED_MODULE_10___default().navLink),
                                     children: "info"
-                                }),
-                                /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.Nav.Link, {
-                                    onClick: ()=>router.push("/help")
-                                    ,
-                                    id: (_css_Header_module_css__WEBPACK_IMPORTED_MODULE_10___default().navLink),
-                                    children: "help"
                                 }),
                                 currentUser ? /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
                                     children: [
@@ -198,10 +190,15 @@ const Header = ()=>{
                                     href: "/user/login",
                                     children: "login"
                                 }),
-                                /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.Nav.Link, {
+                                /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.Nav.Link, {
                                     onClick: ()=>router.push("/basket")
                                     ,
-                                    children: "card"
+                                    children: [
+                                        "card",
+                                        "(",
+                                        userId === "" ? basket.length : itemLength,
+                                        ")"
+                                    ]
                                 })
                             ]
                         })
