@@ -12,20 +12,30 @@
 #item_size_btn {
     width: 60px !important;
     border: 1px solid #a8a8a8 !important;
-}
-#item_size_btn_2 {
-    width: 60px !important;
-    border: 1px solid #a8a8a8 !important;
-}
-#item_size_btn:hover {
     background-color: #a8a8a8 !important;
     color:white !important;
-    border: 1px solid #a8a8a8 !important;
 }
 #item_size_btn:focus {
     background-color: #a8a8a8 !important;
     color:white !important;
     border: 1px solid #a8a8a8 !important;
+    box-shadow: none !important; 
+}
+#item_size_btn_2 {
+    width: 60px !important;
+    border: 1px solid #a8a8a8 !important;
+    background-color: white;
+}
+#item_size_btn_2:focus {
+    width: 60px !important;
+    border: 1px solid #a8a8a8 !important;
+    background-color: white;
+    box-shadow: none !important; 
+}
+#item_size_btn_disabled {
+    width: 60px !important;
+    border: 1px dashed #a8a8a8 !important;
+    background-color: white;
 }
 
 .item_text {
