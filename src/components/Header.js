@@ -2,11 +2,8 @@ import React, { useState,useCallback,useEffect } from 'react'
 import { Container,Navbar,Nav,NavDropdown } from "react-bootstrap";
 import styles from './css/Header.module.css'
 import AuthService from '../../service/user/Auth.service';
-import Router from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
-import Link from 'next/link';
-import next from 'next';
 import {  useRouter } from 'next/router';
 import ItemService from '../../service/item/Item.service';
 
