@@ -14,8 +14,8 @@ class OrderService {
     soldOutItemRemove(userId) {
       return axios.post(API_URL + "soldOutItemRemove/"+userId,  { headers: { Authorization:  authHeader() }});
     } 
-    getOrderUserById(userId, startDate, endDate) {
-      return axios.get(API_URL + "getOrderUserById/"+userId+"?startDate="+startDate+"&endDate="+endDate,  { headers: { Authorization:  authHeader() }});
+    getOrderUserById(userId, startDate, endDate, status) {
+      return axios.get(API_URL + "getOrderUserById/"+userId+"?startDate="+startDate+"&endDate="+endDate+"&status="+status,  { headers: { Authorization:  authHeader() }});
     } 
     cancelOrder(orderId, startDate, endDate) {
       return axios.post(API_URL + "cancelOrderItem/"+orderId+"?startDate="+startDate+"&endDate="+endDate, { headers: { Authorization:  authHeader() }});

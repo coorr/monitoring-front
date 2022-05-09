@@ -19,6 +19,9 @@ import {
   BASKET_INSERT_NOTUSER_FAILURE, 
   BASKET_INSERT_NOTUSER_REQUEST, 
   BASKET_INSERT_NOTUSER_SUCCESS, 
+  BASKET_LENGTH_ORDER_SAVE_FAILURE, 
+  BASKET_LENGTH_ORDER_SAVE_REQUEST, 
+  BASKET_LENGTH_ORDER_SAVE_SUCCESS, 
   BASKET_PLUS_USER_FAILURE, 
   BASKET_PLUS_USER_REQUEST, 
   BASKET_PLUS_USER_SUCCESS, 
@@ -354,6 +357,23 @@ function* soldOutBasket(action) {
   }  
 }
 
+function* basketLengthOrderSave(action) {
+  try {
+    const result = yield BasketService.getBasketToUserLength(action.userId);
+    yield put({       
+      type: BASKET_LENGTH_ORDER_SAVE_SUCCESS, 
+      data: result.data
+    }) 
+  } catch (err) {
+    TokenCheck(err.response.data)
+    yield put({
+      type: BASKET_LENGTH_ORDER_SAVE_FAILURE,
+      error : err.response.data
+    })
+    alert("실패하였습니다.")
+  }  
+}
+
 
 
 function* watchAddItem() {
@@ -404,6 +424,9 @@ function* watchDuplicateSizeQuantityCheck() {
 function* watchSoldOutBasket() {
   yield takeLatest(SOLD_OUT_BASKET_REQUEST, soldOutBasket);
 }
+function* watchBasketLengthOrderSave() {
+  yield takeLatest(BASKET_LENGTH_ORDER_SAVE_REQUEST, basketLengthOrderSave);
+}
 
 
 export default function* userSage() {
@@ -424,5 +447,6 @@ export default function* userSage() {
       fork(watchBasketInsertNotUser),
       fork(watchDuplicateSizeQuantityCheck),
       fork(watchSoldOutBasket),
+      fork(watchBasketLengthOrderSave),
     ])
   }

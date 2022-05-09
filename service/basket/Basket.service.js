@@ -29,7 +29,9 @@ class BasketService {
     duplicateSizeQuantityCheck(data) {
       return axios.post(API_URL + "duplicateSizeQuantityCheck/",  data,  { headers: { Authorization:  authHeader() }});
     } 
-    
+    getBasketToUserLength(userId) {
+      return axios.get(API_URL + "getBasketToUserLength/"+userId ,  { headers: { Authorization:  authHeader() }});
+    } 
 
 
 }

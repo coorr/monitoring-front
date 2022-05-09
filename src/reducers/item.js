@@ -80,6 +80,10 @@ const initialState = {
     soldOutBasketLoading:false,
     soldOutBasketDone:false,
     soldOutBasketError:null,
+
+    basketLengthOrderSaveLoading:false,
+    basketLengthOrderSaveDone:false,
+    basketLengthOrderSaveError:null,
 }
 
 export const GET_ITEM_FIRST_REQUEST = 'GET_ITEM_FIRST_REQUEST';
@@ -157,6 +161,10 @@ export const DUPLICATE_SIZE_QUANTITY_CHECK_FAILURE = 'DUPLICATE_SIZE_QUANTITY_CH
 export const SOLD_OUT_BASKET_REQUEST = 'SOLD_OUT_BASKET_REQUEST';
 export const SOLD_OUT_BASKET_SUCCESS = 'SOLD_OUT_BASKET_SUCCESS';
 export const SOLD_OUT_BASKET_FAILURE = 'SOLD_OUT_BASKET_FAILURE';
+
+export const BASKET_LENGTH_ORDER_SAVE_REQUEST = 'BASKET_LENGTH_ORDER_SAVE_REQUEST';
+export const BASKET_LENGTH_ORDER_SAVE_SUCCESS = 'BASKET_LENGTH_ORDER_SAVE_SUCCESS';
+export const BASKET_LENGTH_ORDER_SAVE_FAILURE = 'BASKET_LENGTH_ORDER_SAVE_FAILURE';
 
 
 const reducer = (state = initialState, action) => {
@@ -310,6 +318,7 @@ const reducer = (state = initialState, action) => {
                 draft.basketRemoveUserLoading=false;
                 draft.basketRemoveUserDone=true;
                 draft.currentItem= action.data;
+                draft.itemLength = action.data.length
                 break;
             case BASKET_REMOVE_USER_FAILURE:
                 draft.basketRemoveUserLoading=false;
@@ -325,6 +334,7 @@ const reducer = (state = initialState, action) => {
                 draft.basketDownUserLoading=false;
                 draft.basketDownUserDone=true;
                 draft.currentItem= action.data;
+                draft.itemLength = action.data.length
                 break;
             case BASKET_DOWN_USER_FAILURE:
                 draft.basketDownUserLoading=false;
@@ -340,6 +350,7 @@ const reducer = (state = initialState, action) => {
                 draft.basketPlusUserLoading=false;
                 draft.basketPlusUserDone=true;
                 draft.currentItem= action.data;
+                draft.itemLength = action.data.length
                 break;
             case BASKET_PLUS_USER_FAILURE:
                 draft.basketPlusUserLoading=false;
@@ -356,6 +367,7 @@ const reducer = (state = initialState, action) => {
                 draft.basketEmptyDone=true;
                 draft.currentItem= [];
                 draft.totalPrice= 0;
+                draft.itemLength = 0
                 break;
             case BASKET_EMPTY_FAILURE:
                 draft.basketEmptyLoading=false;
@@ -372,7 +384,6 @@ const reducer = (state = initialState, action) => {
                 draft.basketInsertNotUserDone=true;
                 draft.currentItem= action.data;
                 draft.itemLength = action.data.length
-                localStorage.setItem("itemLength", JSON.stringify(action.data.length));
                 break;
             case BASKET_INSERT_NOTUSER_FAILURE:
                 draft.basketInsertNotUserLoading=false;
@@ -402,10 +413,26 @@ const reducer = (state = initialState, action) => {
                 draft.soldOutBasketLoading=false;
                 draft.soldOutBasketDone=true;
                 draft.currentItem=action.data;
+                draft.itemLength = action.data.length
                 break;
             case SOLD_OUT_BASKET_FAILURE:
                 draft.soldOutBasketLoading=false;
                 draft.soldOutBasketError=action.error;
+                break;
+
+            case BASKET_LENGTH_ORDER_SAVE_REQUEST:
+                draft.basketLengthOrderSaveLoading = true;
+                draft.basketLengthOrderSaveDone = false;
+                draft.basketLengthOrderSaveError = null;
+                break;
+            case BASKET_LENGTH_ORDER_SAVE_SUCCESS:
+                draft.basketLengthOrderSaveLoading=false;
+                draft.basketLengthOrderSaveDone=true;
+                draft.itemLength = action.data
+                break;
+            case BASKET_LENGTH_ORDER_SAVE_FAILURE:
+                draft.basketLengthOrderSaveLoading=false;
+                draft.basketLengthOrderSaveError=action.error;
                 break;
                 
             case UPLOAD_IMAGE_REQUEST:
@@ -420,6 +447,7 @@ const reducer = (state = initialState, action) => {
                 draft.count = draft.count+action.count;
                 draft.currentItemAdd = true;
                 break;  
+
             case DOWN_COUNT_ITEMLIST_REQUEST:
                 const downCount = draft.currentItem.find((v,i) => v.keyIndex === action.data)
                 downCount.itemCount= downCount.itemCount-1
@@ -447,6 +475,7 @@ const reducer = (state = initialState, action) => {
                 break;
             case BASKET_LOCAL_ADD_REQUEST:
                 draft.currentItem = action.data;
+                draft.itemLength = action.data.length
                 break;
             case IS_POST_OPEN_REQUEST:
                 draft.isOpenPost= !draft.isOpenPost;
