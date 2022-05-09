@@ -10,6 +10,10 @@ import { CANCEL_ORDER_REQUEST, GET_ORDER_ALL_REQUEST } from '../../reducers/orde
 import Moment from 'moment';
 import Image from 'next/image';
 import { location } from '../../config/location';
+import ItemService from '../../../service/item/Item.service';
+import { BASKET_INSERT_NOTUSER_REQUEST } from '../../reducers/item';
+import Link from 'next/link';
+import useInput from '../../hooks/useInput';
 
 const curretTime = new Date(new Date().getTime() - 7889400000);
 const format = "YYYY.MM.DD";
@@ -20,6 +24,7 @@ const list = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [userId, setUserId] = useState('')
+  const [status, onChangeStatus, setStatus] = useInput('')
   const [timeControl, setTimeControl] = useState(["오늘", "1개월", "3개월"])
   const [timeOne, setTimeOne] = useState("3개월");
   const [endDate, setEndDate] = useState( Moment(curretTime, format).format(endFormat));
@@ -40,10 +45,25 @@ const list = () => {
             type: GET_ORDER_ALL_REQUEST,
             userId,
             startDate: Moment(new Date(), format).format(startFormat),
-            endDate: endDate
+            endDate: endDate,
+            status,
         })
     }
-},[userId])
+},[userId, status])
+
+  useEffect(() => {
+    const itemLocalData = ItemService.getCurrentItem();
+
+    if(userId !== '' && itemLocalData !== null ) {
+        dispatch({
+            type: BASKET_INSERT_NOTUSER_REQUEST,
+            userId: userId,
+            data: itemLocalData
+        })
+        localStorage.setItem("localRecentProduct", JSON.stringify(null));
+    }
+    console.log("44");
+  },[userId])
 
   const onClickTimeControl = useCallback((e) => {
       console.log(new Date());
@@ -85,7 +105,7 @@ const list = () => {
             type: CANCEL_ORDER_REQUEST,
             orderId,
             startDate: Moment(new Date(), format).format(startFormat),
-            endDate
+            endDate,
         })
       } else { return; }
         
@@ -101,11 +121,12 @@ const list = () => {
             <Row>
                 <Col>
                     <span style={{display: 'flex', fontSize: '14px'}}>주문조회</span>
-                    <select style={{padding: '3px', fontSize : '13px'}}>
+                    <select value={status} onChange={onChangeStatus} style={{padding: '3px', fontSize : '13px'}}>
                         <option>전체 주문처리상태</option>
-                        <option>배송준비중</option>
-                        <option>배송완료</option>
-                        <option>취소</option>
+                        <option value="ORDER">주문준비</option>
+                        <option value="CANCEL">주문취소</option>
+                        <option value="READY">배송준비</option>
+                        <option value="COMP">배송완료</option>
                     </select>&nbsp;&nbsp;
                     { timeControl.map((v) => (
                         <button 
@@ -158,7 +179,9 @@ const list = () => {
                                                     />
                                                 </td> 
                                                 <td className={styles.table_order_title} id={styles.tabel_order_title_id}>
-                                                    <span style={{float:'left'}}>{item.title}</span> <br/>
+                                                    <Link href={`/item/${item.itemId}`}><a >
+                                                        <span style={{float:'left'}}>{item.title}</span>
+                                                    </a></Link><br/>
                                                     <p style={{float:'left', color: '#757575'}}>[옵션: {item.size}]</p> 
                                                 </td> 
                                                 <td className={styles.table_font_family}>{item.count}</td>

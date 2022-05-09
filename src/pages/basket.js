@@ -13,6 +13,7 @@ import { BASKET_DOWN_USER_REQUEST, BASKET_EMPTY_REQUEST, BASKET_GET_REQUEST,
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { location } from '../config/location'
+import { route } from 'next/dist/server/router'
 
 const basket = () => {
   const router = useRouter();
@@ -30,12 +31,10 @@ const basket = () => {
     }
 
     if(itemLocalData !== null) {
-        if (itemLocalData.length > 0) {
-            dispatch({
-                type: BASKET_LOCAL_ADD_REQUEST,
-                data: itemLocalData
-            })
-        }
+        dispatch({
+            type: BASKET_LOCAL_ADD_REQUEST,
+            data: itemLocalData
+        })
     }
    
     console.log("basket useEffect");
@@ -61,11 +60,16 @@ const basket = () => {
                 data: keyIndex,
                 userId
             })
+            window.location.reload();
         } else {
             const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
             if(localRecentProduct !== null) {
                 const basketRemove = localRecentProduct.filter((v) => v.keyIndex !== keyIndex)
                 localStorage.setItem("localRecentProduct", JSON.stringify(basketRemove));
+                const localRecentProducts = JSON.parse(localStorage.getItem('localRecentProduct'));
+                if(localRecentProducts.length === 0) {
+                    localStorage.setItem("localRecentProduct", JSON.stringify(null));
+                }
                 dispatch({
                     type: BASKET_LOCAL_ADD_REQUEST,
                     data: basketRemove,
@@ -116,8 +120,6 @@ const basket = () => {
         const localRecentProduct = JSON.parse(localStorage.getItem('localRecentProduct'));
         if(localRecentProduct !== null) {
             const basketPlus = localRecentProduct.find((v) => v.keyIndex === keyIndex)
-            console.log(basketPlus);
-            // 주문량 조건 달기
             basketPlus.itemCount = basketPlus.itemCount + 1
             basketPlus.itemTotal = basketPlus.itemTotal + basketPlus.price
             localStorage.setItem("localRecentProduct", JSON.stringify(localRecentProduct));
@@ -142,7 +144,7 @@ const basket = () => {
                 type: BASKET_LOCAL_ADD_REQUEST,
                 data: []
             })
-          localStorage.setItem("localRecentProduct", JSON.stringify([]));
+          localStorage.setItem("localRecentProduct", JSON.stringify(null));
           window.location.reload();
         }
       } else {
@@ -151,6 +153,9 @@ const basket = () => {
   })
 
   const onClickOrderPage = useCallback(() => {
+      if(userId === '') {
+        return router.push("/user/login")
+      }
       router.push("/order/order")
   })
 
