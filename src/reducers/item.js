@@ -248,6 +248,9 @@ const reducer = (state = initialState, action) => {
                 draft.getItemOneLoading = true;
                 draft.getItemOneDone = false;
                 draft.getItemOneError = null;
+                draft.currentItem = [];
+                draft.total= null;
+                draft.count = 0;
                 break;
             case GET_ITEM_ONE_SUCCESS:
                 draft.getItemOneLoading=false;
@@ -283,9 +286,7 @@ const reducer = (state = initialState, action) => {
                 draft.basketGetDone=true;
                 draft.currentItem= action.data;
                 const total = null;
-                action.data.forEach(v => {
-                    total += v.itemTotal
-                })
+                action.data.forEach(v => total += v.itemTotal )
                 draft.totalPrice = total;
                 draft.itemLength = action.data.length;
                 break;
@@ -318,7 +319,10 @@ const reducer = (state = initialState, action) => {
                 draft.basketRemoveUserLoading=false;
                 draft.basketRemoveUserDone=true;
                 draft.currentItem= action.data;
-                draft.itemLength = action.data.length
+                const cancelTotal = null;
+                action.data.forEach(v => cancelTotal += v.itemTotal )
+                draft.totalPrice = cancelTotal;
+                draft.itemLength = action.data.length;
                 break;
             case BASKET_REMOVE_USER_FAILURE:
                 draft.basketRemoveUserLoading=false;
@@ -334,7 +338,10 @@ const reducer = (state = initialState, action) => {
                 draft.basketDownUserLoading=false;
                 draft.basketDownUserDone=true;
                 draft.currentItem= action.data;
-                draft.itemLength = action.data.length
+                draft.itemLength = action.data.length;
+                const basketDownTotal = null;
+                action.data.forEach( v =>  basketDownTotal += v.itemTotal )
+                draft.totalPrice = basketDownTotal;
                 break;
             case BASKET_DOWN_USER_FAILURE:
                 draft.basketDownUserLoading=false;
@@ -350,7 +357,10 @@ const reducer = (state = initialState, action) => {
                 draft.basketPlusUserLoading=false;
                 draft.basketPlusUserDone=true;
                 draft.currentItem= action.data;
-                draft.itemLength = action.data.length
+                draft.itemLength = action.data.length;
+                const basketPlusTotal = null;
+                action.data.forEach(v => basketPlusTotal += v.itemTotal )
+                draft.totalPrice = basketPlusTotal;
                 break;
             case BASKET_PLUS_USER_FAILURE:
                 draft.basketPlusUserLoading=false;
@@ -468,14 +478,17 @@ const reducer = (state = initialState, action) => {
                 draft.total = draft.total - removeCount.itemTotal;
                 draft.count = draft.count - removeCount.itemCount
                 break;
-            case BASKET_NULL_REQUEST:
-                draft.currentItem = [];
-                draft.total= null;
-                draft.count = 0;
-                break;
+            // case BASKET_NULL_REQUEST:
+            //     draft.currentItem = [];
+            //     draft.total= null;
+            //     draft.count = 0;
+            //     break;
             case BASKET_LOCAL_ADD_REQUEST:
                 draft.currentItem = action.data;
-                draft.itemLength = action.data.length
+                draft.itemLength = action.data.length;
+                const localTotal = null;
+                action.data.forEach(v => localTotal += v.itemTotal )
+                draft.totalPrice = localTotal;
                 break;
             case IS_POST_OPEN_REQUEST:
                 draft.isOpenPost= !draft.isOpenPost;
