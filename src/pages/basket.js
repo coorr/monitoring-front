@@ -13,7 +13,6 @@ import { BASKET_DOWN_USER_REQUEST, BASKET_EMPTY_REQUEST, BASKET_GET_REQUEST,
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { location } from '../config/location'
-import { route } from 'next/dist/server/router'
 
 const basket = () => {
   const router = useRouter();

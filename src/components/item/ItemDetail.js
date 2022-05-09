@@ -10,7 +10,6 @@ import DeleteIcon from '../../images/btn_price_delete.gif';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import AuthService from '../../../service/user/Auth.service';
-import BasketService from '../../../service/basket/Basket.service';
 import { location } from '../../config/location';
 
 

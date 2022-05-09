@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Container, Row, Col, Card,ListGroup, Button } from 'react-bootstrap'
+import { Card} from 'react-bootstrap'
 import styles from '../../components/css/Product.module.scss'
 import DeleteIcon from '../../images/btn_price_delete.gif'
 import Image from 'next/image';

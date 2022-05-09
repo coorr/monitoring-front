@@ -21,10 +21,6 @@ const configureStore = () => {
   const store = createStore(reducer, enhancer);
   store.sagaTask = sagaMiddleware.run(rootSaga); 
   
-//   store.sagaTask  = sagaMiddleware.run(rootSaga, store.dispatch).toPromise().catch(e => {
-//     logger.error({ message: e.message, source: 'sagaError', stacktrace: e.sagaStack });
-//     store.dispatch({ type: 'ERROR', payload: e })
-// });
   return store;
 };
 
