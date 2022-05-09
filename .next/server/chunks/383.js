@@ -14,6 +14,7 @@ exports.modules = {
 /* harmony export */   "E4": () => (/* binding */ BASKET_ADD_USER_REQUEST),
 /* harmony export */   "G2": () => (/* binding */ REMOVE_COUNT_ITEMLIST_REQUEST),
 /* harmony export */   "HN": () => (/* binding */ REVISED_ITEM_SUCCESS),
+/* harmony export */   "I2": () => (/* binding */ BASKET_LENGTH_ORDER_SAVE_SUCCESS),
 /* harmony export */   "I5": () => (/* binding */ REMOVE_ITEM_SUCCESS),
 /* harmony export */   "IE": () => (/* binding */ DUPLICATE_SIZE_QUANTITY_CHECK_SUCCESS),
 /* harmony export */   "Ib": () => (/* binding */ BASKET_INSERT_NOTUSER_FAILURE),
@@ -27,6 +28,7 @@ exports.modules = {
 /* harmony export */   "Qr": () => (/* binding */ DUPLICATE_SIZE_QUANTITY_CHECK_REQUEST),
 /* harmony export */   "R0": () => (/* binding */ BASKET_EMPTY_REQUEST),
 /* harmony export */   "RK": () => (/* binding */ ADD_ITEM_FAILURE),
+/* harmony export */   "RP": () => (/* binding */ BASKET_LENGTH_ORDER_SAVE_FAILURE),
 /* harmony export */   "S0": () => (/* binding */ GET_ITEM_REQUEST),
 /* harmony export */   "So": () => (/* binding */ BASKET_REMOVE_USER_REQUEST),
 /* harmony export */   "UD": () => (/* binding */ BASKET_DOWN_USER_FAILURE),
@@ -59,6 +61,7 @@ exports.modules = {
 /* harmony export */   "oT": () => (/* binding */ BASKET_EMPTY_SUCCESS),
 /* harmony export */   "oV": () => (/* binding */ BASKET_ADD_USER_FAILURE),
 /* harmony export */   "rv": () => (/* binding */ BASKET_GET_SUCCESS),
+/* harmony export */   "tQ": () => (/* binding */ BASKET_LENGTH_ORDER_SAVE_REQUEST),
 /* harmony export */   "uV": () => (/* binding */ GET_ITEM_FAILURE),
 /* harmony export */   "uj": () => (/* binding */ BASKET_PLUS_USER_REQUEST),
 /* harmony export */   "wn": () => (/* binding */ REVISED_ITEM_FAILURE),
@@ -132,7 +135,10 @@ const initialState = {
     duplicateSizeQuantityCheckError: null,
     soldOutBasketLoading: false,
     soldOutBasketDone: false,
-    soldOutBasketError: null
+    soldOutBasketError: null,
+    basketLengthOrderSaveLoading: false,
+    basketLengthOrderSaveDone: false,
+    basketLengthOrderSaveError: null
 };
 const GET_ITEM_FIRST_REQUEST = "GET_ITEM_FIRST_REQUEST";
 const GET_ITEM_FIRST_SUCCESS = "GET_ITEM_FIRST_SUCCESS";
@@ -193,6 +199,9 @@ const DUPLICATE_SIZE_QUANTITY_CHECK_FAILURE = "DUPLICATE_SIZE_QUANTITY_CHECK_FAI
 const SOLD_OUT_BASKET_REQUEST = "SOLD_OUT_BASKET_REQUEST";
 const SOLD_OUT_BASKET_SUCCESS = "SOLD_OUT_BASKET_SUCCESS";
 const SOLD_OUT_BASKET_FAILURE = "SOLD_OUT_BASKET_FAILURE";
+const BASKET_LENGTH_ORDER_SAVE_REQUEST = "BASKET_LENGTH_ORDER_SAVE_REQUEST";
+const BASKET_LENGTH_ORDER_SAVE_SUCCESS = "BASKET_LENGTH_ORDER_SAVE_SUCCESS";
+const BASKET_LENGTH_ORDER_SAVE_FAILURE = "BASKET_LENGTH_ORDER_SAVE_FAILURE";
 const reducer = (state = initialState, action)=>{
     return immer__WEBPACK_IMPORTED_MODULE_0___default()(state, (draft)=>{
         switch(action.type){
@@ -335,6 +344,7 @@ const reducer = (state = initialState, action)=>{
                 draft.basketRemoveUserLoading = false;
                 draft.basketRemoveUserDone = true;
                 draft.currentItem = action.data;
+                draft.itemLength = action.data.length;
                 break;
             case BASKET_REMOVE_USER_FAILURE:
                 draft.basketRemoveUserLoading = false;
@@ -349,6 +359,7 @@ const reducer = (state = initialState, action)=>{
                 draft.basketDownUserLoading = false;
                 draft.basketDownUserDone = true;
                 draft.currentItem = action.data;
+                draft.itemLength = action.data.length;
                 break;
             case BASKET_DOWN_USER_FAILURE:
                 draft.basketDownUserLoading = false;
@@ -363,6 +374,7 @@ const reducer = (state = initialState, action)=>{
                 draft.basketPlusUserLoading = false;
                 draft.basketPlusUserDone = true;
                 draft.currentItem = action.data;
+                draft.itemLength = action.data.length;
                 break;
             case BASKET_PLUS_USER_FAILURE:
                 draft.basketPlusUserLoading = false;
@@ -378,6 +390,7 @@ const reducer = (state = initialState, action)=>{
                 draft.basketEmptyDone = true;
                 draft.currentItem = [];
                 draft.totalPrice = 0;
+                draft.itemLength = 0;
                 break;
             case BASKET_EMPTY_FAILURE:
                 draft.basketEmptyLoading = false;
@@ -393,7 +406,6 @@ const reducer = (state = initialState, action)=>{
                 draft.basketInsertNotUserDone = true;
                 draft.currentItem = action.data;
                 draft.itemLength = action.data.length;
-                localStorage.setItem("itemLength", JSON.stringify(action.data.length));
                 break;
             case BASKET_INSERT_NOTUSER_FAILURE:
                 draft.basketInsertNotUserLoading = false;
@@ -421,10 +433,25 @@ const reducer = (state = initialState, action)=>{
                 draft.soldOutBasketLoading = false;
                 draft.soldOutBasketDone = true;
                 draft.currentItem = action.data;
+                draft.itemLength = action.data.length;
                 break;
             case SOLD_OUT_BASKET_FAILURE:
                 draft.soldOutBasketLoading = false;
                 draft.soldOutBasketError = action.error;
+                break;
+            case BASKET_LENGTH_ORDER_SAVE_REQUEST:
+                draft.basketLengthOrderSaveLoading = true;
+                draft.basketLengthOrderSaveDone = false;
+                draft.basketLengthOrderSaveError = null;
+                break;
+            case BASKET_LENGTH_ORDER_SAVE_SUCCESS:
+                draft.basketLengthOrderSaveLoading = false;
+                draft.basketLengthOrderSaveDone = true;
+                draft.itemLength = action.data;
+                break;
+            case BASKET_LENGTH_ORDER_SAVE_FAILURE:
+                draft.basketLengthOrderSaveLoading = false;
+                draft.basketLengthOrderSaveError = action.error;
                 break;
             case UPLOAD_IMAGE_REQUEST:
                 draft.imagePath = draft.imagePath.concat(action.data);
@@ -470,6 +497,7 @@ const reducer = (state = initialState, action)=>{
                 break;
             case BASKET_LOCAL_ADD_REQUEST:
                 draft.currentItem = action.data;
+                draft.itemLength = action.data.length;
                 break;
             case IS_POST_OPEN_REQUEST:
                 draft.isOpenPost = !draft.isOpenPost;

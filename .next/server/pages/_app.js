@@ -391,6 +391,22 @@ function* soldOutBasket(action) {
         alert("\uC2E4\uD328\uD558\uC600\uC2B5\uB2C8\uB2E4.");
     }
 }
+function* basketLengthOrderSave(action) {
+    try {
+        const result = yield Basket_service/* default.getBasketToUserLength */.Z.getBasketToUserLength(action.userId);
+        yield (0,effects_namespaceObject.put)({
+            type: item/* BASKET_LENGTH_ORDER_SAVE_SUCCESS */.I2,
+            data: result.data
+        });
+    } catch (err) {
+        tokenCheck(err.response.data);
+        yield (0,effects_namespaceObject.put)({
+            type: item/* BASKET_LENGTH_ORDER_SAVE_FAILURE */.RP,
+            error: err.response.data
+        });
+        alert("\uC2E4\uD328\uD558\uC600\uC2B5\uB2C8\uB2E4.");
+    }
+}
 function* watchAddItem() {
     yield (0,effects_namespaceObject.takeLatest)(item/* ADD_ITEM_REQUEST */.C_, addItem);
 }
@@ -439,6 +455,9 @@ function* watchDuplicateSizeQuantityCheck() {
 function* watchSoldOutBasket() {
     yield (0,effects_namespaceObject.takeLatest)(item/* SOLD_OUT_BASKET_REQUEST */.b0, soldOutBasket);
 }
+function* watchBasketLengthOrderSave() {
+    yield (0,effects_namespaceObject.takeLatest)(item/* BASKET_LENGTH_ORDER_SAVE_REQUEST */.tQ, basketLengthOrderSave);
+}
 function* userSage() {
     yield (0,effects_namespaceObject.all)([
         (0,effects_namespaceObject.fork)(watchAddItem),
@@ -456,7 +475,8 @@ function* userSage() {
         (0,effects_namespaceObject.fork)(watchBasketEmpty),
         (0,effects_namespaceObject.fork)(watchBasketInsertNotUser),
         (0,effects_namespaceObject.fork)(watchDuplicateSizeQuantityCheck),
-        (0,effects_namespaceObject.fork)(watchSoldOutBasket), 
+        (0,effects_namespaceObject.fork)(watchSoldOutBasket),
+        (0,effects_namespaceObject.fork)(watchBasketLengthOrderSave), 
     ]);
 };
 
@@ -519,7 +539,11 @@ function* user_userSage() {
     ]);
 };
 
+// EXTERNAL MODULE: external "react-redux"
+var external_react_redux_ = __webpack_require__(6022);
 ;// CONCATENATED MODULE: ./src/sagas/order.js
+
+
 
 
 
@@ -545,7 +569,7 @@ function* orderSave(action) {
 }
 function* getOrderAll(action) {
     try {
-        const result = yield Order_service/* default.getOrderUserById */.Z.getOrderUserById(action.userId, action.startDate, action.endDate);
+        const result = yield Order_service/* default.getOrderUserById */.Z.getOrderUserById(action.userId, action.startDate, action.endDate, action.status);
         yield (0,effects_namespaceObject.put)({
             type: order/* GET_ORDER_ALL_SUCCESS */.gQ,
             data: result.data
@@ -671,11 +695,11 @@ function App({ Component , pageProps  }) {
         children: [
             /*#__PURE__*/ (0,jsx_runtime_.jsxs)((head_default()), {
                 children: [
+                    /*#__PURE__*/ jsx_runtime_.jsx("title", {
+                        children: "LOOK"
+                    }),
                     /*#__PURE__*/ jsx_runtime_.jsx("meta", {
                         charSet: "utf-8"
-                    }),
-                    /*#__PURE__*/ jsx_runtime_.jsx("title", {
-                        children: "coor"
                     })
                 ]
             }),
@@ -717,6 +741,13 @@ module.exports = require("next/head");
 /***/ ((module) => {
 
 module.exports = require("next/router");
+
+/***/ }),
+
+/***/ 6022:
+/***/ ((module) => {
+
+module.exports = require("react-redux");
 
 /***/ }),
 

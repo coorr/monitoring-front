@@ -39,8 +39,8 @@ class OrderService {
             }
         });
     }
-    getOrderUserById(userId, startDate, endDate) {
-        return axios__WEBPACK_IMPORTED_MODULE_0___default().get(API_URL + "getOrderUserById/" + userId + "?startDate=" + startDate + "&endDate=" + endDate, {
+    getOrderUserById(userId, startDate, endDate, status) {
+        return axios__WEBPACK_IMPORTED_MODULE_0___default().get(API_URL + "getOrderUserById/" + userId + "?startDate=" + startDate + "&endDate=" + endDate + "&status=" + status, {
             headers: {
                 Authorization: (0,_user_auth_header__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z)()
             }

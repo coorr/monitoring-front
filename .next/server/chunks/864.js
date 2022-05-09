@@ -42,7 +42,8 @@ module.exports = {
 /* harmony export */   "x": () => (/* binding */ location)
 /* harmony export */ });
 // export const location = "http://localhost:8080/static/";
-const location = "https://shopping-back-s3.s3.ap-northeast-2.amazonaws.com/"; // 배포 url
+// export const location = "https://shopping-back-s3.s3.ap-northeast-2.amazonaws.com/"; // 배포 url
+const location = "https://lh3.googleusercontent.com/"; // 구글 url
 
 
 /***/ })

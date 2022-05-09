@@ -16,7 +16,8 @@ module.exports = {
 	"orderHeaderMargin": "Header_orderHeaderMargin__u1spz",
 	"headerTitle": "Header_headerTitle__CvQKp",
 	"postCodeStyle": "Header_postCodeStyle__ivjve",
-	"postHeaderColor": "Header_postHeaderColor__waVXl"
+	"postHeaderColor": "Header_postHeaderColor__waVXl",
+	"postHeaderRedRadio": "Header_postHeaderRedRadio__Ix6TC"
 };
 
 

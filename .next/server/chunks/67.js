@@ -74,6 +74,13 @@ class BasketService {
             }
         });
     }
+    getBasketToUserLength(userId) {
+        return axios__WEBPACK_IMPORTED_MODULE_0___default().get(API_URL + "getBasketToUserLength/" + userId, {
+            headers: {
+                Authorization: (0,_user_auth_header__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z)()
+            }
+        });
+    }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new BasketService());
 

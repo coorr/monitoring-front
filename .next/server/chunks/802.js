@@ -71,7 +71,7 @@ function authHeader() {
 /* harmony export */   "v": () => (/* binding */ config)
 /* harmony export */ });
 // export const config = "http://localhost:8080/";
-const config = "http://54.180.170.84:8080/"; // 배포 url
+const config = "https://lookapi.cf/"; // 배포 url
 
 
 /***/ })
