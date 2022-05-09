@@ -28,6 +28,17 @@ const Item = () =>  {
       <>
 
         <Header />
+          <Head>
+            <title>
+              {itemOne[0].title}
+            </title>
+            <meta name='description' content={itemOne[0].size} />
+            <meta property='og:title'  content={itemOne[0].title} />
+            <meta property='og:description'  content={itemOne[0].title} />
+            <meta property='og:title'  content={itemOne[0].size} />
+            <meta property='og:image'  content={itemOne[0].images ? itemOne[0].images[0].location : null} />
+            <meta property='og:url'  content={`https://lookshop.cf/item/${id}`} />
+          </Head>
         <div className="middle_space_screen" />
         {
           getItemOneDone && (

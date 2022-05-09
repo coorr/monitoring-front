@@ -17,11 +17,12 @@ import { location } from '../../config/location';
 const ItemDetail = ({ itemDetail }) => {
     const router = useRouter();
     const [sizeValueArray, setSizeValueArray] = useState(['S','M','L'])
+    const [sizeValueArrays, setSizeValueArrays] = useState([{"S": itemDetail.quantityS }, {"M": itemDetail.quantityM },{ "L": itemDetail.quantityL}])
     const [sizeValue, setSizeValue] = useState('');
     const [admin, setAdmin] = useState(false);
     const [userId, setUserId] = useState('');
     const dispatch = useDispatch();
-    const { duplicateSizeQuantityCheckError, duplicateSizeQuantityCheckDone, basketItem ,currentItem, total, count  } = useSelector((state) => state.item);
+    const { basketItem ,currentItem, total, count  } = useSelector((state) => state.item);
 
     useEffect(() => {
         console.log("ItemDetail.useEffect");
@@ -38,9 +39,9 @@ const ItemDetail = ({ itemDetail }) => {
             })
         }
 
-        dispatch({
-            type: BASKET_NULL_REQUEST
-        })
+        // dispatch({
+        //     type: BASKET_NULL_REQUEST
+        // })
     },[admin,userId])
     console.log("itemDetail" , itemDetail);
 
@@ -72,7 +73,7 @@ const ItemDetail = ({ itemDetail }) => {
             count: 1
         })
         
-    })
+    },[sizeValue])
 
     const onClickItemListDown = useCallback((index) => () => {
         for(var i=0; i<currentItem.length; i++) {
@@ -196,25 +197,39 @@ const ItemDetail = ({ itemDetail }) => {
                 <span className={styles.item_text} style={{ textDecoration: 'line-through'}}>{itemDetail.price.toLocaleString('ko-KR')}원</span>
                 <span className={styles.item_text}>{itemDetail.discount_price.toLocaleString('ko-KR')}원</span>
             </div>
-            <br/>            
+            <br/>       
+            <div  style={{display:"flex"}}>   
            {
-               sizeValueArray.map((v,i) => (
-                 <Button 
-                    key={"size"+i} 
-                    id={v === sizeValue ? styles.item_size_btn : styles.item_size_btn_2} 
-                    value={v} 
-                    onClick={(e) => onClickSizeValue(e,i)}
-                 >
-                     {v}
-                 </Button>
+               sizeValueArrays.map((v,i) => (
+                    <div key={"size"+i}>
+                        {
+                            v[sizeValueArray[i]] === 0 ? (
+                                <Button 
+                                    id={styles.item_size_btn_disabled} 
+                                    disabled
+                                >
+                                    {sizeValueArray[i]}
+                                </Button>
+                            ) : (
+                                <Button 
+                                    id={sizeValueArray[i] === sizeValue ? styles.item_size_btn : styles.item_size_btn_2} 
+                                    value={sizeValueArray[i]} 
+                                    onClick={(e) => onClickSizeValue(e,i)}
+                                >
+                                    {sizeValueArray[i]}
+                                </Button>
+                            )
+                        }
+                    </div>
                ))
            }
+           </div>
            <br />
            <br />
            <div style={{ fontSize: "13px", color: "#555555"}}>
             {
                currentItem.map((v,i) => (
-                 <>
+                 <div key={v.keyIndex}>
                    {
                        i >= 1 && (
                            <>
@@ -224,7 +239,7 @@ const ItemDetail = ({ itemDetail }) => {
                        )
                    }
                    <br/>
-                   <span key={"item"+i}  style={{marginBottom: '3px'}}>{v.title + " - " + v.size}</span>
+                   <span   style={{marginBottom: '3px'}}>{v.title + " - " + v.size}</span>
                   
                    <div  style={{float: 'right'}}>
                      <button onClick={onClickItemListDown(v.keyIndex)} className={styles.item_add_remove_btn}>-</button> &nbsp;&nbsp;
@@ -233,7 +248,7 @@ const ItemDetail = ({ itemDetail }) => {
                      <button onClick={onClickItemListRemove(v.keyIndex)} className={styles.item_add_remove_btn}><Image src={DeleteIcon} /></button>
                    </div>
                    <br />
-                 </>
+                 </div>
                ))
            }
            </div>

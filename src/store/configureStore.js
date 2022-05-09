@@ -12,23 +12,19 @@ const loggerMiddleware = ({ dispatch, getState }) => (next) => (action) => {
 };
 
 const configureStore = () => {
-  const sagaMiddleware = createSagaMiddleware({
-    onError: (err) => {
-      store.dispatch({ type: 'ERROR', payload: err })
-    }
-  });
+  const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware, loggerMiddleware];
   // const middlewares = [];
   const enhancer = process.env.NODE_ENV === 'production'
-    ? compose(applyMiddleware(...middlewares)) // 빌드용
-    : composeWithDevTools(applyMiddleware(...middlewares)); // 개발용
+    ? compose(applyMiddleware(sagaMiddleware)) 
+    : composeWithDevTools(applyMiddleware(...middlewares)); 
   const store = createStore(reducer, enhancer);
-  // store.sagaTask = sagaMiddleware.run(rootSaga); // saga 기능
+  store.sagaTask = sagaMiddleware.run(rootSaga); 
   
-  store.sagaTask  = sagaMiddleware.run(rootSaga, store.dispatch).toPromise().catch(e => {
-    logger.error({ message: e.message, source: 'sagaError', stacktrace: e.sagaStack });
-    store.dispatch({ type: 'ERROR', payload: e })
-});
+//   store.sagaTask  = sagaMiddleware.run(rootSaga, store.dispatch).toPromise().catch(e => {
+//     logger.error({ message: e.message, source: 'sagaError', stacktrace: e.sagaStack });
+//     store.dispatch({ type: 'ERROR', payload: e })
+// });
   return store;
 };
 
