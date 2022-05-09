@@ -13,8 +13,10 @@ function App({ Component, pageProps }) {
     return (
       <>
         <Head>
+          <title>LOOK</title>
           <meta charSet='utf-8' />
-          <title>coor</title>
+          {/* <link rel="icon" href="/favicon.ico" /> */}
+          {/* <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> */}
         </Head>
         <SSRProvider>
           <Component {...pageProps} />

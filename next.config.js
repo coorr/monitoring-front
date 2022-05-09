@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   module.exports = withBundleAnalyzer({
     compress: true,
     images: {
-      domains: ['images.unsplash.com', "lh3.googleusercontent.com","localhost"]
+      domains: ["lh3.googleusercontent.com","localhost", "shopping-back-s3.s3.ap-northeast-2.amazonaws.com","lookapi.cf"]
     },
     webpack(config, { webpack }) {
       const prod = process.env.NODE_ENV === 'production';

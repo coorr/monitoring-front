@@ -19,8 +19,7 @@ const Header = () => {
   const [admin, setAdmin ]  = useState('');
   const [userId, setUserId ]  = useState('');
   const [currentUser, setCurrentUser ]  = useState(false);
-  const [basket, setBasket ]  = useState(false);
-  const [ userItemLength, setUserItemLength] = useState('')
+  const [basket, setBasket ]  = useState([]);
   const {  currentItem, itemLength  } = useSelector((state) => state.item)
 
   useEffect(() => {
@@ -40,7 +39,7 @@ const Header = () => {
   useEffect(() => {
     const basketLocal = ItemService.getCurrentItem();
     console.log("22");
-    if(userId === '' && !basket && basketLocal !== null) {
+    if(userId === ''  && basket.length === 0 && basketLocal !== null) {
       setBasket(basketLocal)
     } 
   },[userId, basket])
@@ -64,7 +63,6 @@ const Header = () => {
   });
 
   const login = useCallback(() => {
-    console.log("login 시도 중");
     router.push("/user/login")
   });
 
@@ -76,7 +74,7 @@ const Header = () => {
     <>
     <Navbar  expand="lg"  >
         <Container className={styles.headerLayout}>
-          <Navbar.Brand href="/" className={styles.headerColor}>COOR</Navbar.Brand>
+          <Navbar.Brand href="/" className={styles.headerColor}>LOOK</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" >
             <Nav className="ms-auto" >
@@ -98,8 +96,7 @@ const Header = () => {
                 <NavDropdown.Item onClick={() => router.push("/help")} id={styles.dropdownMenuItem}>Shirt</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => router.push("/help")} id={styles.dropdownMenuItem}>T-shirt</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>info</Nav.Link>
-              <Nav.Link onClick={() => router.push("/help")} id={styles.navLink}>help</Nav.Link>
+              <Nav.Link onClick={() => router.push("/info")} id={styles.navLink}>info</Nav.Link>
               {
                 currentUser ? (
                   <>
@@ -110,8 +107,7 @@ const Header = () => {
                   <Nav.Link id={styles.navLink} href="/user/login">login</Nav.Link>
                 )
               }
-              {/* <Nav.Link  onClick={() => router.push("/basket")}>card{"("}{ userId === '' ? basket.length : userItemLength}{")"}</Nav.Link> */}
-              <Nav.Link  onClick={() => router.push("/basket")}>card</Nav.Link>
+              <Nav.Link  onClick={() => router.push("/basket")}>card{"("}{ userId === '' ? basket.length : itemLength}{")"}</Nav.Link>
               
               
             </Nav>

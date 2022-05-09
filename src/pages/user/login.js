@@ -4,7 +4,6 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import Header from "../../components/header";
 import AuthService from "../../../service/user/Auth.service";
-import Link from "next/link";
 import Router from "next/router";
 import styles from '../../components/css/User.module.css'
 import useInput from "../../hooks/useInput";
@@ -38,7 +37,7 @@ const Login = () => {
     if (checkBtn.context._errors.length === 0) {
       AuthService.login(username, password)
       .then(res => {
-        Router.push("/help")
+        Router.push("/mypage/list")
           dispatch({
             type: LOG_IN_REQUEST,
             data: res.id
