@@ -1,12 +1,10 @@
 import React, {memo, useCallback, useState} from 'react'
 import { Card } from "react-bootstrap";
-import { useRouter } from 'next/router';
 import Link from 'next/link'
 import { location } from '../../config/location';
 
 const ItemPost = ({item}) => {
   const [over, setOver] = useState(false);
-  const router = useRouter();
   console.log(item);
 
   return (

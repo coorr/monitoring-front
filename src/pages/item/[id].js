@@ -52,7 +52,6 @@ const Item = () =>  {
             <ItemDetail itemDetail={itemOne[0]}  />
           )
         }
-        {/* <ItemImage /> */}
         <Footer />
       </>
   )

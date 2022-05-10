@@ -8,7 +8,6 @@ import { ADDRESS_ORDER_REQUEST, IS_POST_OPEN_REQUEST } from '../../reducers/item
 
 const PostModel = ({show, onHide} )  => {
   const dispatch = useDispatch();
-  const {isOpenPost } = useSelector((state) => state.item) 
 
 
   const onCompletePost = useCallback((data) => {
@@ -34,8 +33,6 @@ const PostModel = ({show, onHide} )  => {
     })
 
     console.log(data);
-    console.log(data.zonecode);
-    console.log(address);
     });
 
     const onClickModelClose = useCallback(() => {
