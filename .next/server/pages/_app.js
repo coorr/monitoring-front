@@ -748,6 +748,10 @@ function App({ Component , pageProps  }) {
                     }),
                     /*#__PURE__*/ jsx_runtime_.jsx("meta", {
                         charSet: "utf-8"
+                    }),
+                    /*#__PURE__*/ jsx_runtime_.jsx("meta", {
+                        name: "google-site-verification",
+                        content: "W6zJFkxNv0WaYmUx8nZ4Pjv_HActp5-ROUGkSfokpLI"
                     })
                 ]
             }),
