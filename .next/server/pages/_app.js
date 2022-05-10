@@ -613,11 +613,7 @@ function* user_userSage() {
     ]);
 };
 
-// EXTERNAL MODULE: external "react-redux"
-var external_react_redux_ = __webpack_require__(6022);
 ;// CONCATENATED MODULE: ./src/sagas/order.js
-
-
 
 
 
@@ -793,13 +789,6 @@ module.exports = require("next/head");
 /***/ ((module) => {
 
 module.exports = require("next/router");
-
-/***/ }),
-
-/***/ 6022:
-/***/ ((module) => {
-
-module.exports = require("react-redux");
 
 /***/ }),
 
