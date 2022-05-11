@@ -1,6 +1,22 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
+  "/basket": "pages/basket.html",
+  "/addItem": "pages/addItem.html",
+  "/": "pages/index.html",
+  "/info": "pages/info.html",
+  "/item/knitwear": "pages/item/knitwear.html",
+  "/item/[id]": "pages/item/[id].html",
+  "/item/outwear": "pages/item/outwear.html",
+  "/item/shirt": "pages/item/shirt.html",
+  "/item/sweatshirt": "pages/item/sweatshirt.html",
+  "/item/tshirt": "pages/item/tshirt.html",
+  "/user/login": "pages/user/login.html",
+  "/mypage/list": "pages/mypage/list.html",
+  "/order/order": "pages/order/order.html",
+  "/user/register": "pages/user/register.html",
   "/_error": "pages/_error.js",
-  "/": "pages/index.js"
+  "/user/register.result": "pages/user/register.result.html",
+  "/item/revised/itemRevised": "pages/item/revised/itemRevised.html",
+  "/404": "pages/404.html"
 }
