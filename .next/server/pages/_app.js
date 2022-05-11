@@ -757,7 +757,7 @@ const configureStore = ()=>{
         sagaMiddleware,
         loggerMiddleware
     ];
-    // const middlewares = [];
+    console.log("process.env.NODE_ENV = ", "production");
     const enhancer =  true ? (0,external_redux_namespaceObject.compose)((0,external_redux_namespaceObject.applyMiddleware)(sagaMiddleware)) : 0;
     const store = (0,external_redux_namespaceObject.createStore)(reducers, enhancer);
     store.sagaTask = sagaMiddleware.run(rootSaga);
