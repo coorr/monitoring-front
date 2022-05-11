@@ -82,7 +82,7 @@ function* addItem(action) {
 function* getItemFirst(action) {
   try {
     const result =  yield ItemService.selectItemAll(action.data !== undefined ? action.data.lastId : 0 , 
-                                                  action.data !== undefined ? action.data.size : 12);
+                                                  action.data !== undefined ? action.data.size : 12, action.category);
     yield put({       
       type: GET_ITEM_FIRST_SUCCESS, 
       data: result.data
@@ -100,7 +100,7 @@ function* getItemFirst(action) {
 function* getItem(action) {
   try {
     const result =  yield ItemService.selectItemAll(action.data !== undefined ? action.data.lastId : 0 , 
-                                                  action.data !== undefined ? action.data.size : 6);
+                                                  action.data !== undefined ? action.data.size : 6, action.category);
     yield put({       
       type: GET_ITEM_SUCCESS, 
       data: result.data

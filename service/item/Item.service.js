@@ -8,8 +8,8 @@ class ItemService {
     insertItemAll(itemData) {
       return axios.post(API_URL + "admin/insertItemAll", itemData, { headers: { Authorization:  authHeader(), 'Content-Type' : 'multipart/form-data' }});
     }
-    selectItemAll(lastId,size) {
-      return axios.get(API_URL + "getItem?lastId="+lastId+"&size="+size, { headers: { Authorization:  authHeader() }});
+    selectItemAll(lastId,size,category) {
+      return axios.get(API_URL + "getItem?lastId="+lastId+"&size="+size+"&category="+category, { headers: { Authorization:  authHeader() }});
     }
     getItemOne(id) {
       return axios.get(API_URL + "getItemOne/"+id, { headers: { Authorization:  authHeader() }});

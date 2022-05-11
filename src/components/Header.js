@@ -63,9 +63,7 @@ const Header = () => {
     router.push("/user/login")
   });
 
-  const onClickTest = useCallback(() => {
-    router.push("/help")
-  })
+
   console.log(userId);
   return (
     <>
@@ -87,11 +85,11 @@ const Header = () => {
                 onMouseEnter={showDropdown} 
                 onMouseLeave={hideDropdown}
               >
-                <NavDropdown.Item onClick={onClickTest} id={styles.dropdownMenuItem}>Outwear</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => router.push("/help")}id={styles.dropdownMenuItem}>Knitwear</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => router.push("/help")} id={styles.dropdownMenuItem}>Sweatshirt</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => router.push("/help")} id={styles.dropdownMenuItem}>Shirt</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => router.push("/help")} id={styles.dropdownMenuItem}>T-shirt</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => router.push("/item/outwear")} id={styles.dropdownMenuItem}>Outwear</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => router.push("/item/knitwear")} id={styles.dropdownMenuItem}>Knitwear</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => router.push("/item/sweatshirt")} id={styles.dropdownMenuItem}>Sweatshirt</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => router.push("/item/shirt")} id={styles.dropdownMenuItem}>Shirt</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => router.push("/item/tshirt")} id={styles.dropdownMenuItem}>T-shirt</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link onClick={() => router.push("/info")} id={styles.navLink}>info</Nav.Link>
               {
