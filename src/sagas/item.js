@@ -41,15 +41,18 @@ import ItemService from '../../service/item/Item.service'
 import TokenCheck from '../store/tokenCheck';
 import BasketService from '../../service/basket/Basket.service';
 import OrderService from '../../service/order/Order.service';
+import AdminService from '../../service/admin/admin.service';
 
 function* addRevisedItem(action) {
+  const history = action.history;
   try {
-    const result =  yield ItemService.revisedItem(action.data);
+    const result =  yield AdminService.revisedItem(action.data);
     alert("저장 되었습니다.")
     yield put({       
       type: REVISED_ITEM_SUCCESS, 
       data: result.data
     }) 
+    history.push("/")
   } catch (err) {
     TokenCheck(err.response.data)
     yield put({
@@ -61,7 +64,7 @@ function* addRevisedItem(action) {
 
 function* addItem(action) {
   try {
-    const result =  yield ItemService.insertItemAll(action.data);
+    const result =  yield AdminService.insertItemAll(action.data);
     alert("저장 되었습니다.")
     yield put({       
       type: ADD_ITEM_SUCCESS, 
@@ -79,7 +82,7 @@ function* addItem(action) {
 function* getItemFirst(action) {
   try {
     const result =  yield ItemService.selectItemAll(action.data !== undefined ? action.data.lastId : 0 , 
-                                                  action.data !== undefined ? action.data.size : 30);
+                                                  action.data !== undefined ? action.data.size : 12);
     yield put({       
       type: GET_ITEM_FIRST_SUCCESS, 
       data: result.data
@@ -97,7 +100,7 @@ function* getItemFirst(action) {
 function* getItem(action) {
   try {
     const result =  yield ItemService.selectItemAll(action.data !== undefined ? action.data.lastId : 0 , 
-                                                  action.data !== undefined ? action.data.size : 30);
+                                                  action.data !== undefined ? action.data.size : 6);
     yield put({       
       type: GET_ITEM_SUCCESS, 
       data: result.data
@@ -129,7 +132,7 @@ function* getItemOne(action) {
 
 function* removeItem(action) {
   try {
-    yield ItemService.removeItem(action.data);
+    yield AdminService.removeItem(action.data);
     const history = action.history;
     yield put({       
       type: REMOVE_ITEM_SUCCESS, 
@@ -137,12 +140,15 @@ function* removeItem(action) {
     alert("삭제되었습니다.")
     history.push('/');
   } catch (err) {
-    TokenCheck(err.response.data)
+    if(err.response.data) {
+      TokenCheck(err.response.data)
+    } else {
+      alert("실패하였습니다.")
+    }
     yield put({
       type: REMOVE_ITEM_FAILURE,
       error : err.response.data
     })
-    alert("실패하였습니다.")
   }  
 }
 

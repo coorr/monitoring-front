@@ -52,14 +52,14 @@ const ItemRevised = () => {
   // }, [addItemDone])
 
   const textResize = useCallback(() => {
-    
     const obj = textRef.current;
     obj.style.height='auto';
     obj.style.height= obj.scrollHeight + 'px';
   },[]);
   
   const handleComplete = useCallback(() => {
-    console.log("quantityS",quantityS);
+    const history = router;
+    
     const formData = new FormData();
     newImagePath.forEach((file) => {
       formData.append('multipartFiles', file);
@@ -85,6 +85,7 @@ const ItemRevised = () => {
     dispatch({
       type: REVISED_ITEM_REQUEST,
       data: formData,
+      history
     })
   },[newImagePath,quantityS,quantityM,quantityL, imagePath,itemId, title,price,discountPrice,category,size,material,info]);
 
