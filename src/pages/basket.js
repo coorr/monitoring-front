@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Header from '../components/header'
+import Header from '../components/Header'
 import { Container, Row, Col, Card,ListGroup, Button } from 'react-bootstrap'
 import styles from '../components/css/Product.module.scss'
 import DeleteIcon from '../images/btn_price_delete.gif'

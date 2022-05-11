@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Header from "../components/header";
+import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import ItemPost from "../components/item/ItemPost";
 import styles from '../components/css/Product.module.scss'

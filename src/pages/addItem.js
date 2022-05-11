@@ -1,5 +1,5 @@
 import React, { useCallback,useState,useRef, useEffect } from 'react'
-import Header from '../components/header'
+import Header from '../components/Header'
 import AuthService from '../../service/user/Auth.service';
 import Router from 'next/router'
 import styles from '../components/css/User.module.css'

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import Footer from '../../components/Footer'
-import Header from '../../components/header'
+import Header from '../../components/Header'
 import { Container, Row, Col, Card,ListGroup, Button, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";

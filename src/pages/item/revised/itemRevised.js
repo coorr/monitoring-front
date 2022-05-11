@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react'
 import { useRouter } from 'next/router'
 import Footer from '../../../components/Footer'
-import Header from '../../../components/header'
+import Header from '../../../components/Header'
 import AuthService from '../../../../service/user/Auth.service'
 import styles from '../../../components/css/User.module.css'
 import { useDispatch, useSelector } from 'react-redux'
