@@ -167,6 +167,7 @@ export const BASKET_LENGTH_ORDER_SAVE_SUCCESS = 'BASKET_LENGTH_ORDER_SAVE_SUCCES
 export const BASKET_LENGTH_ORDER_SAVE_FAILURE = 'BASKET_LENGTH_ORDER_SAVE_FAILURE';
 
 
+
 const reducer = (state = initialState, action) => {
     return produce(state, (draft) => {
         switch (action.type) {
@@ -285,7 +286,7 @@ const reducer = (state = initialState, action) => {
                 draft.basketGetLoading=false;
                 draft.basketGetDone=true;
                 draft.currentItem= action.data;
-                const total = null;
+                let total = 0;
                 action.data.forEach(v => total += v.itemTotal )
                 draft.totalPrice = total;
                 draft.itemLength = action.data.length;
@@ -319,7 +320,7 @@ const reducer = (state = initialState, action) => {
                 draft.basketRemoveUserLoading=false;
                 draft.basketRemoveUserDone=true;
                 draft.currentItem= action.data;
-                const cancelTotal = null;
+                let cancelTotal = null;
                 action.data.forEach(v => cancelTotal += v.itemTotal )
                 draft.totalPrice = cancelTotal;
                 draft.itemLength = action.data.length;
@@ -339,7 +340,7 @@ const reducer = (state = initialState, action) => {
                 draft.basketDownUserDone=true;
                 draft.currentItem= action.data;
                 draft.itemLength = action.data.length;
-                const basketDownTotal = null;
+                let basketDownTotal = null;
                 action.data.forEach( v =>  basketDownTotal += v.itemTotal )
                 draft.totalPrice = basketDownTotal;
                 break;
@@ -358,7 +359,7 @@ const reducer = (state = initialState, action) => {
                 draft.basketPlusUserDone=true;
                 draft.currentItem= action.data;
                 draft.itemLength = action.data.length;
-                const basketPlusTotal = null;
+                let basketPlusTotal = null;
                 action.data.forEach(v => basketPlusTotal += v.itemTotal )
                 draft.totalPrice = basketPlusTotal;
                 break;
@@ -478,15 +479,10 @@ const reducer = (state = initialState, action) => {
                 draft.total = draft.total - removeCount.itemTotal;
                 draft.count = draft.count - removeCount.itemCount
                 break;
-            // case BASKET_NULL_REQUEST:
-            //     draft.currentItem = [];
-            //     draft.total= null;
-            //     draft.count = 0;
-            //     break;
             case BASKET_LOCAL_ADD_REQUEST:
                 draft.currentItem = action.data;
                 draft.itemLength = action.data.length;
-                const localTotal = null;
+                let localTotal = null;
                 action.data.forEach(v => localTotal += v.itemTotal )
                 draft.totalPrice = localTotal;
                 break;

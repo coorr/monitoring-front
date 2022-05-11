@@ -178,11 +178,14 @@ function* basketAddUser(action) {
 function* basketGet(action) {
   try {
     const result = yield BasketService.getBasketByUserId(action.userId);
+    console.log(result);
+    console.log(result.data);
     yield put({       
       type: BASKET_GET_SUCCESS, 
       data: result.data
     }) 
   } catch (err) {
+    console.log(err);
     TokenCheck(err.response.data)
     yield put({
       type: BASKET_GET_FAILURE,

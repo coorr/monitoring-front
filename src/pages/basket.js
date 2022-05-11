@@ -27,6 +27,10 @@ const basket = () => {
 
     if (userId === '' && userLocalData !== null) {
         setUserId(userLocalData.id);
+        dispatch({
+            type: BASKET_GET_REQUEST,
+            userId: userLocalData.id
+        })
     }
 
     if(itemLocalData !== null) {
@@ -39,14 +43,14 @@ const basket = () => {
     console.log("basket useEffect");
   }, [userId]);
 
-  useEffect(()=> {
-    if(userId !== '') {
-        dispatch({
-            type: BASKET_GET_REQUEST,
-            userId: userId
-        })
-    }
-  },[userId])
+//   useEffect(()=> {
+//     if(userId !== '') {
+//         dispatch({
+//             type: BASKET_GET_REQUEST,
+//             userId: userId
+//         })
+//     }
+//   },[userId])
   console.log("currentItem : ", currentItem)
 
   
