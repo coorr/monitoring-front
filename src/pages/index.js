@@ -24,7 +24,7 @@ const index = () => {
       if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if(hasMoreItem && !getItemLoading) {
           const lastId = item[item.length - 1]?.itemId;
-          const size = 10;
+          const size = 12;
           dispatch({
             type: GET_ITEM_REQUEST,
             data: { lastId, size}
@@ -51,13 +51,5 @@ const index = () => {
   )
 }
 
-// export const getServerSideProps = wrapper.getServerSideProps(async(context) => {
-//   context.store.dispatch({
-//     type: GET_ITEM_REQUEST,
-//   })
-
-//   context.store.dispatch(END);
-//   await context.store.sagaTask.toPromise();
-// })
 
 export default index

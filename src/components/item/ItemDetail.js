@@ -160,11 +160,15 @@ const ItemDetail = ({ itemDetail }) => {
 
     const onClickRemoveItem = useCallback(() => {
         const history = router;
-        dispatch({
-            type: REMOVE_ITEM_REQUEST,
-            data: itemDetail.itemId,
-            history: history
-        })
+        if(confirm("삭제하시겠습니까?")) {
+            dispatch({
+                type: REMOVE_ITEM_REQUEST,
+                data: itemDetail.itemId,
+                history: history
+            })
+        } else {
+            return;
+        }
     })
 
     console.log(currentItem);
@@ -267,7 +271,7 @@ const ItemDetail = ({ itemDetail }) => {
                     disabled
                 />
 
-                <p>Fabric Description</p>
+                <span>Fabric Description</span>
                 <p>{itemDetail.material}</p><br />
 
                 <span>Info</span>
