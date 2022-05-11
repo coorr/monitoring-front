@@ -3,7 +3,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
-import Header from '../../components/header'
+import Header from '../../components/Header'
 import AuthService from "../../../service/user/Auth.service";
 import styles from '../../components/css/User.module.css'
 import Router from "next/router";

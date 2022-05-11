@@ -2,7 +2,7 @@ import React, { useState, useCallback ,useRef} from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import Header from "../../components/header";
+import Header from "../../components/Header";
 import AuthService from "../../../service/user/Auth.service";
 import Router from "next/router";
 import styles from '../../components/css/User.module.css'

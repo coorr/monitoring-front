@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect} from 'react'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
-import OrderHeader from '../../components/order/orderHeader';
+import OrderHeader from '../../components/order/OrderHeader';
 import { Container, Row, Col,  Button } from 'react-bootstrap'
 import styles from '../../components/css/Order.module.css'
 import { BASKET_GET_REQUEST, BASKET_LENGTH_ORDER_SAVE_REQUEST, IS_POST_OPEN_REQUEST, SOLD_OUT_BASKET_REQUEST } from '../../reducers/item';

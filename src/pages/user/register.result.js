@@ -1,5 +1,5 @@
 import React, { useState,useCallback  } from 'react'
-import Header from '../../components/header'
+import Header from '../../components/Header'
 import styles from '../../components/css/User.module.css'
 import Router from 'next/router'
 import { useSelector } from 'react-redux'
