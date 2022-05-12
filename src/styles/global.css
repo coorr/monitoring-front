@@ -102,3 +102,6 @@ table td {
 input[type="text"]:disabled {
   background: white;
 }
+/* .row>* {
+  padding: 0 !important;
+} */

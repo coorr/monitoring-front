@@ -15,9 +15,9 @@ const help = () => {
       <Row>
         <Col xs={12} md={6}>
           <div style={{textAlign: 'left'}}>
-            <p>CIAL : COMMON ORIGINS</p>
-            <p>cial seeks for simple and harmonious beauty.</p>
-            <p>cial is a contemporary brand that captures naturalness.</p>
+            <p>LOOK : COMMON ORIGINS</p>
+            <p>look seeks for simple and harmonious beauty.</p>
+            <p>look is a contemporary brand that captures naturalness.</p>
           </div>
         </Col>
         <Col xs={12} md={6}>

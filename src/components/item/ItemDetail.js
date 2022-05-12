@@ -38,13 +38,10 @@ const ItemDetail = ({ itemDetail }) => {
             })
         }
 
-        // dispatch({
-        //     type: BASKET_NULL_REQUEST
-        // })
     },[admin,userId])
     console.log("itemDetail" , itemDetail);
 
-    const onClickSizeValue = useCallback((e,index)  => {
+    const onClickSizeValue = useCallback((index)  =>  (e) => {
         if(sizeValue === e.target.value) {
             return setSizeValue('');
         }   
@@ -72,7 +69,7 @@ const ItemDetail = ({ itemDetail }) => {
             count: 1
         })
         
-    },[sizeValue])
+    },[sizeValue, currentItem])
 
     const onClickItemListDown = useCallback((index) => () => {
         for(var i=0; i<currentItem.length; i++) {
@@ -102,7 +99,6 @@ const ItemDetail = ({ itemDetail }) => {
 
     const onClickComplete = useCallback(() =>  {
         const history = router;
-        console.log(userId);
         if(currentItem.length === 0) {
             return alert("필수 옵션을 선택해주세요.")
         }
@@ -180,6 +176,7 @@ const ItemDetail = ({ itemDetail }) => {
     <Row>
       <Col xs={12} md={6}>
         <img src={itemDetail.images.length > 0 ? location+`${itemDetail.images[0].location}` : []} alt="이미지" width="100%" height="900px" />
+        &nbsp;
       </Col>
       <Col xs={12} md={6}>
         <div className="mx-5">
@@ -217,7 +214,7 @@ const ItemDetail = ({ itemDetail }) => {
                                 <Button 
                                     id={sizeValueArray[i] === sizeValue ? styles.item_size_btn : styles.item_size_btn_2} 
                                     value={sizeValueArray[i]} 
-                                    onClick={(e) => onClickSizeValue(e,i)}
+                                    onClick={onClickSizeValue(i)}
                                 >
                                     {sizeValueArray[i]}
                                 </Button>
@@ -227,7 +224,6 @@ const ItemDetail = ({ itemDetail }) => {
                ))
            }
            </div>
-           <br />
            <br />
            <div style={{ fontSize: "13px", color: "#555555"}}>
             {
@@ -270,10 +266,12 @@ const ItemDetail = ({ itemDetail }) => {
                     value={itemDetail.size} 
                     disabled
                 />
+                <br/>
 
                 <span>Fabric Description</span>
                 <p>{itemDetail.material}</p><br />
 
+                <br/>
                 <span>Info</span>
                 <textarea
                     className={styles.textarea_form_control } 

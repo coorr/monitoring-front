@@ -169,7 +169,7 @@ const basket = () => {
         <div className="middle_space_screen" />
         <Container style={{maxWidth: '720px'}}>
             <Row>
-                <Col>
+                <Col xs={12} md={12}>
                     <span style={{display: 'flex', fontSize: '14px'}}>장바구니</span>
                     <div style={{borderBottom: '1px solid black'}} />
 

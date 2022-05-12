@@ -476,7 +476,7 @@ const reducer = (state = initialState, action) => {
             case REMOVE_COUNT_ITEMLIST_REQUEST:
                 const removeCount = draft.currentItem.find((v,i) => v.keyIndex === action.data)
                 draft.currentItem = draft.currentItem.filter((v,i) => v.keyIndex !== action.data)
-                draft.total = draft.total - removeCount.itemTotal;
+                draft.total = draft.total - (removeCount.price * removeCount.itemCount);
                 draft.count = draft.count - removeCount.itemCount
                 break;
             case BASKET_LOCAL_ADD_REQUEST:
