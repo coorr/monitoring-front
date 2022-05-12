@@ -58,8 +58,8 @@ const vpassword = value => {
 
 
 const Register = () => {
-  const form =useRef(null);
-  const checkBtn =useRef(null);
+  const form =useRef();
+  const checkBtn =useRef();
   const dispatch = useDispatch();
 
   const [username, onChangeUsername] = useInput('');
@@ -80,9 +80,9 @@ const Register = () => {
           return setPasswordError(true)
         }
    
-        form.validateAll();
+        form.current.validateAll();
 
-        if (checkBtn.context._errors.length === 0) {   // 서버보다 우선순위 먼저
+        if (checkBtn.current.context._errors.length === 0) {   // 서버보다 우선순위 먼저
           AuthService.register(username,email,password)
           .then(res => {
             dispatch({
@@ -119,9 +119,7 @@ const Register = () => {
         <br />
           <Form
             onSubmit={handleRegister}
-            ref={c => {
-              form = c;
-            }}
+            ref={form}
           >
               <div>
                 <div className="form-group">
@@ -181,9 +179,7 @@ const Register = () => {
               </div>
             <CheckButton
               style={{ display: "none" }}
-              ref={c => {
-                checkBtn = c;
-              }}
+              ref={checkBtn}
             />
           </Form>
         </div>

@@ -13,8 +13,8 @@ import Footer from "../../components/Footer";
 
 
 const Login = () => {
-  const form =useRef(null);
-  const checkBtn =useRef(null);
+  const form =useRef();
+  const checkBtn =useRef();
   
   const [username, onChangeUsername] = useInput('');
   const [password, onChangePassword] = useInput('');
@@ -32,9 +32,9 @@ const Login = () => {
     }
     
 
-    form.validateAll();
+    form.current.validateAll();
 
-    if (checkBtn.context._errors.length === 0) {
+    if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(username, password)
       .then(res => {
         Router.push("/mypage/list")
@@ -69,9 +69,7 @@ const Login = () => {
 
               <Form
                 onSubmit={handleLogin}
-                ref={c => {
-                  form = c;
-                }}
+                ref={form}
               >
                 <div className="form-group">
                   <label htmlFor="username" className={styles.login_font_input}>ID</label>
@@ -122,9 +120,7 @@ const Login = () => {
 
                 <CheckButton
                   style={{ display: "none" }}
-                  ref={c => {
-                    checkBtn = c;
-                  }}
+                  ref={checkBtn}
                 />
               </Form>
               </div> 
