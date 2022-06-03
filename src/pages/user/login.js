@@ -100,7 +100,6 @@ const Login = () => {
                     className="btn btn-primary btn-block"
                     disabled={logInLoading}
                     type="submit"
-                    // onSubmit={handleLogin}
                   >
                     {logInLoading && (
                       <span className="spinner-border spinner-border-sm"></span>
@@ -116,6 +115,14 @@ const Login = () => {
                     <label  className={styles.login_account_font_label}>New to Account?</label>{" "}
                     <a href="register" className={styles.login_account_font_a}>Create an account.</a>
                   </div>
+                </div>
+
+                <div className="form-group" >
+                  <div className="btn" style={{fontSize : '13px', width:"240px", fontWeight: 'bold'}}>
+                    <label>&nbsp;&nbsp;테스트 ID  &nbsp;&nbsp;: user</label><br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>테스트 PW : 123123</label>
+                  </div>
+                  
                 </div>
 
                 <CheckButton
