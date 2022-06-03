@@ -420,12 +420,16 @@ const reducer = (state = initialState, action) => {
                 draft.soldOutBasketDone = false;
                 draft.soldOutBasketError = null;
                 break;
-            case SOLD_OUT_BASKET_SUCCESS:
+            case SOLD_OUT_BASKET_SUCCESS: {
                 draft.soldOutBasketLoading=false;
                 draft.soldOutBasketDone=true;
                 draft.currentItem=action.data;
-                draft.itemLength = action.data.length
+                draft.itemLength = action.data.length;
+                let total = 0;
+                action.data.forEach(v => total += v.itemTotal )
+                draft.totalPrice = total;
                 break;
+            }
             case SOLD_OUT_BASKET_FAILURE:
                 draft.soldOutBasketLoading=false;
                 draft.soldOutBasketError=action.error;

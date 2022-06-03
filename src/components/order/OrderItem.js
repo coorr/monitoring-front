@@ -7,8 +7,10 @@ import { BASKET_REMOVE_USER_REQUEST } from '../../reducers/item';
 import AuthService from '../../../service/user/Auth.service';
 import { useDispatch } from 'react-redux';
 import { location } from '../../config/location';
+import { useRouter } from 'next/router';
 
 const OrderItem = ({item}) => {
+    const router = useRouter();
     const dispatch = useDispatch();
     const [userId, setUserId] = useState('')
 
@@ -21,12 +23,14 @@ const OrderItem = ({item}) => {
     }, [userId]);
 
     const onClickBasketRemove = useCallback((keyIndex) => () => {
+        const history = router;
         if(confirm("선택하신 상품을 삭제하시겠습니까?")) {
             if(userId !== '') {
                 dispatch({
                     type: BASKET_REMOVE_USER_REQUEST,
                     data: keyIndex,
-                    userId
+                    userId,
+                    history
                 })
             }
         } else { return; }

@@ -215,6 +215,10 @@ function* basketGetUser(action) {
 function* basketRemoveUser(action) {
   try {
     const result = yield BasketService.removeBasketById(action.data, action.userId);
+    const history = action.history;
+    if(result.data.length === 0) {
+      return yield history.push("/basket")
+    }
     yield put({       
       type: BASKET_REMOVE_USER_SUCCESS, 
       data: result.data
