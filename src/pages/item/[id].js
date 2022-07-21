@@ -33,13 +33,13 @@ const Item = () =>  {
               getItemOneDone && (
                 <>
                 <title>
-                  {itemOne[0].title}
+                  {itemOne.title}
                 </title>
-                <meta name='description' content={itemOne[0].size} />
-                <meta property='og:title'  content={itemOne[0].title} />
-                <meta property='og:description'  content={itemOne[0].title} />
-                <meta property='og:title'  content={itemOne[0].size} />
-                <meta property='og:image'  content={itemOne[0].images[0]  ? itemOne[0].images[0].location : null} />
+                <meta name='description' content={itemOne.size} />
+                <meta property='og:title'  content={itemOne.title} />
+                <meta property='og:description'  content={itemOne.title} />
+                <meta property='og:title'  content={itemOne.size} />
+                <meta property='og:image'  content={itemOne.images  ? itemOne.images.location : null} />
                 <meta property='og:url'  content={`https://lookshop.cf/item/${id}`} />
                 </>
               )
@@ -49,7 +49,7 @@ const Item = () =>  {
         <div className="middle_space_screen" />
         {
           getItemOneDone && (
-            <ItemDetail itemDetail={itemOne[0]}  />
+            <ItemDetail itemDetail={itemOne}  />
           )
         }
         <Footer />

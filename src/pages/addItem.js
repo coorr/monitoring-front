@@ -56,7 +56,7 @@ const AddItem = () => {
   const handleComplete = useCallback(() => {
     const formData = new FormData();
     imagePath.forEach((file) => {
-      formData.append('multipartFiles', file);
+      formData.append('file', file);
   });
     const itemData = {
       title: title,
@@ -70,7 +70,7 @@ const AddItem = () => {
       material: material,
       info: info
     }
-    formData.append('itemData', JSON.stringify(itemData));
+    formData.append('itemData',  new Blob([JSON.stringify(itemData)], { type: "application/json"}));
 
     dispatch({
       type: ADD_ITEM_REQUEST,

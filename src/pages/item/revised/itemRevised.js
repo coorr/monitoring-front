@@ -62,7 +62,7 @@ const ItemRevised = () => {
     
     const formData = new FormData();
     newImagePath.forEach((file) => {
-      formData.append('multipartFiles', file);
+      formData.append('file', file);
   });
 
   const itemData = {
@@ -76,15 +76,17 @@ const ItemRevised = () => {
       category: category,
       size: size,
       material: material,
-      info: info
+      info: info,
+      imagePath: imagePath
     }
+
   
-    formData.append('itemData', JSON.stringify(itemData));
-    formData.append('imagePath', JSON.stringify(imagePath));
+    formData.append('itemData', new Blob([JSON.stringify(itemData)], { type: "application/json"}));
 
     dispatch({
       type: REVISED_ITEM_REQUEST,
       data: formData,
+      itemId: itemId,
       history
     })
   },[newImagePath,quantityS,quantityM,quantityL, imagePath,itemId, title,price,discountPrice,category,size,material,info]);

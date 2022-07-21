@@ -41,18 +41,17 @@ import ItemService from '../../service/item/Item.service'
 import TokenCheck from '../store/tokenCheck';
 import BasketService from '../../service/basket/Basket.service';
 import OrderService from '../../service/order/Order.service';
-import AdminService from '../../service/admin/admin.service';
 
 function* addRevisedItem(action) {
   const history = action.history;
   try {
-    const result =  yield AdminService.revisedItem(action.data);
+    const result =  yield ItemService.revisedItem(action.data, action.itemId);
     alert("저장 되었습니다.")
     yield put({       
       type: REVISED_ITEM_SUCCESS, 
       data: result.data
     }) 
-    history.push("/")
+    // history.push("/")
   } catch (err) {
     TokenCheck(err.response.data)
     yield put({
@@ -64,7 +63,7 @@ function* addRevisedItem(action) {
 
 function* addItem(action) {
   try {
-    const result =  yield AdminService.insertItemAll(action.data);
+    const result =  yield ItemService.insertItemAll(action.data);
     alert("저장 되었습니다.")
     yield put({       
       type: ADD_ITEM_SUCCESS, 
@@ -131,8 +130,11 @@ function* getItemOne(action) {
 }
 
 function* removeItem(action) {
+  console.log("123123123123123123123123");
+  console.log(action.data);
   try {
-    yield AdminService.removeItem(action.data);
+    
+    yield ItemService.removeItem(action.data);
     const history = action.history;
     yield put({       
       type: REMOVE_ITEM_SUCCESS, 

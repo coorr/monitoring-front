@@ -14,6 +14,7 @@ import { location } from '../../config/location';
 
 
 const ItemDetail = ({ itemDetail }) => {
+    console.log(itemDetail);
     const router = useRouter();
     const [sizeValueArray, setSizeValueArray] = useState(['S','M','L'])
     const [sizeValueArrays, setSizeValueArrays] = useState([{"S": itemDetail.quantityS }, {"M": itemDetail.quantityM },{ "L": itemDetail.quantityL}])
